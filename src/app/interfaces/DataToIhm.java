@@ -2,9 +2,6 @@ package app.interfaces;
 
 import java.util.List;
 
-/**
- * Created by greyna on 11/12/14.
- */
 public interface DataToIhm {
 /*    void receiveUser(User user, int queryId);
     void receiveUsers(List<User> users, int queryId);
