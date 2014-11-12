@@ -3,20 +3,19 @@
  */
 package app;
 
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import app.controller.LoginController;
+import app.controller.ProfileController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import app.controller.LoginController;
-import app.controller.ProfileController;
-import app.model.User;
-import app.security.Authenticator;
+
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Main Application. This class handles navigation and user session.
@@ -24,9 +23,6 @@ import app.security.Authenticator;
 public class Main extends Application {
 
     private Stage stage;
-    private User loggedUser;
-    private final double MINIMUM_WINDOW_WIDTH = 390.0;
-    private final double MINIMUM_WINDOW_HEIGHT = 500.0;
 
     /**
      * @param args the command line arguments
@@ -39,9 +35,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             stage = primaryStage;
-            stage.setTitle("FXML Login Sample");
-            stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
-            stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+            stage.setTitle("PicShare");
             gotoLogin();
             primaryStage.show();
         } catch (Exception ex) {
@@ -49,37 +43,9 @@ public class Main extends Application {
         }
     }
 
-    public User getLoggedUser() {
-        return loggedUser;
-    }
-        
-    public boolean userLogging(String userId, String password){
-        if (Authenticator.validate(userId, password)) {
-            loggedUser = User.of(userId);
-            gotoProfile();
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    public void userLogout(){
-        loggedUser = null;
-        gotoLogin();
-    }
-    
-    private void gotoProfile() {
-        try {
-            ProfileController profile = (ProfileController) replaceSceneContent("view/Profile.fxml");
-            profile.setApp(this);
-        } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     private void gotoLogin() {
         try {
-            LoginController login = (LoginController) replaceSceneContent("view/Login.fxml");
+            LoginController login = (LoginController) replaceSceneContent("view/connexion.fxml");
             login.setApp(this);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,15 +57,42 @@ public class Main extends Application {
         InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
         loader.setLocation(Main.class.getResource(fxml));
-        AnchorPane page;
+        Parent page;
         try {
-            page = (AnchorPane) loader.load(in);
+            page = (Parent) loader.load(in);
         } finally {
             in.close();
         } 
-        Scene scene = new Scene(page, 800, 600);
+        Scene scene = new Scene(page);
+        scene.getStylesheets().add("app/resource/picshare.css");
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();
     }
+
+    public boolean userLogging(String userId, String password){
+/*        if (Authenticator.validate(userId, password)) {
+            loggedUser = User.of(userId);
+            gotoProfile();
+            return true;
+        } else {
+            return false;
+        }*/
+        return true;
+    }
+
+    public void userLogout(){
+        //loggedUser = null;
+        gotoLogin();
+    }
+
+    private void gotoProfile() {
+        try {
+            ProfileController profile = (ProfileController) replaceSceneContent("view/config.fxml");
+            //profile.setApp(this);
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
