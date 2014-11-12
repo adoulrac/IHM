@@ -2,24 +2,6 @@ package IHM.interfaces;
 
 import java.util.List;
 
-<<<<<<< HEAD:interfaces/DataToIhm.java
-public interface DataToIhm {
-/*
-    void receiveUser(User user, int queryId);
-    void receiveUsers(List<User> users, int queryId);
-    void receivePicture(Picture picture, int queryId);
-    void receivePictures(List<Picture> pictures, int queryId);
-    void receiveComment(Comment comment, int queryId);
-    void receiveNote(Note note, int queryId);
-    void receiveFriendRequest(User user, int queryId);
-*/
-=======
-/**
- * Interface called by the DATA layer to send back asynchronous results to the IHM layer,
- * OR requests/results from other clients.
- * @author Arthur Van Ceulen
- * @param queryId is sent by IHM to DATA when requesting. If equal to 0, means that the result was not previously requested by the IHM layer (like a friend request).
- */
 public interface DataToIhm {
     /**
      * Send back the user requested.
@@ -62,5 +44,4 @@ public interface DataToIhm {
      * @param user the other user who sent the request.
      */
     //void receiveFriendRequest(User user, int queryId);
->>>>>>> FETCH_HEAD:src/app/interfaces/DataToIhm.java
 }
