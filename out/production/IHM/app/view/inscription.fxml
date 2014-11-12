@@ -12,7 +12,7 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="279.0" layoutX="142.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="381.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="267.0" layoutX="149.0" layoutY="155.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="369.0" />
-      <Button layoutX="275.0" layoutY="388.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" styleClass="connexion-btn" stylesheets="@../resource/picshare.css" text="Valider" textFill="#6d6e71" />
+      <Button layoutX="275.0" layoutY="388.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" styleClass="connexion-btn"  text="Valider" textFill="#6d6e71" />
       <TextField layoutX="275.0" layoutY="168.0" />
       <TextField layoutX="275.0" layoutY="210.0" />
       <Label layoutX="221.0" layoutY="171.0" text="Login" textFill="WHITE">
@@ -23,11 +23,11 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <Hyperlink layoutX="373.0" layoutY="37.0" styleClass="connexion-link" stylesheets="@../resource/picshare.css" text="S'inscrire" textFill="#6d6e71">
+      <Hyperlink layoutX="373.0" layoutY="37.0" styleClass="connexion-link"  text="S'inscrire" textFill="#6d6e71">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Hyperlink>
-      <Hyperlink layoutX="487.0" layoutY="37.0" styleClass="connexion-link" stylesheets="@../resource/picshare.css" text="Charger profil" textFill="#6d6e71">
+      <Hyperlink layoutX="487.0" layoutY="37.0" styleClass="connexion-link"  text="Charger profil" textFill="#6d6e71">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Hyperlink>
