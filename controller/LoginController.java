@@ -26,9 +26,9 @@ public class LoginController extends AnchorPane implements Initializable {
     @FXML
     Label errorMessage;
 
-    private Main application;
+    private MainController application;
 
-    public void setApp(Main application){
+    public void setApp(MainController application){
         this.application = application;
     }
     
