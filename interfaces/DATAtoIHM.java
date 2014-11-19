@@ -48,29 +48,4 @@ public interface DATAtoIHM
      * @param user the other user who sent the request.
      */
     void receiveFriendRequest(User user, int queryId);
-
-    /**
-     * Receive a notification of change in a picture (comment, note, .
-     * @param userId the id of the user connected.
-     * @param filename the name of the picture.
-     */
-    void refreshPicture(String filename, int userId, int queryId);
-
-
-    // deleted
-    /**
-     * Send back the list of users requested.
-     * @param users the list of users requested.
-     */
-    //void receiveUsers(List<User> users, int queryId);
-    /**
-     * Receive a comment, or a comment validation if posted by this user on another user's picture.
-     * @param comment the comment received or sent.
-     */
-    //void receiveComment(Comment comment, int queryId);
-    /**
-     * Receive a note, or a note validation if posted by this user on another user's picture.
-     * @param note the note received or sent.
-     */
-    //void receiveNote(Note note, int queryId);
 }
