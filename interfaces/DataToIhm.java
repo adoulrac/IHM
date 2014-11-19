@@ -2,7 +2,7 @@ package IHM.interfaces;
 
 import java.util.List;
 
-public interface DATAToIHM
+public interface DATAtoIHM
 {
     /**
      * Send back the user requested.
