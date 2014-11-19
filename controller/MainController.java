@@ -1,5 +1,6 @@
 package IHM.controller;
 
+import DATA.model.User;
 import IHM.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,20 +17,30 @@ public class MainController {
 
     private final static String APP_NAME = "PicShare";
     private Stage stage;
+    private User currentUser;
 
     public MainController(Stage primaryStage) {
         stage = primaryStage;
         stage.setTitle(APP_NAME);
-        gotoLogin();
+        goToLogin();
         primaryStage.show();
     }
 
-    private void gotoLogin() {
+    public void goToLogin() {
         try {
             LoginController login = (LoginController) replaceSceneContent("view/connexion.fxml");
             login.setApp(this);
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void goToRegister() {
+        try {
+            RegisterController register = (RegisterController) replaceSceneContent("view/inscription.fxml");
+            register.setApp(this);
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -56,16 +67,36 @@ public class MainController {
     }
 
     public void userLogout(){
-        gotoLogin();
+        goToLogin();
     }
 
     private void gotoProfile() {
         try {
             ProfileController profile = (ProfileController) replaceSceneContent("IHM/view/config.fxml");
-            //profile.setApp(this);
+            profile.setApp(this);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public void goToWelcome() {
+        try {
+            WelcomeController welcome = (WelcomeController) replaceSceneContent("IHM/view/accueil.fxml");
+            welcome.setApp(this);
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public User currentUser() {
+        return this.currentUser();
+    }
+
+    public Stage getPrimaryStage() {
+        return this.stage;
+    }
 }
