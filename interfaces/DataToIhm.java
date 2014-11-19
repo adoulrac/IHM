@@ -2,7 +2,8 @@ package IHM.interfaces;
 
 import java.util.List;
 
-public interface DataToIhm {
+public interface DATAToIHM
+{
     /**
      * Send back the user requested.
      * @param user the user requested.

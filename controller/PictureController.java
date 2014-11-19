@@ -1,4 +1,6 @@
 package IHM.controller;
 
-public class PictureController {
+public class PictureController
+{
+
 }
