@@ -44,7 +44,16 @@ public class MainController {
         }
     }
 
-    private Initializable replaceSceneContent(String fxml) throws Exception {
+    public void goToGroups() {
+        try {
+            GroupsController groups = (GroupsController) replaceSceneContent("view/gestion_groupes.fxml");
+            groups.setApp(this);
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Initializable replaceSceneContent(String fxml) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
@@ -70,21 +79,21 @@ public class MainController {
         goToLogin();
     }
 
-    private void gotoProfile() {
+    public void goToProfile() {
         try {
-            ProfileController profile = (ProfileController) replaceSceneContent("IHM/view/config.fxml");
+            ProfileController profile = (ProfileController) replaceSceneContent("view/config.fxml");
             profile.setApp(this);
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void goToWelcome() {
         try {
-            WelcomeController welcome = (WelcomeController) replaceSceneContent("IHM/view/accueil.fxml");
+            WelcomeController welcome = (WelcomeController) replaceSceneContent("view/accueil.fxml");
             welcome.setApp(this);
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
