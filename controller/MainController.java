@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class MainController {
 
     private final static String APP_NAME = "PicShare";
+    private final static String CSS_PATH = "IHM/resource/picshare.css";
     private Stage stage;
     private User currentUser;
 
@@ -53,7 +54,7 @@ public class MainController {
         }
     }
 
-    public Initializable replaceSceneContent(String fxml) throws Exception {
+    private Initializable replaceSceneContent(String fxml) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
@@ -65,7 +66,7 @@ public class MainController {
             in.close();
         }
         Scene scene = new Scene(page);
-        scene.getStylesheets().add("IHM/resource/picshare.css");
+        scene.getStylesheets().add(CSS_PATH);
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();

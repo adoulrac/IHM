@@ -36,11 +36,15 @@ public class WelcomeController extends Pane implements Initializable {
     }
 
     public void launchPreferences() {
-        this.application.goToProfile();
+        if(application != null) {
+            application.goToProfile();
+        }
     }
 
     public void launchGroups() {
-       this.application.goToGroups();
+       if(application != null) {
+           application.goToGroups();
+       }
     }
 
 }
