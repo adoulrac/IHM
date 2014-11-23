@@ -8,13 +8,13 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" fx:controller="IHM.controller.LoginController" prefWidth="617.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" fx:controller="IHM.controller.RegisterController" prefWidth="617.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="279.0" layoutX="142.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="381.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="267.0" layoutX="149.0" layoutY="155.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="369.0" />
-      <Button layoutX="275.0" layoutY="388.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" styleClass="connexion-btn"  text="Valider" textFill="#6d6e71" />
-      <TextField layoutX="275.0" layoutY="168.0" />
-      <TextField layoutX="275.0" layoutY="210.0" />
+      <Button layoutX="275.0" layoutY="388.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" styleClass="connexion-btn"  text="Valider" textFill="#6d6e71" onAction="#subscribe" />
+      <TextField layoutX="275.0" layoutY="168.0" fx:id="login"/>
+      <PasswordField layoutX="275.0" layoutY="210.0" fx:id="password"/>
       <Label layoutX="221.0" layoutY="171.0" text="Login" textFill="WHITE">
          <font>
             <Font name="System Bold" size="13.0" />
@@ -32,13 +32,13 @@
             <Image url="@../resource/logo.jpeg" />
          </image>
       </ImageView>
-      <TextField layoutX="275.0" layoutY="253.0" />
+      <PasswordField layoutX="275.0" layoutY="253.0" fx:id="confirmation"/>
       <Label layoutX="174.0" layoutY="260.0" text="Confirmation" textFill="WHITE">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <TextArea layoutX="275.0" layoutY="294.0" prefHeight="85.0" prefWidth="149.0" />
+      <TextArea layoutX="275.0" layoutY="294.0" prefHeight="85.0" prefWidth="149.0" fx:id="ips" />
       <Label layoutX="180.0" layoutY="292.0" text="Adresses IP" textFill="WHITE">
          <font>
             <Font name="System Bold" size="13.0" />

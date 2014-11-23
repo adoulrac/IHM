@@ -3,8 +3,11 @@ package IHM.controller;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import DATA.model.User;
+import IHM.helper.ValidatorHelper;
 import IHM.util.FileUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,11 +28,9 @@ import javafx.stage.Stage;
 public class LoginController extends Pane implements Initializable {
 
     @FXML
-    TextField userId;
+    TextField login;
     @FXML
     PasswordField password;
-    @FXML
-    Button login;
 
     private MainController application;
     
@@ -39,14 +40,23 @@ public class LoginController extends Pane implements Initializable {
     }
     
     public void login() {
+        String loginText = login.getText();
+        String passwordText = password.getText();
+
+        if(ValidatorHelper.validateLogin(loginText) && ValidatorHelper.validatePassword(passwordText)) {
+            //TODO: Authenticate user
+            application.goToWelcome();
+        }
     }
 
     public void loadProfile() {
         File profileFile = FileUtil.chooseFile();
-        //TODO: IHMtoDATA.importProfile(profileFile);
+        //TODO: Import user profile
+
         User user = null;
         if(user != null) {
             application.setCurrentUser(user);
+            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, user.getLogin() + " has loaded his profile.");
             application.goToWelcome();
         } else {
             Dialogs.showInformationDialog(application.getPrimaryStage(), "Error in importing the user profile");
@@ -54,9 +64,7 @@ public class LoginController extends Pane implements Initializable {
     }
 
     public void register() {
-        if(application != null) {
-            application.goToRegister();
-        }
+        application.goToRegister();
     }
 
     public void setApp(MainController application){
