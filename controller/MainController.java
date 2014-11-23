@@ -102,7 +102,7 @@ public class MainController {
     }
 
     public User currentUser() {
-        return this.currentUser();
+        return this.currentUser;
     }
 
     public Stage getPrimaryStage() {
