@@ -28,7 +28,7 @@ public class WelcomeController extends Pane implements Initializable {
 
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
-        //TODO
+        // NOP
     }
 
     public void setApp(final MainController app) {

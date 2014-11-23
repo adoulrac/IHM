@@ -46,6 +46,8 @@ public class LoginController extends Pane implements Initializable {
         if(ValidatorHelper.validateLogin(loginText) && ValidatorHelper.validatePassword(passwordText)) {
             //TODO: Authenticate user
             application.goToWelcome();
+        } else {
+            Dialogs.showErrorDialog(application.getPrimaryStage(), "Fields are not valid.");
         }
     }
 
