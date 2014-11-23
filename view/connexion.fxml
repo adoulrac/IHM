@@ -13,7 +13,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="192.0" layoutX="114.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="367.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="180.0" layoutX="120.0" layoutY="165.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="356.0" />
       <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" styleClass="connexion-btn" text="Se connecter" textFill="#6d6e71" onAction="#login" />
-      <TextField layoutX="254.0" layoutY="200.0" fx:id="userId"/>
+      <TextField layoutX="254.0" layoutY="200.0" fx:id="login"/>
       <PasswordField layoutX="254.0" layoutY="244.0" fx:id="password"/>
       <Label layoutX="203.0" layoutY="203.0" text="Login" textFill="WHITE">
          <font>
