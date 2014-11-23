@@ -2,6 +2,8 @@ package IHM.controller;
 
 import DATA.model.User;
 import IHM.Main;
+import IHM.util.GeneratorUtil;
+import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -10,19 +12,29 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
+import java.rmi.server.UID;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainController {
 
     private final static String APP_NAME = "PicShare";
+
     private final static String CSS_PATH = "IHM/resource/picshare.css";
+
     private Stage stage;
+
     private User currentUser;
+
+    private Map<UUID, Parent> requests;
 
     public MainController(Stage primaryStage) {
         stage = primaryStage;
         stage.setTitle(APP_NAME);
+        requests = Maps.newHashMap();
+
         goToLogin();
         primaryStage.show();
     }
@@ -108,5 +120,18 @@ public class MainController {
 
     public Stage getPrimaryStage() {
         return this.stage;
+    }
+
+    public void addRequest(Parent controller) {
+        if(controller == null) {
+            return;
+        }
+        this.requests.put(GeneratorUtil.generateUID(), controller);
+    }
+
+    public void removeRequest(UUID requestId) {
+        if (requestId != null) {
+            requests.remove(requestId);
+        }
     }
 }
