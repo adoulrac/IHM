@@ -27,10 +27,13 @@ public class MainController {
 
     private User currentUser;
 
-    private Map<UUID, Parent> requests;
+    private Map<Integer, Parent> requests;
+
+    private int currentId;
 
     public MainController(Stage primaryStage) {
         stage = primaryStage;
+        currentId = 0;
         stage.setTitle(APP_NAME);
         requests = Maps.newHashMap();
 
@@ -126,10 +129,10 @@ public class MainController {
         if(controller == null) {
             return;
         }
-        this.requests.put(GeneratorUtil.generateUID(), controller);
+        this.requests.put(currentId++, controller);
     }
 
-    public void removeRequest(UUID requestId) {
+    public void removeRequest(Integer requestId) {
         if (requestId != null) {
             requests.remove(requestId);
         }
