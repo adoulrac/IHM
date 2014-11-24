@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.*?>
+
+<?import com.sun.javafx.scene.control.skin.SplitPaneSkin?>
+<Accordion layoutX="630.0" layoutY="178.0" prefHeight="463.0" prefWidth="204.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controller.FriendsSubController">
+    <panes>
+        <TitledPane animated="false"  text="Tous les utilisateurs" textFill="WHITE">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" fx:id="allConnectedPane">
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane animated="false" text="Ma famille" textFill="WHITE">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+        <TitledPane animated="false" text="Mes amis" textFill="WHITE">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <children>
+                    </children>
+                </AnchorPane>
+            </content>
+        </TitledPane>
+    </panes>
+</Accordion>

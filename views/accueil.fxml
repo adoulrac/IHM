@@ -25,30 +25,7 @@
       </HBox>
       <TextField layoutX="635.0" layoutY="657.0" text="Ajouter..." />
       <Label layoutX="572.0" layoutY="19.0" fx:id="lblUserName" text="" />
-      <Accordion layoutX="630.0" layoutY="178.0" prefHeight="463.0" prefWidth="204.0">
-        <panes>
-          <TitledPane animated="false"  text="Tous les utilisateurs" textFill="WHITE">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                     </children></AnchorPane>
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="Ma famille" textFill="WHITE">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="Mes amis" textFill="WHITE">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
+      <fx:include source="friends_welcome.fxml"></fx:include>
       <Button layoutX="793.0" layoutY="657.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="28.0" styleClass="add-friend-btn" fx:id="btnAddFriend"  />
       <Button layoutX="658.0" layoutY="149.0" mnemonicParsing="false" styleClass="groups-btn"  text="Gestion des groupes" fx:id="btnGroupsHandling" onAction="#launchGroups" />
       <Button layoutX="688.0" layoutY="101.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" styleClass="settings-btn" fx:id="btnPreferences" text="Préférences" onAction="#launchPreferences" />
