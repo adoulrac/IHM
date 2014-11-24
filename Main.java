@@ -1,19 +1,8 @@
 package IHM;
 
-import IHM.controller.LoginController;
 import IHM.controller.MainController;
-import IHM.controller.ProfileController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Main Application. This class handles navigation and user session.

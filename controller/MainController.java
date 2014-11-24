@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
-import java.rmi.server.UID;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
