@@ -1,23 +1,20 @@
 package IHM.controller;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import DATA.model.User;
+import IHM.helper.ValidatorHelper;
 import IHM.util.FileUtil;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import IHM.Main;
 import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Login Controller.
@@ -25,38 +22,52 @@ import javafx.stage.Stage;
 public class LoginController extends Pane implements Initializable {
 
     @FXML
-    TextField userId;
+    TextField login;
     @FXML
     PasswordField password;
-    @FXML
-    Button login;
 
     private MainController application;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //NOP
     }
-    
+
     public void login() {
+        String loginText = login.getText();
+        String passwordText = password.getText();
+
+        if(ValidatorHelper.validateLogin(loginText) &&
+                ValidatorHelper.validatePassword(passwordText) &&
+                application.getIHMtoDATA().login(loginText, passwordText)) {
+            openApplication();
+        } else {
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Login failed, please check if your password and login are correct.");
+        }
+
     }
 
     public void loadProfile() {
         File profileFile = FileUtil.chooseFile();
-        //TODO: IHMtoDATA.importProfile(profileFile);
-        User user = null;
+        //TODO: Import user profile
+
+        openApplication();
+    }
+
+    private void openApplication() {
+        User user = application.getIHMtoDATA().getCurrentUser();
         if(user != null) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, "User " + user.getLogin() + " has logged in.");
             application.setCurrentUser(user);
             application.goToWelcome();
         } else {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Error in importing the user profile");
+            Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the current user.");
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the current user.");
         }
     }
 
     public void register() {
-        if(application != null) {
-            application.goToRegister();
-        }
+        application.goToRegister();
     }
 
     public void setApp(MainController application){

@@ -1,20 +1,66 @@
 package IHM.controller;
 
-import javafx.fxml.Initializable;
-
-import java.net.URL;
 import java.util.ResourceBundle;
 
-public class WelcomeController implements Initializable {
+import javafx.fxml.Initializable;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+
+import java.net.URL;
+
+public class WelcomeController extends Pane implements Initializable {
 
     private MainController application;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO
+    @FXML
+    private Button btnDeconnect;
+    @FXML
+    private Button btnGroupsHandling;
+    @FXML
+    private Button btnPreferences;
+    @FXML
+    private Button btnAddFriends;
+
+    @FXML
+    private Label lblUserName;
+
+    public WelcomeController()
+    {
+
     }
 
-    public void setApp(MainController application){
-        this.application = application;
+    @Override
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
+        // NOP
     }
+
+
+    public void setApp(final MainController app) {
+        this.application = app;
+    }
+
+    public void launchPreferences() {
+        if(application != null) {
+            application.goToProfile();
+        }
+    }
+
+    public void launchGroups() {
+       if(application != null) {
+           application.goToGroups();
+       }
+    }
+
+    public void logout() {
+        this.application.userLogout();
+    }
+
+    public void setUserLabel()
+    {
+        lblUserName.setText( "Connecté (" + this.application.currentUser().getLogin() + ")");
+    }
+
 }

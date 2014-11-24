@@ -3,20 +3,20 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- * Created by greyna on 17/11/2014.
  * Entry point for running tests.
  */
 public class TestRunner {
     public static void main(String[] args) {
-        // One or more test classes
-        //Result result = JUnitCore.runClasses(MyClassTest.class /*, MySecondClassTest.class*/);
-
-        // Suite class
+        // Run tests
         Result result = JUnitCore.runClasses(AllTests.class);
 
+        Logger.getLogger(TestRunner.class.getName()).log(Level.INFO, result.getFailureCount() + " unit test(s) has(ve) failed.");
         for (Failure failure : result.getFailures()) {
-            System.out.println(failure.toString());
+            Logger.getLogger(TestRunner.class.getName()).log(Level.SEVERE, failure.toString());
         }
     }
 }

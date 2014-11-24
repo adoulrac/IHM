@@ -1,7 +1,9 @@
 package IHM.controller;
 
+import DATA.interfaces.IHMtoDATA;
 import DATA.model.User;
 import IHM.Main;
+import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
@@ -10,18 +12,33 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainController {
 
     private final static String APP_NAME = "PicShare";
+
+    private final static String CSS_PATH = "IHM/resource/picshare.css";
+
     private Stage stage;
+
     private User currentUser;
+
+    private Map<Integer, Parent> requests;
+
+    private int currentId;
+
+    private IHMtoDATA DATAInterface;
 
     public MainController(Stage primaryStage) {
         stage = primaryStage;
+        currentId = 0;
         stage.setTitle(APP_NAME);
+        requests = Maps.newHashMap();
+        //DATAInterface = new IHMtoDATAImpl();
+
         goToLogin();
         primaryStage.show();
     }
@@ -44,6 +61,15 @@ public class MainController {
         }
     }
 
+    public void goToGroups() {
+        try {
+            GroupsController groups = (GroupsController) replaceSceneContent("view/gestion_groupes.fxml");
+            groups.setApp(this);
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private Initializable replaceSceneContent(String fxml) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         InputStream in = Main.class.getResourceAsStream(fxml);
@@ -56,7 +82,7 @@ public class MainController {
             in.close();
         }
         Scene scene = new Scene(page);
-        scene.getStylesheets().add("IHM/resource/picshare.css");
+        scene.getStylesheets().add(CSS_PATH);
         stage.setScene(scene);
         stage.sizeToScene();
         return (Initializable) loader.getController();
@@ -70,21 +96,22 @@ public class MainController {
         goToLogin();
     }
 
-    private void gotoProfile() {
+    public void goToProfile() {
         try {
-            ProfileController profile = (ProfileController) replaceSceneContent("IHM/view/config.fxml");
+            ProfileController profile = (ProfileController) replaceSceneContent("view/config.fxml");
             profile.setApp(this);
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void goToWelcome() {
         try {
-            WelcomeController welcome = (WelcomeController) replaceSceneContent("IHM/view/accueil.fxml");
+            WelcomeController welcome = (WelcomeController) replaceSceneContent("view/accueil.fxml");
             welcome.setApp(this);
+            welcome.setUserLabel();
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -93,10 +120,28 @@ public class MainController {
     }
 
     public User currentUser() {
-        return this.currentUser();
+        return this.currentUser;
     }
 
     public Stage getPrimaryStage() {
         return this.stage;
     }
+
+    public void addRequest(Parent controller) {
+        if(controller == null) {
+            return;
+        }
+        this.requests.put(currentId++, controller);
+    }
+
+    public void removeRequest(Integer requestId) {
+        if (requestId != null) {
+            requests.remove(requestId);
+        }
+    }
+
+    public IHMtoDATA getIHMtoDATA() {
+        return this.DATAInterface;
+    }
+
 }
