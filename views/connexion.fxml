@@ -10,14 +10,22 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
+<<<<<<< Updated upstream:views/connexion.fxml
+>>>>>>> Stashed changes:view/connexion.fxml
+=======
 >>>>>>> Stashed changes:view/connexion.fxml
 <Pane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controller.LoginController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="192.0" layoutX="114.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="367.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="180.0" layoutX="120.0" layoutY="165.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="356.0" />
 <<<<<<< Updated upstream:views/connexion.fxml
+<<<<<<< Updated upstream:views/connexion.fxml
       <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" styleClass="connexion-btn" text="Se connecter" textFill="#6d6e71" onAction="#login" />
       <TextField layoutX="254.0" layoutY="200.0" fx:id="login"/>
+=======
+      <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" styleClass="connexion-btn" text="Se connecter" textFill="#6d6e71" fx:id="login" />
+      <TextField layoutX="254.0" layoutY="200.0" fx:id="userId"/>
+>>>>>>> Stashed changes:view/connexion.fxml
 =======
       <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" styleClass="connexion-btn" text="Se connecter" textFill="#6d6e71" fx:id="login" />
       <TextField layoutX="254.0" layoutY="200.0" fx:id="userId"/>
