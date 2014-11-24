@@ -2,7 +2,6 @@ package IHM.controller;
 
 import DATA.model.User;
 import IHM.Main;
-import IHM.util.GeneratorUtil;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,7 +12,6 @@ import javafx.stage.Stage;
 
 import java.io.InputStream;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
