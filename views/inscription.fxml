@@ -14,6 +14,9 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" fx:controller="IHM.controller.LoginController" prefWidth="617.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 <<<<<<< Updated upstream:views/inscription.fxml
+<<<<<<< Updated upstream:views/inscription.fxml
+>>>>>>> Stashed changes:view/inscription.fxml
+=======
 >>>>>>> Stashed changes:view/inscription.fxml
 =======
 >>>>>>> Stashed changes:view/inscription.fxml
