@@ -27,12 +27,12 @@ public class LoginController extends Pane implements Initializable {
     PasswordField password;
 
     private MainController application;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //NOP
     }
-    
+
     public void login() {
         String loginText = login.getText();
         String passwordText = password.getText();
