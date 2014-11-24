@@ -1,7 +1,6 @@
 package IHM.controller;
 
 import DATA.model.User;
-import IHM.Main;
 import IHM.helper.ValidatorHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

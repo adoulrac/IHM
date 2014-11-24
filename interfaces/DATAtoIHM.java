@@ -1,9 +1,10 @@
 package IHM.interfaces;
 
+import DATA.model.Picture;
+import DATA.model.User;
+
 import java.util.List;
 import java.util.UUID;
-
-import DATA.model.*;
 
 /**
  * Interface DATA uses to call IHM with asynchronous results.

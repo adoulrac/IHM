@@ -1,6 +1,5 @@
 package IHM.util;
 
-import java.rmi.server.UID;
 import java.util.UUID;
 
 public class GeneratorUtil {

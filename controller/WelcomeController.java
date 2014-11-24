@@ -1,17 +1,12 @@
 package IHM.controller;
 
-import java.util.ResourceBundle;
-
-import IHM.Main;
-import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
 
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ResourceBundle;
 
 public class WelcomeController extends Pane implements Initializable {
 
@@ -28,7 +23,7 @@ public class WelcomeController extends Pane implements Initializable {
 
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
-        //TODO
+        // NOP
     }
 
     public void setApp(final MainController app) {

@@ -1,26 +1,20 @@
 package IHM.controller;
 
+import DATA.model.User;
+import IHM.helper.ValidatorHelper;
+import IHM.util.FileUtil;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Dialogs;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import DATA.model.User;
-import IHM.helper.ValidatorHelper;
-import IHM.util.FileUtil;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialogs;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import IHM.Main;
-import javafx.scene.layout.Pane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 /**
  * Login Controller.
@@ -46,6 +40,8 @@ public class LoginController extends Pane implements Initializable {
         if(ValidatorHelper.validateLogin(loginText) && ValidatorHelper.validatePassword(passwordText)) {
             //TODO: Authenticate user
             application.goToWelcome();
+        } else {
+            Dialogs.showErrorDialog(application.getPrimaryStage(), "Fields are not valid.");
         }
     }
 
