@@ -45,19 +45,31 @@ public class RegisterController implements Initializable {
         String confirmText = confirmation.getText();
         String ipsText = ips.getText();
 
+        if(!ValidatorHelper.validateLogin(loginText)) {
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol “_-” only.");
+            return;
+        }
+
         if(passwordText == null || confirmText == null || !passwordText.equals(confirmText)) {
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Passwords are different.");
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Passwords are different.");
             return;
         }
 
-        if(!ValidatorHelper.validateLogin(loginText)
-                || !ValidatorHelper.validatePassword(passwordText)
-                || !ValidatorHelper.validateIPs(ipsText)){
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Fields are not valid.");
+        if(!ValidatorHelper.validatePassword(passwordText)) {
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Password: 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter.");
             return;
         }
 
-        // TODO: Add the new user
+        if(!ValidatorHelper.validateIPs(ipsText)) {
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid IP Addresses.");
+            return;
+        }
+
+        User userToAdd = new User();
+        userToAdd.setLogin(loginText);
+        userToAdd.setPassword(passwordText);
+
+        application.getIHMtoDATA().signup(userToAdd);
         Logger.getLogger(RegisterController.class.getName()).log(Level.INFO, loginText + " is registering.");
         User user = null;
 
