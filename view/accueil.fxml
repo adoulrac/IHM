@@ -20,74 +20,7 @@
       <Button layoutX="702.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="105.0" fx:id="btnDeconnect" text="Déconnexion" onAction="#logout" />
       <HBox layoutY="146.0" prefHeight="556.0" prefWidth="629.0">
          <children>
-            <TabPane prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs"  tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Toutes les images">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area" >
-                           <children>
-                              <Separator layoutY="59.0" prefHeight="5.0" prefWidth="629.0" />
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-                              <TextField layoutX="464.0" layoutY="21.0" text="Rechercher..." />
-                              <CheckBox layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" />
-                              <CheckBox layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" />
-                              <ScrollBar layoutX="611.0" layoutY="61.0" orientation="VERTICAL" prefHeight="461.0" prefWidth="17.0" />
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                <Tab text="Mes images">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
-                           <children>
-                              <ScrollBar layoutX="610.0" layoutY="61.0" orientation="VERTICAL" prefHeight="461.0" prefWidth="17.0" />
-                              <Separator layoutX="-1.0" layoutY="59.0" prefHeight="5.0" prefWidth="629.0" />
-                              <CheckBox layoutX="207.0" layoutY="78.0" mnemonicParsing="false" />
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-                              <Button layoutX="523.0" layoutY="19.0" mnemonicParsing="false" styleClass="delete-btn"  text="Supprimer" />
-                              <Button depthTest="DISABLE" layoutX="433.0" layoutY="19.0" mnemonicParsing="false" styleClass="add-btn"  text="Ajouter">
-                                    <Insets bottom="5.0" left="30.0" right="5.0" top="5.0" />
-                                 </Button>
-                           </children>
-                        </AnchorPane>
-                  </content>
-                </Tab>
-                  <Tab text="Jolie photo.png">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #EFEFEF;">
-                           <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-                              <TextField layoutX="521.0" layoutY="71.0" prefHeight="25.0" prefWidth="28.0" promptText="3" />
-                              <Button layoutX="558.0" layoutY="70.0" mnemonicParsing="false" text="Voter" />
-                              <Label layoutX="326.0" layoutY="110.0" text="Tags :">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="326.0" layoutY="139.0" text="Descriptif :">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="325.0" layoutY="304.0" text="Commentaires :">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <TextArea layoutX="325.0" layoutY="447.0" prefHeight="39.0" prefWidth="226.0" promptText="Ecrire un commentaire..." />
-                              <Button layoutX="558.0" layoutY="447.0" mnemonicParsing="false" text="Envoyer" />
-                              <Label layoutX="59.0" layoutY="75.0" text="adoulrac">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="59.0" layoutY="90.0" text="a partagé l'image" />
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </Tab>
-              </tabs>
-            </TabPane>
+            <fx:include source="pictures_tab.fxml"></fx:include>
          </children>
       </HBox>
       <TextField layoutX="635.0" layoutY="657.0" text="Ajouter..." />

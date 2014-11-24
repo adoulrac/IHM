@@ -16,6 +16,9 @@ public class WelcomeController extends Pane implements Initializable {
     private MainController application;
 
     @FXML
+    private TabbedPicturesSubController picturesSubController;
+
+    @FXML
     private Button btnDeconnect;
     @FXML
     private Button btnGroupsHandling;
@@ -58,9 +61,12 @@ public class WelcomeController extends Pane implements Initializable {
         this.application.userLogout();
     }
 
-    public void setUserLabel()
+    public void updateView()
     {
         lblUserName.setText( "Connecté (" + this.application.currentUser().getLogin() + ")");
+        picturesSubController.setApp( application );
+        //picturesSubController.constructAllImg();
+        //picturesSubController.constructMyImg();
     }
 
 }
