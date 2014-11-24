@@ -2,16 +2,13 @@ package IHM.controller;
 
 import java.util.ResourceBundle;
 
-import IHM.Main;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.Scene;
 
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class WelcomeController extends Pane implements Initializable {
 
@@ -26,10 +23,18 @@ public class WelcomeController extends Pane implements Initializable {
     @FXML
     private Button btnAddFriends;
 
+    @FXML
+    private Label lblUserName;
+
+    public WelcomeController()
+    {
+
+    }
+
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
-        //TODO
     }
+
 
     public void setApp(final MainController app) {
         this.application = app;
@@ -45,6 +50,15 @@ public class WelcomeController extends Pane implements Initializable {
        if(application != null) {
            application.goToGroups();
        }
+    }
+
+    public void logout() {
+        this.application.userLogout();
+    }
+
+    public void setUserLabel()
+    {
+        lblUserName.setText( "Connecté (" + this.application.currentUser().getLogin() + ")");
     }
 
 }
