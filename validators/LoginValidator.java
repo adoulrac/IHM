@@ -1,4 +1,4 @@
-package IHM.validator;
+package IHM.validators;
 
 
 import com.google.common.base.Strings;

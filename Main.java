@@ -16,6 +16,9 @@ public class Main extends Application {
         Application.launch(Main.class, (java.lang.String[])null);
     }
 
+    /**
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         MainController main = new MainController(primaryStage);

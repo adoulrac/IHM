@@ -1,7 +1,7 @@
-package IHM.test;
+package IHM.tests;
 
-import IHM.validator.IPAddressValidator;
-import IHM.validator.LoginValidator;
+import IHM.validators.IPAddressValidator;
+import IHM.validators.LoginValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

@@ -1,7 +1,7 @@
-package IHM.test;
+package IHM.tests;
 
-import IHM.validator.LoginValidator;
-import IHM.validator.PasswordValidator;
+import IHM.validators.LoginValidator;
+import IHM.validators.PasswordValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

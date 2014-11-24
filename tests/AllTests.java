@@ -1,4 +1,4 @@
-package IHM.test;
+package IHM.tests;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
