@@ -37,25 +37,32 @@ public class LoginController extends Pane implements Initializable {
         String loginText = login.getText();
         String passwordText = password.getText();
 
-        if(ValidatorHelper.validateLogin(loginText) && ValidatorHelper.validatePassword(passwordText)) {
-            //TODO: Authenticate user
-            application.goToWelcome();
+        if(ValidatorHelper.validateLogin(loginText) &&
+                ValidatorHelper.validatePassword(passwordText) &&
+                application.getIHMtoDATA().login(loginText, passwordText)) {
+            openApplication();
         } else {
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Fields are not valid.");
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Login failed, please check if your password and login are correct.");
         }
+
     }
 
     public void loadProfile() {
         File profileFile = FileUtil.chooseFile();
         //TODO: Import user profile
 
-        User user = null;
+        openApplication();
+    }
+
+    private void openApplication() {
+        User user = application.getIHMtoDATA().getCurrentUser();
         if(user != null) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, "User " + user.getLogin() + " has logged in.");
             application.setCurrentUser(user);
-            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, user.getLogin() + " has loaded his profile.");
             application.goToWelcome();
         } else {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Error in importing the user profile");
+            Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the current user.");
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the current user.");
         }
     }
 
