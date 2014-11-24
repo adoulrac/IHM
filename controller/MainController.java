@@ -104,7 +104,7 @@ public class MainController {
         try {
             WelcomeController welcome = (WelcomeController) replaceSceneContent("view/accueil.fxml");
             welcome.setApp(this);
-            welcome.setUserLabel();
+            welcome.updateView();
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
