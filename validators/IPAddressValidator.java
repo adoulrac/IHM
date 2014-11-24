@@ -1,4 +1,4 @@
-package IHM.validator;
+package IHM.validators;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

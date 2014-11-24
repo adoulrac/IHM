@@ -2,7 +2,7 @@ package IHM.interfaces;
 
 import DATA.model.Picture;
 import DATA.model.User;
-import IHM.controller.MainController;
+import IHM.controllers.MainController;
 
 import java.util.List;
 import java.util.UUID;

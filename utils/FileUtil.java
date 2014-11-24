@@ -1,4 +1,4 @@
-package IHM.util;
+package IHM.utils;
 
 
 import javafx.stage.FileChooser;

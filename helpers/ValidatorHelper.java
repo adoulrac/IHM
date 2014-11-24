@@ -1,8 +1,8 @@
-package IHM.helper;
+package IHM.helpers;
 
-import IHM.validator.IPAddressValidator;
-import IHM.validator.LoginValidator;
-import IHM.validator.PasswordValidator;
+import IHM.validators.IPAddressValidator;
+import IHM.validators.LoginValidator;
+import IHM.validators.PasswordValidator;
 
 public class ValidatorHelper {
 

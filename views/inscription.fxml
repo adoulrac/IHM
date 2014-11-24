@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<<<<<<< Updated upstream:views/inscription.fxml
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" fx:controller="IHM.controller.RegisterController" prefWidth="617.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+=======
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="464.0" fx:controller="IHM.controller.LoginController" prefWidth="617.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<<<<<<< Updated upstream:views/inscription.fxml
+<<<<<<< Updated upstream:views/inscription.fxml
+>>>>>>> Stashed changes:view/inscription.fxml
+=======
+>>>>>>> Stashed changes:view/inscription.fxml
+=======
+>>>>>>> Stashed changes:view/inscription.fxml
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="279.0" layoutX="142.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="381.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="267.0" layoutX="149.0" layoutY="155.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="369.0" />

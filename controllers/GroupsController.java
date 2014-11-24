@@ -1,4 +1,4 @@
-package IHM.controller;
+package IHM.controllers;
 
 import javafx.fxml.Initializable;
 

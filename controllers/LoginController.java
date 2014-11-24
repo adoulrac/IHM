@@ -1,8 +1,8 @@
-package IHM.controller;
+package IHM.controllers;
 
 import DATA.model.User;
-import IHM.helper.ValidatorHelper;
-import IHM.util.FileUtil;
+import IHM.helpers.ValidatorHelper;
+import IHM.utils.FileUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Dialogs;

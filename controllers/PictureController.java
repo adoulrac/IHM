@@ -1,4 +1,4 @@
-package IHM.controller;
+package IHM.controllers;
 
 public class PictureController
 {
