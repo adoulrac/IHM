@@ -235,6 +235,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
             return false;
     }
 
+    @Override
+    public List<Group> getAllUsers() {
+        return null;
+    }
+
     /**
      * Logout the current user
      * Save its state

@@ -1,6 +1,7 @@
 package IHM.controllers;
 
 import DATA.interfaces.IHMtoDATA;
+import DATA.internal.IHMtoDATAImpl;
 import DATA.model.User;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
@@ -46,7 +47,11 @@ public class MainController {
         currentId = 0;
         stage.setTitle(APP_NAME);
         requests = Maps.newHashMap();
+
+        // Exchange commenting those to lines to use stub or DATA implementation
         DATAInterface = new IHMtoDATAstub();
+        //DATAInterface = new IHMtoDATAImpl();
+
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
 
         goToLogin();
