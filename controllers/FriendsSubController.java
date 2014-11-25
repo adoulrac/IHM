@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class FriendsSubController extends Pane implements Initializable{
+public class FriendsSubController extends SplitPane implements Initializable {
 
     private static final String DEFAULT_GROUP_NAME = "Tous les utilisateurs";
 
@@ -41,7 +41,7 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
         groups = Maps.newHashMap();
     }
 
@@ -62,24 +62,26 @@ public class FriendsSubController extends Pane implements Initializable{
      * @param group
      */
     public void addGroup(final Group group) {
-        if(group == null) {
+        if (group == null) {
             return;
         }
         String groupName = group.getNom();
         createNewGroup(groupName);
 
         List<User> users = group.getUsers();
-        if(users != null) {
-            for(User user : users)
-                addUserInGroup(user, groupName);
+        if (users != null) {
+            for (User user : users)
+            {
+                addUserInGroup( user, groupName );
+            }
         }
     }
 
-    public void addGroups(final List<Group> groups) {
-        if(groups == null) {
+    public void addGroups(final List<Group> groupsParam) {
+        if (groupsParam == null) {
             return;
         }
-        for(Group group : groups) {
+        for (Group group : groupsParam) {
             addGroup(group);
         }
     }
@@ -93,7 +95,7 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
-        for(User user : users) {
+        for (User user : users) {
             addUserInGroup(user, groupName);
         }
     }
