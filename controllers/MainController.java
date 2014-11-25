@@ -1,6 +1,7 @@
 package IHM.controllers;
 
 import DATA.interfaces.IHMtoDATA;
+import DATA.internal.IHMtoDATAImpl;
 import DATA.model.User;
 import IHM.Main;
 import com.google.common.collect.Maps;
@@ -37,7 +38,7 @@ public class MainController {
         currentId = 0;
         stage.setTitle(APP_NAME);
         requests = Maps.newHashMap();
-        //DATAInterface = new IHMtoDATAImpl();
+        DATAInterface = new IHMtoDATAImpl();
 
         goToLogin();
         primaryStage.show();
