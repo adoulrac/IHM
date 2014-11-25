@@ -120,17 +120,8 @@ public class FriendsSubController extends Pane implements Initializable{
 
     public void addFriend() {
         String text = friendName.getText();
-        //TODO
+        //TODO: send the request to the selected user
         friendName.clear();
-    }
-
-    /**
-     * Move a user into an existing group (drag and drop)
-     * @param user
-     * @param groupName
-     */
-    public void moveUserInGroup(User user, String groupName) {
-        //TODO: Investigate how we can do it with handlers
     }
 
     public void setApp(final MainController app) {
@@ -139,7 +130,10 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     public void addUser(User user) {
-        //TODO add or update user received in async
+        if(user == null) {
+            return;
+        }
+        addUserInGroup(user, DEFAULT_GROUP_NAME);
     }
 
     public void connectUser(UUID userId, String login) {
