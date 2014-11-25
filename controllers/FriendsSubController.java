@@ -51,12 +51,10 @@ public class FriendsSubController extends Pane implements Initializable{
     public void build() {
         //Build the default users section
         createNewGroup(DEFAULT_GROUP_NAME);
-        //TODO: Call Data to get local groups
+
+        // Call Data to get local groups
+        //List<Group> userGroups = application.getIHMtoDATA().getGroups();
         addGroups(Tester.getStaticGroups());
-
-        //TODO: Add user groups which are stored locally
-
-        //TODO: Add auto-completion on change handler of friendName
     }
 
     /**
@@ -121,7 +119,9 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     public void addFriend() {
-        //TODO:
+        String text = friendName.getText();
+        //TODO
+        friendName.clear();
     }
 
     /**
@@ -137,9 +137,4 @@ public class FriendsSubController extends Pane implements Initializable{
         this.application = app;
     }
 
-    /*
-        CheckBox userCB = new CheckBox();
-        userCB.setText( connectedUsers.get( i ).getAddress().toString());
-        allConnectedPane.getChildren().addAll( userCB );
-     */
 }

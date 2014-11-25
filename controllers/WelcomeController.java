@@ -16,7 +16,7 @@ public class WelcomeController extends Pane implements Initializable {
     private MainController application;
 
     @FXML
-    private TabbedPicturesSubController picturesSubController;
+    private TabbedPicturesSubController tabbedPicturesSubController;
 
     @FXML
     private FriendsSubController friendsSubController;
@@ -58,9 +58,9 @@ public class WelcomeController extends Pane implements Initializable {
             lblUserName.setText( "Connecté (" + application.currentUser().getLogin() + ")");
 
         // Build Pictures interface
-        if(picturesSubController != null) {
-            picturesSubController.setApp(application);
-            picturesSubController.build();
+        if(tabbedPicturesSubController != null) {
+            tabbedPicturesSubController.setApp(application);
+            tabbedPicturesSubController.build();
         } else
             Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Pictures controller is null.");
 

@@ -38,7 +38,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Set local data
      */
     public void build() {
-        ArrayList<Picture> myPics = new ArrayList<Picture>( this.application.currentUser().getListPictures() );
+        /*ArrayList<Picture> myPics = new ArrayList<Picture>( this.application.currentUser().getListPictures() );
         myImgPane.setHgap( 40.0 );
         myImgPane.setVgap( 20.0 );
         for(int i=0; i < myPics.size(); ++i)
@@ -50,7 +50,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             sP.getChildren().addAll( r );
             sP.setAlignment( Pos.CENTER );
             myImgPane.getChildren().add(sP);
-        }
+        }*/
     }
 
     public void addPictureInTab(final Picture picture, Tab tab) {
