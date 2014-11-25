@@ -4,6 +4,9 @@ import DATA.interfaces.IHMtoDATA;
 import DATA.internal.IHMtoDATAImpl;
 import DATA.model.User;
 import IHM.Main;
+import IHM.interfaces.DATAtoIHM;
+import IHM.interfaces.DATAtoIHMimpl;
+import IHM.interfaces.IHMtoDATAstub;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,6 +16,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,12 +38,21 @@ public class MainController {
 
     private IHMtoDATA DATAInterface;
 
+    private DATAtoIHM DATAInterfaceReceiver;
+
+    private Initializable currentController;
+
     public MainController(Stage primaryStage) {
         stage = primaryStage;
         currentId = 0;
         stage.setTitle(APP_NAME);
         requests = Maps.newHashMap();
-        DATAInterface = new IHMtoDATAImpl();
+
+        // Exchange commenting those to lines to use stub or DATA implementation
+        DATAInterface = new IHMtoDATAstub();
+        //DATAInterface = new IHMtoDATAImpl();
+
+        DATAInterfaceReceiver = new DATAtoIHMimpl(this);
 
         goToLogin();
         primaryStage.show();
@@ -48,6 +62,7 @@ public class MainController {
         try {
             LoginController login = (LoginController) replaceSceneContent("views/connexion.fxml");
             login.setApp(this);
+            currentController = login;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -57,6 +72,7 @@ public class MainController {
         try {
             RegisterController register = (RegisterController) replaceSceneContent("views/inscription.fxml");
             register.setApp(this);
+            currentController = register;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,6 +82,7 @@ public class MainController {
         try {
             GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml");
             groups.setApp(this);
+            currentController = groups;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,6 +118,7 @@ public class MainController {
         try {
             ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml");
             profile.setApp(this);
+            currentController = profile;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,6 +129,7 @@ public class MainController {
             WelcomeController welcome = (WelcomeController) replaceSceneContent("views/accueil.fxml");
             welcome.setApp(this);
             welcome.build();
+            currentController = welcome;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,8 +160,20 @@ public class MainController {
         }
     }
 
+
+    public Map<Integer, Parent> getRequests() {
+        return requests;
+    }
+
     public IHMtoDATA getIHMtoDATA() {
         return this.DATAInterface;
     }
 
+    public Initializable getCurrentController() {
+        return currentController;
+    }
+
+    public DATAtoIHM getDATAInterfaceReceiver() {
+        return DATAInterfaceReceiver;
+    }
 }

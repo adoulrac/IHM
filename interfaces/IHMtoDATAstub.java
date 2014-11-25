@@ -125,7 +125,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public Group getGroup(String group)  {
         if (group.equals("Amis")) {
-            return new Group("Amis");
+            return amis;
         } else return null;
     }
 

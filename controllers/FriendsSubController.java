@@ -53,8 +53,8 @@ public class FriendsSubController extends Pane implements Initializable{
         createNewGroup(DEFAULT_GROUP_NAME);
 
         // Call Data to get local groups
-        //List<Group> userGroups = application.getIHMtoDATA().getGroups();
-        addGroups(Tester.getStaticGroups());
+        List<Group> userGroups = application.getIHMtoDATA().getGroups();
+        addGroups(userGroups);
     }
 
     /**
@@ -134,7 +134,23 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     public void setApp(final MainController app) {
+        //TODO treat pending friend requests from List<User> returned by app.getDATAInterfaceReceiver().emptyPendingFriendRequests()
         this.application = app;
     }
 
+    public void addUser(User user) {
+        //TODO add or update user received in async
+    }
+
+    public void connectUser(UUID userId, String login) {
+        //TODO update user state with this connection notification received in async
+    }
+
+    public void disconnectUser(UUID userId, String login) {
+        //TODO update user state with this disconnection notification received in async
+    }
+
+    public void receiveFriendRequest(User user) {
+        //TODO receive friend request (could be a confirmation of pending request OR new request from other user)
+    }
 }
