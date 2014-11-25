@@ -3,6 +3,7 @@ package IHM.controller;
 import DATA.interfaces.IHMtoDATA;
 import DATA.model.User;
 import IHM.Main;
+import IHM.interfaces.IHMtoDATAstub;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,7 +38,7 @@ public class MainController {
         currentId = 0;
         stage.setTitle(APP_NAME);
         requests = Maps.newHashMap();
-        //DATAInterface = new IHMtoDATAImpl();
+        DATAInterface = new IHMtoDATAstub();
 
         goToLogin();
         primaryStage.show();
