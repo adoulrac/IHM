@@ -1,6 +1,6 @@
 package IHM;
 
-import IHM.controller.MainController;
+import IHM.controllers.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

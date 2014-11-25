@@ -29,17 +29,17 @@
                         <Label layoutX="14.0" layoutY="124.0" text="118.218.0.0" />
                         <ImageView fitHeight="14.0" fitWidth="11.0" layoutX="90.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resource/delete_btn_black.png" />
+                              <Image url="@../resources/delete_btn_black.png" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="14.0" fitWidth="11.0" layoutX="90.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resource/delete_btn_black.png" />
+                              <Image url="@../resources/delete_btn_black.png" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="14.0" fitWidth="11.0" layoutX="90.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../resource/delete_btn_black.png" />
+                              <Image url="@../resources/delete_btn_black.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -51,7 +51,7 @@
           </TitledPane>
             <ImageView fitHeight="139.0" fitWidth="157.0" layoutX="46.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resource/avatar_icon.png" />
+                  <Image url="@../resources/avatar_icon.png" />
                </image>
             </ImageView>
             <Label layoutX="206.0" layoutY="71.0" text="Adoulrac">

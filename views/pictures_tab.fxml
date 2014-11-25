@@ -10,7 +10,7 @@
 <?import javafx.scene.text.*?>
 
 <?import com.sun.javafx.scene.control.skin.SplitPaneSkin?>
-<TabPane prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs"  tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controller.TabbedPicturesSubController">
+<TabPane prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs"  tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.TabbedPicturesSubController">
   <tabs>
     <Tab text="Toutes les images" fx:id="allImgTab">
       <content>
