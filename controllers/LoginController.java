@@ -51,8 +51,7 @@ public class LoginController extends Pane implements Initializable {
 
     public void loadProfile() {
         File profileFile = FileUtil.chooseFile();
-        //TODO: Import user profile
-
+        application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
         openApplication();
     }
 
