@@ -2,15 +2,12 @@ package IHM.controllers;
 
 import DATA.model.Group;
 import DATA.model.User;
-import IHM.Tester;
 import com.google.common.collect.Maps;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 
 import java.net.URL;
