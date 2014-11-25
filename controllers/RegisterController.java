@@ -71,8 +71,8 @@ public class RegisterController implements Initializable {
         userToAdd.setPassword(passwordText);
         userToAdd.setListIP(StringUtil.toList(ipsText, StringUtil.SYSTEM_SEPARATOR));
 
+        Logger.getLogger(RegisterController.class.getName()).log(Level.INFO, loginText + " is registering with password:" + passwordText + " and IPs:"+ ipsText.replace(StringUtil.SYSTEM_SEPARATOR, "|"));
         application.getIHMtoDATA().signup(userToAdd);
-        Logger.getLogger(RegisterController.class.getName()).log(Level.INFO, loginText + " is registering.");
         User user = application.getIHMtoDATA().getCurrentUser();
 
         application.setCurrentUser(user);
