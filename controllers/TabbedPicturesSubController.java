@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TabbedPicturesSubController extends TabPane implements Initializable{
@@ -25,24 +26,18 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     private TilePane myImgPane;
 
     @Override
-    public void initialize(final URL url, final ResourceBundle resourceBundle)
-    {
-//        myImgPane.setHgap( 40.0 );
-//        myImgPane.setVgap( 20.0 );
-//        for(int i=0; i < 10; ++i)
-//        {
-//            final Rectangle r = new Rectangle(100, 100);
-//            ImagePattern imagePattern = new ImagePattern(new Image( "IHM/resource/avatar_icon.png"));
-//            r.setFill( imagePattern );
-//            StackPane sP = new StackPane();
-//            sP.getChildren().addAll( r );
-//            sP.setAlignment( Pos.CENTER );
-//            myImgPane.getChildren().add(sP);
-//        }
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
+        // NOP
     }
 
-    public void constructMyImg()
-    {
+    public void setApp(final MainController app) {
+        this.application = app;
+    }
+
+    /**
+     * Set local data
+     */
+    public void build() {
         ArrayList<Picture> myPics = new ArrayList<Picture>( this.application.currentUser().getListPictures() );
         myImgPane.setHgap( 40.0 );
         myImgPane.setVgap( 20.0 );
@@ -58,12 +53,28 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
-    public void constructAllImg()
-    {
+    public void addPictureInTab(final Picture picture, Tab tab) {
 
     }
 
-    public void setApp(final MainController app) {
-        this.application = app;
+    public void addTab(final String tabName) {
+
     }
+
+    public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
+
+    }
+
+    //        myImgPane.setHgap( 40.0 );
+    //        myImgPane.setVgap( 20.0 );
+    //        for(int i=0; i < 10; ++i)
+    //        {
+    //            final Rectangle r = new Rectangle(100, 100);
+    //            ImagePattern imagePattern = new ImagePattern(new Image( "IHM/resource/avatar_icon.png"));
+    //            r.setFill( imagePattern );
+    //            StackPane sP = new StackPane();
+    //            sP.getChildren().addAll( r );
+    //            sP.setAlignment( Pos.CENTER );
+    //            myImgPane.getChildren().add(sP);
+    //        }
 }
