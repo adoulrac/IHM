@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.*?>
-
-<?import com.sun.javafx.scene.control.skin.SplitPaneSkin?>
+<?import javafx.scene.text.Font?>
 <TabPane prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs"  tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.TabbedPicturesSubController">
   <tabs>
     <Tab text="Toutes les images" fx:id="allImgTab">
