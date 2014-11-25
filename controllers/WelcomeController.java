@@ -72,4 +72,7 @@ public class WelcomeController extends Pane implements Initializable {
             Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
     }
 
+    public FriendsSubController getFriendsSubController() {
+        return friendsSubController;
+    }
 }
