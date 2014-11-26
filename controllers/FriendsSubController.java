@@ -95,6 +95,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void addUserInGroup(final User user, final String groupName) {
         ObservableList<User> userGroup = groups.get(groupName);
         userGroup.add(user);
+        //TODO: Update user model
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
