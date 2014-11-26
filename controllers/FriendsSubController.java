@@ -2,6 +2,7 @@ package IHM.controllers;
 
 import DATA.model.Group;
 import DATA.model.User;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Paint;
 
 import java.net.URL;
@@ -36,7 +40,39 @@ public class FriendsSubController extends SplitPane implements Initializable {
     @FXML
     private TextField friendName;
 
-    private Map<String, ObservableList<User>> groups;
+    private Map<String, List<UserHBoxCell>> groups;
+
+    private class UserHBoxCell extends HBox {
+        private User user;
+        private Label label;
+        private ImageView icon;
+
+        private static final String onPath = "IHM/resources/online_icon.png";
+        private static final String offPath = "IHM/resources/offline_icon.png";
+
+        public UserHBoxCell(User user, boolean status) {
+            this.user = user;
+
+            label = new Label();
+            label.setText(user.toString());
+            HBox.setHgrow(label, Priority.ALWAYS);
+
+            icon = new ImageView();
+            icon.setImage(new Image(status ? onPath : offPath));
+            icon.setFitHeight(11.0);
+            icon.setFitWidth(13.0);
+
+            this.getChildren().addAll(icon, label);
+        }
+
+        public void switchOn() {
+            icon.setImage(new Image(onPath));
+        }
+
+        public void switchOff() {
+            icon.setImage(new Image(offPath));
+        }
+    }
 
     public FriendsSubController() {
         super();
@@ -55,7 +91,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         //Build the default users section
         createNewGroup(DEFAULT_GROUP_NAME);
 
-        // Call Data to get local groups
+        // Call Data to get local groups or use user model groups
         List<Group> userGroups = application.getIHMtoDATA().getGroups();
         addGroups(userGroups);
     }
@@ -73,10 +109,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
         List<User> users = group.getUsers();
         if (users != null) {
-            for (User user : users)
-            {
-                addUserInGroup( user, groupName );
-            }
+            addUsersInGroup(users, groupName);
         }
     }
 
@@ -93,8 +126,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * Add a user in an existing group
      */
     public void addUserInGroup(final User user, final String groupName) {
-        ObservableList<User> userGroup = groups.get(groupName);
-        userGroup.add(user);
+        List<UserHBoxCell> userGroup = groups.get(groupName);
+        userGroup.add(new UserHBoxCell(user, false));
         //TODO: Update user model
     }
 
@@ -112,13 +145,14 @@ public class FriendsSubController extends SplitPane implements Initializable {
         tp.setTextFill(Paint.valueOf("WHITE"));
         tp.setText(groupName);
 
-        ObservableList<User> items = FXCollections.observableArrayList();
-        ListView users = new ListView();
-        users.setEditable(true);
-        users.setItems(items);
+        List<UserHBoxCell> users = Lists.newArrayList();
+        ListView<UserHBoxCell> listView = new ListView<UserHBoxCell>();
+        ObservableList<UserHBoxCell> myObservableList = FXCollections.observableList(users);
+        listView.setItems(myObservableList);
+        listView.setEditable(true);
 
-        tp.setContent(users);
-        groups.put(groupName, items);
+        tp.setContent(listView);
+        groups.put(groupName, users);
         //TODO: add the group to the User model
 
         groupsAccordion.getPanes().add(tp);
@@ -146,6 +180,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
     public void connectUser(UUID userId, String login) {
         //TODO update user state with this connection notification received in async
+
     }
 
     public void disconnectUser(UUID userId, String login) {
