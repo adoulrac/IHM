@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox layoutX="630.0" layoutY="178.0" fx:id="friendsSub" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="IHM.controllers.FriendsSubController">
     <children>
-        <Accordion fx:id="groupsAccordion" layoutX="630.0" layoutY="178.0" maxHeight="470.0" prefHeight="470.0">
+        <Accordion fx:id="groupsAccordion" layoutX="630.0" layoutY="178.0" prefHeight="470.0" prefWidth="204.0">
             <panes>
             </panes>
         </Accordion>
