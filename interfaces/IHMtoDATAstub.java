@@ -34,6 +34,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public void addComment(Comment comment, int idRequest) { }
 
+    @Override
+    public void addNote(Note note, int idRequest) {
+
+    }
+
     /**
      * Add a new group for the current user
      * @param group The new group
@@ -55,6 +60,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
      */
     @Override
     public void addUserInGroup(User user, Group group)  { }
+
+    @Override
+    public void acceptUserInGroup(User user, Group group) {
+
+    }
 
     /**
      * Delete a group and all its users

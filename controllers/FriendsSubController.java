@@ -193,7 +193,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void receiveFriendRequest(User user) {
         Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
         if(ok.equals("YES")) {
-            addUserInGroup(Group.FRIENDS_GROUP_NAME);
+            addUserInGroup(user, Group.FRIENDS_GROUP_NAME);
             application.getIHMtoDATA().acceptUserInGroup(user, application.getIHMtoDATA().getGroups().get(0));
         }
     }
