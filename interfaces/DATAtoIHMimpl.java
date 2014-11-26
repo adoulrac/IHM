@@ -31,12 +31,14 @@ public class DATAtoIHMimpl implements DATAtoIHM {
 
     @Override
     public void receiveConnectedUser(User user) {
-        ((WelcomeController) app.getCurrentController()).getFriendsSubController().connectUser(user);
+        if(app.getWelcomeController() != null)
+            app.getWelcomeController().getFriendsSubController().connectUser(user);
     }
 
     @Override
     public void receiveUnconnectedUser(User user) {
-        ((WelcomeController) app.getCurrentController()).getFriendsSubController().disconnectUser(user);
+        if(app.getWelcomeController() != null)
+            app.getWelcomeController().getFriendsSubController().disconnectUser(user);
     }
 
     @Override

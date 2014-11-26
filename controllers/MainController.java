@@ -42,6 +42,8 @@ public class MainController {
 
     private Initializable currentController;
 
+    private WelcomeController welcomeController;
+
     public MainController(Stage primaryStage) {
         stage = primaryStage;
         currentId = 0;
@@ -78,7 +80,7 @@ public class MainController {
 
     public void goToGroups() {
         try {
-            GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml");
+            GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml", true);
             groups.setApp(this);
             currentController = groups;
         } catch (Exception ex) {
@@ -86,8 +88,24 @@ public class MainController {
         }
     }
 
-    private Initializable replaceSceneContent(String fxml) throws Exception {
+    private Initializable replaceSceneContent(String fxml, boolean isNewStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
+        Scene scene = buildScene(fxml, loader);
+        Stage currentStage = isNewStage ? new Stage() : stage;
+        currentStage.setScene(scene);
+        currentStage.sizeToScene();
+        if(isNewStage) {
+            currentStage.show();
+            currentStage.toFront();
+        }
+        return (Initializable) loader.getController();
+    }
+
+    private Initializable replaceSceneContent(String fxml) throws Exception {
+        return replaceSceneContent(fxml, false);
+    }
+
+    private Scene buildScene(String fxml, FXMLLoader loader) throws Exception {
         InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
         loader.setLocation(Main.class.getResource(fxml));
@@ -99,9 +117,7 @@ public class MainController {
         }
         Scene scene = new Scene(page);
         scene.getStylesheets().add(CSS_PATH);
-        stage.setScene(scene);
-        stage.sizeToScene();
-        return (Initializable) loader.getController();
+        return scene;
     }
 
     public boolean userLogging(String userId, String password){
@@ -114,7 +130,7 @@ public class MainController {
 
     public void goToProfile() {
         try {
-            ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml");
+            ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml", true);
             profile.setApp(this);
             currentController = profile;
         } catch (Exception ex) {
@@ -122,12 +138,12 @@ public class MainController {
         }
     }
 
-    public void goToWelcome() {
+    public void openWelcome() {
         try {
             WelcomeController welcome = (WelcomeController) replaceSceneContent("views/accueil.fxml");
             welcome.setApp(this);
             welcome.build();
-            currentController = welcome;
+            welcomeController = welcome;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -158,6 +174,9 @@ public class MainController {
         }
     }
 
+    public WelcomeController getWelcomeController() {
+        return this.welcomeController;
+    }
 
     public Map<Integer, Parent> getRequests() {
         return requests;

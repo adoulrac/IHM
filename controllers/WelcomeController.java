@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class WelcomeController extends Pane implements Initializable {
+public class WelcomeController implements Initializable {
 
     private MainController application;
 

@@ -2,12 +2,9 @@ package IHM.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialogs;
+import javafx.scene.control.*;
 import javafx.scene.control.Dialogs.DialogOptions;
 import javafx.scene.control.Dialogs.DialogResponse;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -21,46 +18,49 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import IHM.utils.FileUtil;
+import javafx.stage.Stage;
 
 /**
  * @author Sylvain_
  *
  */
-
 public class ProfileController implements Initializable {
 
-	@FXML
-	Label nickname;
+    @FXML
+    private TitledPane profile;
 
 	@FXML
-	TextField avatarPath;
+    private Label nickname;
 
 	@FXML
-	Button changeAvatar;
+    private TextField avatarPath;
 
 	@FXML
-	TextField lastname;
+    private Button changeAvatar;
 
 	@FXML
-	TextField firstname;
+    private TextField lastname;
 
 	@FXML
-	TextField birthdate;
+    private TextField firstname;
 
 	@FXML
-	TextField newIP;
+    private TextField birthdate;
 
 	@FXML
-	Button validateNewIP;
+    private TextField newIP;
 
 	@FXML
-	Button okButton;
+    private Button validateNewIP;
 
 	@FXML
-	Button cancelButton;
+    private Button okButton;
 
 	@FXML
-	ImageView avatar;
+    private Button cancelButton;
+
+	@FXML
+    private ImageView avatar;
 
 	private MainController application;
 	private String userFirstName, userLastName, userAvatar, userBirthDate, userNickName;
@@ -189,7 +189,7 @@ public class ProfileController implements Initializable {
 	}
 
 	public void onCancel() {
-		this.application.goToWelcome();
+        ((Stage) profile.getScene().getWindow()).close();
 	}
 
 	public void onOK() {
@@ -199,11 +199,11 @@ public class ProfileController implements Initializable {
 			        "Save changes", "Save changes", DialogOptions.OK_CANCEL);
 			if (response==DialogResponse.OK)
 			{
-				this.persistUserInfoChanges();
-				this.application.goToWelcome();
+				persistUserInfoChanges();
+                ((Stage) profile.getScene().getWindow()).close();
 			}
 		} else {
-			this.application.goToWelcome();
+            ((Stage) profile.getScene().getWindow()).close();
 		}
 	}
 }

@@ -77,7 +77,7 @@ public class RegisterController implements Initializable {
         User user = application.getIHMtoDATA().getCurrentUser();
 
         application.setCurrentUser(user);
-        application.goToWelcome();
+        application.openWelcome();
     }
 
 
