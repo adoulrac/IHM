@@ -261,4 +261,5 @@ public class IHMtoDATAstub implements IHMtoDATA {
      */
     @Override
     public boolean editProfile(User u) { return true; }
+
 }

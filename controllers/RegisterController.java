@@ -47,7 +47,7 @@ public class RegisterController implements Initializable {
         String ipsText = ips.getText();
 
         if(!ValidatorHelper.validateLogin(loginText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol “_-” only.");
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.");
             return;
         }
 
@@ -69,7 +69,9 @@ public class RegisterController implements Initializable {
         User userToAdd = new User();
         userToAdd.setLogin(loginText);
         userToAdd.setPassword(passwordText);
+
         userToAdd.setListIP(StringUtil.toList(ipsText, StringUtil.SYSTEM_SEPARATOR));
+
 
         Logger.getLogger(RegisterController.class.getName()).log(Level.INFO, loginText + " is registering with password:" + passwordText + " and IPs:"+ ipsText.replace(StringUtil.SYSTEM_SEPARATOR, "|"));
         application.getIHMtoDATA().signup(userToAdd);
@@ -79,7 +81,9 @@ public class RegisterController implements Initializable {
         application.goToWelcome();
     }
 
+
     public void setApp(MainController application){
         this.application = application;
     }
+    
 }

@@ -1,6 +1,7 @@
 package IHM;
 
 import IHM.controllers.MainController;
+import IHM.interfaces.DATAtoIHM;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -9,19 +10,25 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        Application.launch(Main.class, (java.lang.String[])null);
-    }
+	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(String[] args) {
+		Application.launch(Main.class, (java.lang.String[]) null);
+	}
 
     /**
      * @param primaryStage
      */
     @Override
     public void start(Stage primaryStage) {
-        MainController main = new MainController(primaryStage);
+        main = new MainController(primaryStage);
     }
 
+    private static MainController main;
+
+    public static DATAtoIHM getDATAtoIHMimpl() {
+        return main.getDATAInterfaceReceiver();
+    }
 }
