@@ -65,6 +65,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     }
 
+    public void addPictures(List<Picture> pictures) {
+        //TODO receive async pictures
+    }
+
+    public void addPicture(Picture picture) {
+        //TODO receive async picture
+    }
+
     //        myImgPane.setHgap( 40.0 );
     //        myImgPane.setVgap( 20.0 );
     //        for(int i=0; i < 10; ++i)
