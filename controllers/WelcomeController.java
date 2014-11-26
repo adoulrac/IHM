@@ -55,21 +55,32 @@ public class WelcomeController extends Pane implements Initializable {
 
     public void build() {
         if(application.currentUser() != null)
-            lblUserName.setText( "Connecté (" + application.currentUser().getLogin() + ")");
+        {
+            lblUserName.setText( "Connecté (" + application.currentUser().getLogin() + ")" );
+        }
 
         // Build Pictures interface
         if(tabbedPicturesSubController != null) {
             tabbedPicturesSubController.setApp(application);
             tabbedPicturesSubController.build();
-        } else
-            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Pictures controller is null.");
+        }
+        else
+        {
+            Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Pictures controller is null." );
+        }
 
         // Build Friends interface
         if(friendsSubController != null) {
             friendsSubController.setApp(application);
             friendsSubController.build();
-        } else
-            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
+        }
+        else
+        {
+            Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Friends sub controller is null." );
+        }
     }
 
+    public FriendsSubController getFriendsSubController() {
+        return friendsSubController;
+    }
 }

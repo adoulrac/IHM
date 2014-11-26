@@ -16,14 +16,17 @@ public class IHMtoDATAstub implements IHMtoDATA {
     Group amis = new Group("Amis");
     User arthur = new User("avanceul", "password", "Arthur", "Van Ceulen", "arthur.jpg", "16/08/1991");
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
+    User selim = new User("selim", "selim", "Sélim", "Zénagui", "selim.jpg", "08/06/1992");
 
     public IHMtoDATAstub() {
         listUsers.add(arthur);
         listUsers.add(rachid);
+        listUsers.add( selim );
         amis.setUsers(listUsers);
         listGroups.add(amis);
         arthur.setListGroups(listGroups);
         rachid.setListGroups(listGroups);
+        selim.setListGroups( listGroups );
     }
 
     /**
@@ -125,7 +128,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public Group getGroup(String group)  {
         if (group.equals("Amis")) {
-            return new Group("Amis");
+            return amis;
         } else return null;
     }
 
@@ -229,10 +232,16 @@ public class IHMtoDATAstub implements IHMtoDATA {
      */
     @Override
     public boolean login(String username, String password) {
-        if ((username.equals("avanceul") || username.equals("adoulrac")) && password.equals("password"))
+        if ((username.equals("avanceul") || username.equals("adoulrac") || username.equals("selim"))
+                && (password.equals("password") || password.equals( "selim" )))
             return true;
         else
             return false;
+    }
+
+    @Override
+    public List<Group> getAllUsers() {
+        return null;
     }
 
     /**

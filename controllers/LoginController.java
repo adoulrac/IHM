@@ -37,7 +37,6 @@ public class LoginController extends Pane implements Initializable {
         String loginText = login.getText();
         String passwordText = password.getText();
 
-        /*
         if(ValidatorHelper.validateLogin(loginText) &&
                 ValidatorHelper.validatePassword(passwordText)
                 && application.getIHMtoDATA().login(loginText, passwordText)) {
@@ -45,8 +44,6 @@ public class LoginController extends Pane implements Initializable {
         } else {
             Dialogs.showInformationDialog(application.getPrimaryStage(), "Login failed, please check if your password and login are correct.");
         }
-        */
-        application.goToWelcome();
     }
 
     public void loadProfile() {

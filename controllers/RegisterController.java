@@ -2,7 +2,7 @@ package IHM.controllers;
 
 import DATA.model.User;
 import IHM.helpers.ValidatorHelper;
-import IHM.utils.IPAddressUtil;
+import IHM.utils.StringUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Dialogs;
@@ -69,10 +69,12 @@ public class RegisterController implements Initializable {
         User userToAdd = new User();
         userToAdd.setLogin(loginText);
         userToAdd.setPassword(passwordText);
-        //userToAdd.setListIP(IPAddressUtil.toInet4AddressList(ipsText));
 
+        userToAdd.setListIP(StringUtil.toList(ipsText, StringUtil.SYSTEM_SEPARATOR));
+
+
+        Logger.getLogger(RegisterController.class.getName()).log(Level.INFO, loginText + " is registering with password:" + passwordText + " and IPs:"+ ipsText.replace(StringUtil.SYSTEM_SEPARATOR, "|"));
         application.getIHMtoDATA().signup(userToAdd);
-        Logger.getLogger(RegisterController.class.getName()).log(Level.INFO, loginText + " is registering.");
         User user = application.getIHMtoDATA().getCurrentUser();
 
         application.setCurrentUser(user);

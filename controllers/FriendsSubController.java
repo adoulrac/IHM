@@ -2,15 +2,14 @@ package IHM.controllers;
 
 import DATA.model.Group;
 import DATA.model.User;
-import IHM.Tester;
 import com.google.common.collect.Maps;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 
 import java.net.URL;
@@ -19,7 +18,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class FriendsSubController extends Pane implements Initializable{
+public class FriendsSubController extends SplitPane implements Initializable {
 
     private static final String DEFAULT_GROUP_NAME = "Tous les utilisateurs";
 
@@ -32,6 +31,9 @@ public class FriendsSubController extends Pane implements Initializable{
     private Button btnAddFriend;
 
     @FXML
+    private HBox boxAddFriend;
+
+    @FXML
     private TextField friendName;
 
     private Map<String, ObservableList<User>> groups;
@@ -41,8 +43,9 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
         groups = Maps.newHashMap();
+        boxAddFriend.setPadding(new Insets(15, 12, 15, 12));
     }
 
     /**
@@ -53,8 +56,8 @@ public class FriendsSubController extends Pane implements Initializable{
         createNewGroup(DEFAULT_GROUP_NAME);
 
         // Call Data to get local groups
-        //List<Group> userGroups = application.getIHMtoDATA().getGroups();
-        addGroups(Tester.getStaticGroups());
+        List<Group> userGroups = application.getIHMtoDATA().getGroups();
+        addGroups(userGroups);
     }
 
     /**
@@ -62,24 +65,26 @@ public class FriendsSubController extends Pane implements Initializable{
      * @param group
      */
     public void addGroup(final Group group) {
-        if(group == null) {
+        if (group == null) {
             return;
         }
         String groupName = group.getNom();
         createNewGroup(groupName);
 
         List<User> users = group.getUsers();
-        if(users != null) {
-            for(User user : users)
-                addUserInGroup(user, groupName);
+        if (users != null) {
+            for (User user : users)
+            {
+                addUserInGroup( user, groupName );
+            }
         }
     }
 
-    public void addGroups(final List<Group> groups) {
-        if(groups == null) {
+    public void addGroups(final List<Group> groupsParam) {
+        if (groupsParam == null) {
             return;
         }
-        for(Group group : groups) {
+        for (Group group : groupsParam) {
             addGroup(group);
         }
     }
@@ -93,7 +98,7 @@ public class FriendsSubController extends Pane implements Initializable{
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
-        for(User user : users) {
+        for (User user : users) {
             addUserInGroup(user, groupName);
         }
     }
@@ -120,21 +125,31 @@ public class FriendsSubController extends Pane implements Initializable{
 
     public void addFriend() {
         String text = friendName.getText();
-        //TODO
+        //TODO: send the request to the selected user
         friendName.clear();
     }
 
-    /**
-     * Move a user into an existing group (drag and drop)
-     * @param user
-     * @param groupName
-     */
-    public void moveUserInGroup(User user, String groupName) {
-        //TODO: Investigate how we can do it with handlers
-    }
-
     public void setApp(final MainController app) {
+        //TODO treat pending friend requests from List<User> returned by app.getDATAInterfaceReceiver().emptyPendingFriendRequests()
         this.application = app;
     }
 
+    public void addUser(User user) {
+        if(user == null) {
+            return;
+        }
+        addUserInGroup(user, DEFAULT_GROUP_NAME);
+    }
+
+    public void connectUser(UUID userId, String login) {
+        //TODO update user state with this connection notification received in async
+    }
+
+    public void disconnectUser(UUID userId, String login) {
+        //TODO update user state with this disconnection notification received in async
+    }
+
+    public void receiveFriendRequest(User user) {
+        //TODO receive friend request (could be a confirmation of pending request OR new request from other user)
+    }
 }
