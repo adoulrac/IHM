@@ -7,6 +7,7 @@ import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
 import IHM.interfaces.DATAtoIHMimpl;
 import IHM.interfaces.IHMtoDATAstub;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,13 +45,14 @@ public class MainController {
 
     private WelcomeController welcomeController;
 
+    private List<Stage> newStages;
+
     public MainController(Stage primaryStage) {
         stage = primaryStage;
         currentId = 0;
         stage.setTitle(APP_NAME);
+        newStages = Lists.newArrayList();
         requests = Maps.newHashMap();
-
-        // Exchange commenting those to lines to use stub or DATA implementation
         DATAInterface = new IHMtoDATAImpl();
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
 
@@ -97,6 +99,7 @@ public class MainController {
         if(isNewStage) {
             currentStage.show();
             currentStage.toFront();
+            newStages.add(currentStage);
         }
         return (Initializable) loader.getController();
     }
@@ -125,13 +128,16 @@ public class MainController {
     }
 
     public void userLogout(){
+        for(Stage stage : newStages)
+            stage.close();
         goToLogin();
     }
 
-    public void goToProfile() {
+    public void goToProfile(User user) {
         try {
             ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml", true);
             profile.setApp(this);
+            profile.build(user);
             currentController = profile;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -149,18 +155,6 @@ public class MainController {
         }
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
-    }
-
-    public User currentUser() {
-        return this.currentUser;
-    }
-
-    public Stage getPrimaryStage() {
-        return this.stage;
-    }
-
     public void addRequest(Parent controller) {
         if(controller == null) {
             return;
@@ -172,6 +166,18 @@ public class MainController {
         if (requestId != null) {
             requests.remove(requestId);
         }
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public User currentUser() {
+        return this.currentUser;
+    }
+
+    public Stage getPrimaryStage() {
+        return this.stage;
     }
 
     public WelcomeController getWelcomeController() {

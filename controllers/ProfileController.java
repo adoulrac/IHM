@@ -1,5 +1,6 @@
 package IHM.controllers;
 
+import DATA.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -63,65 +64,75 @@ public class ProfileController implements Initializable {
     private ImageView avatar;
 
 	private MainController application;
+
 	private String userFirstName, userLastName, userAvatar, userBirthDate, userNickName;
+
 	private String defaultValue = "Unknown";
+
 	private List<String> userIP;
+
+    private User user;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		getUserInfos();
-		displayUserInfo();
+        // NOP
 	}
+
+    public void build(User userToDisplay) {
+        this.user = userToDisplay;
+        getUserInfos();
+        displayUserInfo();
+    }
 
 	public void getUserInfos() {
 		try {
-			userLastName = application.currentUser().getLastname();
+			userLastName = user.getLastname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Lastname is empty or original value cannot be retrieved, changes will not be persisted");
 			this.userLastName = defaultValue;
 		}
 		try {
-			userFirstName = application.currentUser().getFirstname();
+			userFirstName = user.getFirstname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Fistname is empty or original value cannot be retrieved, changes will not be persisted");
 			userFirstName = defaultValue;
 		}
 		try {
-			userBirthDate = application.currentUser().getBirthDate();
+			userBirthDate = user.getBirthDate();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Birthdate is empty or original value cannot be retrieved, changes will not be persisted");
 			userBirthDate = defaultValue;
 		}
 
 		try {
-			userAvatar = application.currentUser().getAvatar();
+			userAvatar = user.getAvatar();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Avatar path is empty or original value cannot be retrieved, changes will not be persisted");
 		}
 
 		try {
-			userNickName = application.currentUser().getLogin();
+			userNickName = user.getLogin();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Login is empty or original value cannot be retrieved, changes will not be persisted");
 			userNickName = defaultValue;
 		}
 		userIP = new ArrayList<String>();
 		try {
 			
-			userIP.addAll(application.currentUser().getListIP());
+			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"List of addresses is empty or original value cannot be retrieved, changes will not be persisted");
 		}
 

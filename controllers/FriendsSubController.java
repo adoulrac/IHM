@@ -6,12 +6,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Paint;
@@ -49,7 +51,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         private static final String onPath = "IHM/resources/online_icon.png";
         private static final String offPath = "IHM/resources/offline_icon.png";
 
-        public UserHBoxCell(User user, boolean status) {
+        public UserHBoxCell(final User user, boolean status) {
             this.user = user;
 
             label = new Label();
@@ -62,6 +64,13 @@ public class FriendsSubController extends SplitPane implements Initializable {
             icon.setFitWidth(13.0);
 
             this.getChildren().addAll(icon, label);
+
+            this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    application.goToProfile(user);
+                }
+            });
         }
 
         public void switchOn() {
