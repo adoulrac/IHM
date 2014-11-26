@@ -2,12 +2,11 @@ package IHM.interfaces;
 
 import DATA.model.Picture;
 import DATA.model.User;
-import IHM.controllers.FriendsSubController;
-import IHM.controllers.MainController;
-import IHM.controllers.WelcomeController;
+import IHM.controllers.*;
 import javafx.scene.Parent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +24,11 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         return result;
     }
 
+    private List<UUID> connectedUsers = new ArrayList<UUID>();
+    public List<UUID> getConnectedUsers() {
+        return connectedUsers;
+    }
+
     public DATAtoIHMimpl(MainController app) {
         this.app = app;
     }
@@ -34,11 +38,17 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         Parent controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
-            //TODO decide what happens
+            if (app.getCurrentController() instanceof WelcomeController) {
+                FriendsSubController c = ((WelcomeController) app.getCurrentController()).getFriendsSubController();
+                c.addUser(user);
+            } else {
+                // do nothing (will be fetched later with sync method IHMtoDATA.getAllUsers)
+            }
         }
         else {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).addUser(user);
+                app.removeRequest(queryId);
             }
         }
     }
@@ -48,13 +58,23 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         Parent controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
-            //TODO decide what happens
+            if (app.getCurrentController() instanceof WelcomeController) {
+                FriendsSubController c = ((WelcomeController) app.getCurrentController()).getFriendsSubController();
+                c.connectUser(userId, login);
+            } else {
+                // do nothing (will be fetched later with sync method this.getConnectedUsers)
+            }
         }
         else {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).connectUser(userId, login);
+                app.removeRequest(queryId);
             }
         }
+
+        for(UUID id : connectedUsers)
+            if (id==userId) return;
+        connectedUsers.add(userId);
     }
 
     @Override
@@ -62,23 +82,51 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         Parent controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
-            //TODO decide what happens
+            if (app.getCurrentController() instanceof WelcomeController) {
+                FriendsSubController c = ((WelcomeController) app.getCurrentController()).getFriendsSubController();
+                c.disconnectUser(userId, login);
+            } else {
+                // do nothing (will be fetched later with sync method this.getConnectedUsers)
+            }
         }
         else {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).disconnectUser(userId, login);
+                app.removeRequest(queryId);
+            }
+        }
+
+        connectedUsers.remove(userId);
+    }
+
+    @Override
+    public void receivePicture(Picture picture, int queryId) {
+        Parent controller = app.getRequests().get(queryId);
+        if (controller==null){
+            //no entry or it's deleted in the map
+            // do nothing (we don't know for what these pictures are for)
+        }
+        else {
+            if (controller instanceof TabbedPicturesSubController) {
+                ((TabbedPicturesSubController) controller).addPicture(picture);
+                app.removeRequest(queryId);
             }
         }
     }
 
     @Override
-    public void receivePicture(Picture picture, int queryId) {
-
-    }
-
-    @Override
     public void receivePictures(List<Picture> pictures, int queryId) {
-
+        Parent controller = app.getRequests().get(queryId);
+        if (controller==null){
+            //no entry or it's deleted in the map
+            // do nothing (we don't know for what these pictures are for)
+        }
+        else {
+            if (controller instanceof TabbedPicturesSubController) {
+                ((TabbedPicturesSubController) controller).addPictures(pictures);
+                app.removeRequest(queryId);
+            }
+        }
     }
 
     @Override
@@ -90,7 +138,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
                 FriendsSubController c = ((WelcomeController) app.getCurrentController()).getFriendsSubController();
                 c.receiveFriendRequest(user);
             } else {
-                // store friend request
+                // store friend request to be fetched later with this.emptyPendingFriendRequests
                 friendRequests.add(user);
             }
         }
@@ -98,6 +146,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
             if (controller instanceof FriendsSubController) {
                 // Confirmation of our friend request
                 ((FriendsSubController) controller).receiveFriendRequest(user);
+                app.removeRequest(queryId);
             }
         }
     }

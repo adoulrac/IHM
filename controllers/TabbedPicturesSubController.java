@@ -105,6 +105,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         tab.setContent( sP );
     }
 
+    public void addPictures(List<Picture> pictures) {
+        //TODO receive async pictures
+    }
+
+    public void addPicture(Picture picture) {
+        //TODO receive async picture
+    }
+
     public void addLocalePicture()
     {
         File f = FileUtil.chooseFile();

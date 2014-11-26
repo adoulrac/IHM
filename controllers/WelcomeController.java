@@ -83,4 +83,8 @@ public class WelcomeController extends Pane implements Initializable {
     public FriendsSubController getFriendsSubController() {
         return friendsSubController;
     }
+
+    public TabbedPicturesSubController getTabbedPicturesSubController() {
+        return tabbedPicturesSubController;
+    }
 }

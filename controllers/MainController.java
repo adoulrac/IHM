@@ -61,6 +61,7 @@ public class MainController {
         try {
             LoginController login = (LoginController) replaceSceneContent("views/connexion.fxml");
             login.setApp(this);
+            removeAllRequests(currentController);
             currentController = login;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,6 +72,7 @@ public class MainController {
         try {
             RegisterController register = (RegisterController) replaceSceneContent("views/inscription.fxml");
             register.setApp(this);
+            removeAllRequests(currentController);
             currentController = register;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,6 +83,7 @@ public class MainController {
         try {
             GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml");
             groups.setApp(this);
+            removeAllRequests(currentController);
             currentController = groups;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,6 +120,7 @@ public class MainController {
         try {
             ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml");
             profile.setApp(this);
+            removeAllRequests(currentController);
             currentController = profile;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -128,6 +132,7 @@ public class MainController {
             WelcomeController welcome = (WelcomeController) replaceSceneContent("views/accueil.fxml");
             welcome.setApp(this);
             welcome.build();
+            removeAllRequests(currentController);
             currentController = welcome;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -159,6 +164,18 @@ public class MainController {
         }
     }
 
+    public void removeAllRequests(Initializable controller) {
+        List<Parent> allControllers = new ArrayList<>();
+        if (controller instanceof WelcomeController) {
+            allControllers.add(((WelcomeController) controller).getFriendsSubController());
+            allControllers.add(((WelcomeController) controller).getTabbedPicturesSubController());
+        }
+        for (Map.Entry item : requests.entrySet()) {
+            if (allControllers.contains(item.getValue())) {
+                requests.remove(item.getKey());
+            }
+        }
+    }
 
     public Map<Integer, Parent> getRequests() {
         return requests;
