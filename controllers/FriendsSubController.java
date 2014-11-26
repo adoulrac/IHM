@@ -7,7 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 
 import java.net.URL;
@@ -29,6 +31,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
     private Button btnAddFriend;
 
     @FXML
+    private HBox boxAddFriend;
+
+    @FXML
     private TextField friendName;
 
     private Map<String, ObservableList<User>> groups;
@@ -40,6 +45,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
         groups = Maps.newHashMap();
+        boxAddFriend.setPadding(new Insets(15, 12, 15, 12));
     }
 
     /**
