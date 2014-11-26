@@ -48,6 +48,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).addUser(user);
+                app.removeRequest(queryId);
             }
         }
     }
@@ -67,6 +68,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).connectUser(userId, login);
+                app.removeRequest(queryId);
             }
         }
 
@@ -90,6 +92,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).disconnectUser(userId, login);
+                app.removeRequest(queryId);
             }
         }
 
@@ -106,6 +109,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPicture(picture);
+                app.removeRequest(queryId);
             }
         }
     }
@@ -120,6 +124,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPictures(pictures);
+                app.removeRequest(queryId);
             }
         }
     }
@@ -141,6 +146,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
             if (controller instanceof FriendsSubController) {
                 // Confirmation of our friend request
                 ((FriendsSubController) controller).receiveFriendRequest(user);
+                app.removeRequest(queryId);
             }
         }
     }
