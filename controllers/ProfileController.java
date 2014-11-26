@@ -63,8 +63,7 @@ public class ProfileController implements Initializable {
 	ImageView avatar;
 
 	private MainController application;
-	private String userFirstName, userLastName, userAvatar, userBirthDate,
-			userNickName;
+	private String userFirstName, userLastName, userAvatar, userBirthDate, userNickName;
 	private String defaultValue = "Unknown";
 	private List<String> userIP;
 
