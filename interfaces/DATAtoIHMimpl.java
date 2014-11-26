@@ -106,8 +106,6 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPicture(picture);
-            } else if (controller instanceof PictureController) {
-                ((PictureController) controller).addPicture(picture);
             }
         }
     }
@@ -122,8 +120,6 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPictures(pictures);
-            } else if (controller instanceof PictureController) {
-                ((PictureController) controller).addPictures(pictures);
             }
         }
     }
