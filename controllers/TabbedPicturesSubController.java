@@ -30,6 +30,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     private MainController application;
 
     @FXML
+    private TabPane tabbedPicturesSub;
+
+    @FXML
     private Tab myImgTab;
 
     private static double HGAP_PICTURES = 40.0;
@@ -71,12 +74,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             {
                 if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
                     if(mouseEvent.getClickCount() == 2){
-                        Tab t = new Tab(p.getFilename());
-                        t.setContent( new AnchorPane() );
-                        addTab( t );
-                     //   PictureController pC = new PictureController(p);
-                     //   pC.build();
-                     //   addTab(pC);
+                        PictureController pC = new PictureController(p);
+                        pC.build();
+                        addTab(pC);
                     }
                 }
             }
@@ -88,7 +88,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     public void addTab(final Tab tab) {
-        this.getTabs().add( tab );
+        tabbedPicturesSub.getTabs().add( tab );
+        tabbedPicturesSub.getSelectionModel().select( tab );
     }
 
     public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
