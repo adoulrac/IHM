@@ -49,7 +49,8 @@ public class MainController {
         requests = Maps.newHashMap();
 
         // Exchange commenting those to lines to use stub or DATA implementation
-        DATAInterface = new IHMtoDATAImpl();
+        //DATAInterface = new IHMtoDATAImpl();
+        DATAInterface = new IHMtoDATAstub();
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
 
         goToLogin();
