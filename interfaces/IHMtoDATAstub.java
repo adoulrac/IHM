@@ -261,4 +261,10 @@ public class IHMtoDATAstub implements IHMtoDATA {
      */
     @Override
     public boolean editProfile(User u) { return true; }
+
+	@Override
+	public List<Group> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -55,6 +55,7 @@ public class MainController {
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
 
         goToLogin();
+        //goToProfile();
         primaryStage.show();
     }
 
