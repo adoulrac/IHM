@@ -52,7 +52,7 @@ public class LoginController extends Pane implements Initializable {
         try {
             application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
             openApplication();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the profile file.");
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the profile file.");
         }
