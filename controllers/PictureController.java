@@ -11,7 +11,7 @@ public class PictureController extends Tab implements Initializable
 {
     public PictureController(Picture p)
     {
-
+        super(p.getFilename());
     }
 
     @Override
