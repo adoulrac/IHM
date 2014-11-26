@@ -66,7 +66,7 @@ public class ProfileController implements Initializable {
 	private String userFirstName, userLastName, userAvatar, userBirthDate,
 			userNickName;
 	private String defaultValue = "Unknown";
-	private List<InetAddress> userIP;
+	private List<String> userIP;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -116,7 +116,7 @@ public class ProfileController implements Initializable {
 							"Login is empty or original value cannot be retrieved, changes will not be persisted");
 			userNickName = defaultValue;
 		}
-		userIP = new ArrayList<InetAddress>();
+		userIP = new ArrayList<String>();
 		try {
 			
 			userIP.addAll(application.currentUser().getListIP());
