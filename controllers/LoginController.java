@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -48,7 +49,11 @@ public class LoginController extends Pane implements Initializable {
 
     public void loadProfile() {
         File profileFile = FileUtil.chooseFile();
-        application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
+        try {
+            application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         openApplication();
     }
 
