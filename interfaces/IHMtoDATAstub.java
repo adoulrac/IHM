@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by greyna on 24/11/2014.
- */
 public class IHMtoDATAstub implements IHMtoDATA {
     List<User> listUsers = new ArrayList<User>();
     List<Group> listGroups = new ArrayList<Group>();
