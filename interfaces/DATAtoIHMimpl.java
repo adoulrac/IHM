@@ -30,7 +30,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     }
 
     @Override
-    public void receiveUser(User user, int queryId) {
+    public void receiveConnectedUser(User user, int queryId) {
         Parent controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
@@ -38,13 +38,13 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         }
         else {
             if (controller instanceof FriendsSubController) {
-                ((FriendsSubController) controller).addUser(user);
+                ((FriendsSubController) controller).connectUser(user);
             }
         }
     }
 
     @Override
-    public void receiveConnectedUser(UUID userId, String login, int queryId) {
+    public void receiveUnconnectedUser(User user, int queryId) {
         Parent controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
@@ -52,21 +52,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         }
         else {
             if (controller instanceof FriendsSubController) {
-                ((FriendsSubController) controller).connectUser(userId, login);
-            }
-        }
-    }
-
-    @Override
-    public void receiveUnconnectedUser(UUID userId, String login, int queryId) {
-        Parent controller = app.getRequests().get(queryId);
-        if (controller==null){
-            //no entry or it's deleted in the map
-            //TODO decide what happens
-        }
-        else {
-            if (controller instanceof FriendsSubController) {
-                ((FriendsSubController) controller).disconnectUser(userId, login);
+                ((FriendsSubController) controller).disconnectUser(user);
             }
         }
     }

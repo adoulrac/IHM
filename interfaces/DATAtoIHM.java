@@ -13,24 +13,16 @@ import java.util.UUID;
 public interface DATAtoIHM
 {
     /**
-     * Send back the user requested.
-     * @param user the user requested.
-     */
-    void receiveUser(User user, int queryId);
-
-    /**
      * Receive a notification of connection.
-     * @param userId the id of the user connected.
-     * @param login the name of the user.
+     * @param user the user connected.
      */
-    void receiveConnectedUser(UUID userId, String login, int queryId);
+    void receiveConnectedUser(User user, int queryId);
 
     /**
      * Receive a notification of unconnection.
-     * @param userId the id of the user unconnected.
-     * @param login the name of the user.
+     * @param user the user unconnected.
      */
-    void receiveUnconnectedUser(UUID userId, String login, int queryId);
+    void receiveUnconnectedUser(User user, int queryId);
 
     /**
      * Send back the picture requested.

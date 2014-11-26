@@ -127,7 +127,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addUserInGroup(final User user, final String groupName) {
         List<UserHBoxCell> userGroup = groups.get(groupName);
-        userGroup.add(new UserHBoxCell(user, user.isConnected()));
+        if(userGroup != null)
+            userGroup.add(new UserHBoxCell(user, user.isConnected()));
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
@@ -162,28 +163,30 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
     public void addFriend() {
         String text = friendName.getText();
-        application.getIHMtoDATA().addUserInGroup();
+        UserHBoxCell userToAdd = lookForUser(text);
+
+        application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), Groups.FRIENDS_GROUP_NAME);
+        Dialogs.showInformationDialog(application.getPrimaryStage(), "A friend request has been sent to " + text);
         friendName.clear();
     }
 
     public void setApp(final MainController app) {
-        //TODO Treat pending friend requests
         this.application = app;
     }
 
-    public void connectUser(UUID userId, String login) {
-        UserHBoxCell user = lookForUser(userId);
-        if(user != null) {
-            user.switchOn();
+    public void connectUser(User user) {
+        UserHBoxCell existingUser = lookForUser(user.getUid());
+        if(existingUser != null) {
+            existingUser.switchOn();
         } else {
-            addUserInGroup(Groups.DEFAULT_GROUP_NAME);
+            addUserInGroup(user, Groups.DEFAULT_GROUP_NAME);
         }
     }
 
-    public void disconnectUser(UUID userId, String login) {
-        UserHBoxCell user = lookForUser(userId);
-        if(user != null) {
-            user.switchOff();
+    public void disconnectUser(User user) {
+        UserHBoxCell existingUser = lookForUser(user.getUid());
+        if(existingUser != null) {
+            existingUser.switchOff();
         }
     }
 
@@ -191,7 +194,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
         if(ok.equals("YES")) {
             addUserInGroup(Groups.FRIENDS_GROUP_NAME);
-            application.getIHMtoDATA().confirmUserInGroup();
+            application.getIHMtoDATA().acceptUserInGroup();
         }
     }
 
