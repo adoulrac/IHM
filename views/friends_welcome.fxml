@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:id="friendsSub" layoutX="630.0" layoutY="178.0" prefWidth="204.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="IHM.controllers.FriendsSubController">
+    <children>
+    <Accordion fx:id="groupsAccordion" layoutX="630.0" layoutY="178.0" prefHeight="463.0" prefWidth="204.0">
+        <panes>
+        </panes>
+    </Accordion>
+    <TextField fx:id="friendName" layoutX="3.0" layoutY="598.0" text="Ajouter..." />
+    <Button fx:id="btnAddFriend" layoutX="171.0" layoutY="597.0" mnemonicParsing="false" onAction="#addFriend" prefHeight="25.0" prefWidth="28.0" styleClass="add-friend-btn" />
+    </children>
+</Pane>
