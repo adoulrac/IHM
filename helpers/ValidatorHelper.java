@@ -3,6 +3,7 @@ package IHM.helpers;
 import IHM.validators.IPAddressValidator;
 import IHM.validators.LoginValidator;
 import IHM.validators.PasswordValidator;
+import com.google.common.base.Strings;
 
 public class ValidatorHelper {
 
@@ -16,6 +17,9 @@ public class ValidatorHelper {
     }
 
     public static boolean validateIPs(final String ipsText) {
+        if(Strings.isNullOrEmpty(ipsText)) {
+            return true;
+        }
         String[] lines = ipsText.split(System.getProperty("line.separator"));
         boolean valid = true;
 
