@@ -2,25 +2,25 @@ package IHM.controllers;
 
 import DATA.model.Picture;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Tab;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
-public class PictureController extends Pane implements Initializable
+public class PictureController extends Tab implements Initializable
 {
+    public PictureController(Picture p)
+    {
+
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize( final URL url, final ResourceBundle resourceBundle )
+    {
 
     }
 
-    public void addPictures(List<Picture> pictures) {
-        //TODO receive async pictures
-    }
 
-    public void addPicture(Picture picture) {
-        //TODO receive async picture
-    }
+    public void build()
+    {}
 }
