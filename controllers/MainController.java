@@ -32,6 +32,7 @@ public class MainController {
 
     private User currentUser;
 
+    //TODO when goToSmwhere, remove entry from map
     private Map<Integer, Parent> requests;
 
     private int currentId;
