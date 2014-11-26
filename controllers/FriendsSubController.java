@@ -118,6 +118,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
         tp.setContent(users);
         groups.put(groupName, items);
+        //TODO: add the group to the User model
 
         groupsAccordion.getPanes().add(tp);
         return tp;
@@ -139,6 +140,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
             return;
         }
         addUserInGroup(user, DEFAULT_GROUP_NAME);
+        //TODO: add the friend to the list of groups in the user model
     }
 
     public void connectUser(UUID userId, String login) {
@@ -150,6 +152,12 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     public void receiveFriendRequest(User user) {
-        //TODO receive friend request (could be a confirmation of pending request OR new request from other user)
+        Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
+        if(ok.equals("YES")) {
+            //TODO: application.getIHMtoDATA().sendFriendResponse(user, true);
+            //TODO: add the friend
+        } else {
+            //TODO: application.getIHMtoDATA().sendFriendResponse(user, false);
+        }
     }
 }
