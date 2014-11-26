@@ -32,28 +32,26 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     @Override
     public void receiveConnectedUser(User user, int queryId) {
         Parent controller = app.getRequests().get(queryId);
-        if (controller==null){
-            //no entry or it's deleted in the map
-            //TODO decide what happens
-        }
-        else {
+        if(queryId == -1 || controller!=null) {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).connectUser(user);
             }
+        }else {
+            //no entry or it's deleted in the map
+            //TODO decide what happens
         }
     }
 
     @Override
     public void receiveUnconnectedUser(User user, int queryId) {
         Parent controller = app.getRequests().get(queryId);
-        if (controller==null){
-            //no entry or it's deleted in the map
-            //TODO decide what happens
-        }
-        else {
+        if(queryId == -1 || controller!=null) {
             if (controller instanceof FriendsSubController) {
                 ((FriendsSubController) controller).disconnectUser(user);
             }
+        }else {
+            //no entry or it's deleted in the map
+            //TODO decide what happens
         }
     }
 
