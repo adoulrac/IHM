@@ -16,13 +16,13 @@ public interface DATAtoIHM
      * Receive a notification of connection.
      * @param user the user connected.
      */
-    void receiveConnectedUser(User user, int queryId);
+    void receiveConnectedUser(User user);
 
     /**
      * Receive a notification of unconnection.
      * @param user the user unconnected.
      */
-    void receiveUnconnectedUser(User user, int queryId);
+    void receiveUnconnectedUser(User user);
 
     /**
      * Send back the picture requested.
