@@ -47,7 +47,7 @@ public class RegisterController implements Initializable {
         String ipsText = ips.getText();
 
         if(!ValidatorHelper.validateLogin(loginText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol â€œ_-â€ only.");
+            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.");
             return;
         }
 
