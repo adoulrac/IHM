@@ -11,7 +11,8 @@ public class ValidatorHelper {
     }
 
     public static boolean validatePassword(final String password) {
-        return new PasswordValidator().validate(password);
+        return true;
+        //return new PasswordValidator().validate(password);
     }
 
     public static boolean validateIPs(final String ipsText) {
@@ -26,6 +27,7 @@ public class ValidatorHelper {
     }
 
     public static boolean validateLogin(final String login) {
-        return new LoginValidator().validate(login);
+        return true;
+        //return new LoginValidator().validate(login);
     }
 }
