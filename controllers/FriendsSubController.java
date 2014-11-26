@@ -19,12 +19,11 @@ import javafx.scene.paint.Paint;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
 public class FriendsSubController extends SplitPane implements Initializable {
-
-    private static final String DEFAULT_GROUP_NAME = "Tous les utilisateurs";
 
     private MainController application;
 
@@ -72,6 +71,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
         public void switchOff() {
             icon.setImage(new Image(offPath));
         }
+
+        public User getUser() {
+            return user;
+        }
     }
 
     public FriendsSubController() {
@@ -88,11 +91,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * Build the GUI
      */
     public void build() {
-        //Build the default users section
-        createNewGroup(DEFAULT_GROUP_NAME);
-
-        // Call Data to get local groups or use user model groups
-        List<Group> userGroups = application.getIHMtoDATA().getGroups();
+        // Initialize groups
+        List<Group> userGroups = application.getIHMtoDATA().getAllUsers();
         addGroups(userGroups);
     }
 
@@ -127,11 +127,13 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addUserInGroup(final User user, final String groupName) {
         List<UserHBoxCell> userGroup = groups.get(groupName);
-        userGroup.add(new UserHBoxCell(user, false));
-        //TODO: Update user model
+        userGroup.add(new UserHBoxCell(user, user.isConnected()));
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
+        if(users == null) {
+            return;
+        }
         for (User user : users) {
             addUserInGroup(user, groupName);
         }
@@ -153,7 +155,6 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
         tp.setContent(listView);
         groups.put(groupName, users);
-        //TODO: add the group to the User model
 
         groupsAccordion.getPanes().add(tp);
         return tp;
@@ -161,39 +162,60 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
     public void addFriend() {
         String text = friendName.getText();
-        //TODO: send the request to the selected user
+        application.getIHMtoDATA().addUserInGroup();
         friendName.clear();
     }
 
     public void setApp(final MainController app) {
-        //TODO treat pending friend requests from List<User> returned by app.getDATAInterfaceReceiver().emptyPendingFriendRequests()
+        //TODO Treat pending friend requests
         this.application = app;
     }
 
-    public void addUser(User user) {
-        if(user == null) {
-            return;
-        }
-        addUserInGroup(user, DEFAULT_GROUP_NAME);
-        //TODO: add the friend to the list of groups in the user model
-    }
-
     public void connectUser(UUID userId, String login) {
-        //TODO update user state with this connection notification received in async
-
+        UserHBoxCell user = lookForUser(userId);
+        if(user != null) {
+            user.switchOn();
+        } else {
+            addUserInGroup(Groups.DEFAULT_GROUP_NAME);
+        }
     }
 
     public void disconnectUser(UUID userId, String login) {
-        //TODO update user state with this disconnection notification received in async
+        UserHBoxCell user = lookForUser(userId);
+        if(user != null) {
+            user.switchOff();
+        }
     }
 
     public void receiveFriendRequest(User user) {
         Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
         if(ok.equals("YES")) {
-            //TODO: application.getIHMtoDATA().sendFriendResponse(user, true);
-            //TODO: add the friend
-        } else {
-            //TODO: application.getIHMtoDATA().sendFriendResponse(user, false);
+            addUserInGroup(Groups.FRIENDS_GROUP_NAME);
+            application.getIHMtoDATA().confirmUserInGroup();
         }
+    }
+
+    private UserHBoxCell lookForUser(UUID userId) {
+        for(Entry<String, List<UserHBoxCell>> entry : groups.entrySet()) {
+            List<UserHBoxCell> users = entry.getValue();
+            for(UserHBoxCell u : users) {
+                if(u.getUser().getUid().equals(userId)) {
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
+
+    private UserHBoxCell lookForUser(String firstLastName) {
+        for(Entry<String, List<UserHBoxCell>> entry : groups.entrySet()) {
+            List<UserHBoxCell> users = entry.getValue();
+            for(UserHBoxCell u : users) {
+                if(u.toString().equals(firstLastName)) {
+                    return u;
+                }
+            }
+        }
+        return null;
     }
 }
