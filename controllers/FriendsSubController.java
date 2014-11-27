@@ -187,7 +187,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void connectUser(User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
         if(existingUser != null) {
-            existingUser.switchOn();
+            String groupName = removeUserInGroup(user);
+            addUserInGroup(user, groupName);
         } else {
             addUserInGroup(user, Group.DEFAULT_GROUP_NAME);
         }
@@ -196,7 +197,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void disconnectUser(User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
         if(existingUser != null) {
-            existingUser.switchOff();
+            String groupName = removeUserInGroup(user);
+            addUserInGroup(user, groupName);
         }
     }
 
@@ -227,6 +229,23 @@ public class FriendsSubController extends SplitPane implements Initializable {
                 if(u.toString().equals(firstLastName)) {
                     return u;
                 }
+            }
+        }
+        return null;
+    }
+
+    private String removeUserInGroup(User user) {
+        UserHBoxCell userToRemove = null;
+        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+            List<UserHBoxCell> users = entry.getValue();
+            for (UserHBoxCell u : users) {
+                if(u.getUser().getUid().equals(user.getUid())) {
+                    userToRemove = u;
+                }
+            }
+            if(userToRemove != null){
+                users.remove(userToRemove);
+                return entry.getKey();
             }
         }
         return null;
