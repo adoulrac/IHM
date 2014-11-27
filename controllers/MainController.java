@@ -15,6 +15,7 @@ import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -98,6 +99,8 @@ public class MainController {
         Scene scene = buildScene(fxml, loader);
         Stage currentStage = isNewStage ? new Stage() : stage;
         currentStage.setScene(scene);
+        // currentStage.initStyle(StageStyle.UNDECORATED);
+        currentStage.setResizable(false);
         currentStage.sizeToScene();
         if(isNewStage) {
             currentStage.show();
