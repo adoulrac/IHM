@@ -7,6 +7,7 @@ import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
 import IHM.interfaces.DATAtoIHMimpl;
 import IHM.interfaces.IHMtoDATAstub;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -42,15 +43,17 @@ public class MainController {
 
     private Initializable currentController;
 
+    private WelcomeController welcomeController;
+
+    private List<Stage> newStages;
+
     public MainController(Stage primaryStage) {
         stage = primaryStage;
         currentId = 0;
         stage.setTitle(APP_NAME);
+        newStages = Lists.newArrayList();
         requests = Maps.newHashMap();
-
-        // Exchange commenting those to lines to use stub or DATA implementation
-        //DATAInterface = new IHMtoDATAImpl();
-        DATAInterface = new IHMtoDATAstub();
+        DATAInterface = new IHMtoDATAImpl();
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
 
         goToLogin();
@@ -81,7 +84,7 @@ public class MainController {
 
     public void goToGroups() {
         try {
-            GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml");
+            GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml", true);
             groups.setApp(this);
             removeAllRequests(currentController);
             currentController = groups;
@@ -90,8 +93,25 @@ public class MainController {
         }
     }
 
-    private Initializable replaceSceneContent(String fxml) throws Exception {
+    private Initializable replaceSceneContent(String fxml, boolean isNewStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
+        Scene scene = buildScene(fxml, loader);
+        Stage currentStage = isNewStage ? new Stage() : stage;
+        currentStage.setScene(scene);
+        currentStage.sizeToScene();
+        if(isNewStage) {
+            currentStage.show();
+            currentStage.toFront();
+            newStages.add(currentStage);
+        }
+        return (Initializable) loader.getController();
+    }
+
+    private Initializable replaceSceneContent(String fxml) throws Exception {
+        return replaceSceneContent(fxml, false);
+    }
+
+    private Scene buildScene(String fxml, FXMLLoader loader) throws Exception {
         InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
         loader.setLocation(Main.class.getResource(fxml));
@@ -103,9 +123,7 @@ public class MainController {
         }
         Scene scene = new Scene(page);
         scene.getStylesheets().add(CSS_PATH);
-        stage.setScene(scene);
-        stage.sizeToScene();
-        return (Initializable) loader.getController();
+        return scene;
     }
 
     public boolean userLogging(String userId, String password){
@@ -113,13 +131,16 @@ public class MainController {
     }
 
     public void userLogout(){
+        for(Stage stage : newStages)
+            stage.close();
         goToLogin();
     }
 
-    public void goToProfile() {
+    public void goToProfile(User user) {
         try {
-            ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml");
+            ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml", true);
             profile.setApp(this);
+            profile.build(user);
             removeAllRequests(currentController);
             currentController = profile;
         } catch (Exception ex) {
@@ -127,15 +148,28 @@ public class MainController {
         }
     }
 
-    public void goToWelcome() {
+    public void openWelcome() {
         try {
             WelcomeController welcome = (WelcomeController) replaceSceneContent("views/accueil.fxml");
             welcome.setApp(this);
             welcome.build();
-            removeAllRequests(currentController);
-            currentController = welcome;
+            welcomeController = welcome;
+            removeAllRequests(welcomeController);
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void addRequest(Parent controller) {
+        if(controller == null) {
+            return;
+        }
+        this.requests.put(currentId++, controller);
+    }
+
+    public void removeRequest(Integer requestId) {
+        if (requestId != null) {
+            requests.remove(requestId);
         }
     }
 
@@ -151,17 +185,8 @@ public class MainController {
         return this.stage;
     }
 
-    public void addRequest(Parent controller) {
-        if(controller == null) {
-            return;
-        }
-        this.requests.put(currentId++, controller);
-    }
-
-    public void removeRequest(Integer requestId) {
-        if (requestId != null) {
-            requests.remove(requestId);
-        }
+    public WelcomeController getWelcomeController() {
+        return this.welcomeController;
     }
 
     public void removeAllRequests(Initializable controller) {

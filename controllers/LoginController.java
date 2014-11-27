@@ -63,7 +63,7 @@ public class LoginController extends Pane implements Initializable {
         if(user != null) {
             Logger.getLogger(LoginController.class.getName()).log(Level.INFO, "User " + user.getLogin() + " has logged in.");
             application.setCurrentUser(user);
-            application.goToWelcome();
+            application.openWelcome();
         } else {
             Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the current user.");
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the current user.");

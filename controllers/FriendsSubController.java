@@ -6,12 +6,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Paint;
@@ -19,12 +21,11 @@ import javafx.scene.paint.Paint;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
 public class FriendsSubController extends SplitPane implements Initializable {
-
-    private static final String DEFAULT_GROUP_NAME = "Tous les utilisateurs";
 
     private MainController application;
 
@@ -40,7 +41,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     @FXML
     private TextField friendName;
 
-    private Map<String, List<UserHBoxCell>> groups;
+    private Map<String, ObservableList<UserHBoxCell>> groups;
 
     private class UserHBoxCell extends HBox {
         private User user;
@@ -50,11 +51,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
         private static final String onPath = "IHM/resources/online_icon.png";
         private static final String offPath = "IHM/resources/offline_icon.png";
 
-        public UserHBoxCell(User user, boolean status) {
+        public UserHBoxCell(final User user, boolean status) {
             this.user = user;
 
             label = new Label();
-            label.setText(user.toString());
+            label.setText(user.getLogin());
             HBox.setHgrow(label, Priority.ALWAYS);
 
             icon = new ImageView();
@@ -63,6 +64,13 @@ public class FriendsSubController extends SplitPane implements Initializable {
             icon.setFitWidth(13.0);
 
             this.getChildren().addAll(icon, label);
+
+            this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    application.goToProfile(user);
+                }
+            });
         }
 
         public void switchOn() {
@@ -71,6 +79,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
         public void switchOff() {
             icon.setImage(new Image(offPath));
+        }
+
+        public User getUser() {
+            return user;
         }
     }
 
@@ -88,11 +100,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * Build the GUI
      */
     public void build() {
-        //Build the default users section
-        createNewGroup(DEFAULT_GROUP_NAME);
-
-        // Call Data to get local groups or use user model groups
-        List<Group> userGroups = application.getIHMtoDATA().getGroups();
+        // Initialize groups
+        List<Group> userGroups = application.getIHMtoDATA().getAllUsers();
         addGroups(userGroups);
     }
 
@@ -127,11 +136,15 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addUserInGroup(final User user, final String groupName) {
         List<UserHBoxCell> userGroup = groups.get(groupName);
-        userGroup.add(new UserHBoxCell(user, false));
-        //TODO: Update user model
+        if(userGroup != null) {
+            userGroup.add(new UserHBoxCell(user, user.isConnected()));
+        }
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
+        if(users == null) {
+            return;
+        }
         for (User user : users) {
             addUserInGroup(user, groupName);
         }
@@ -152,8 +165,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         listView.setEditable(true);
 
         tp.setContent(listView);
-        groups.put(groupName, users);
-        //TODO: add the group to the User model
+        groups.put(groupName, myObservableList);
 
         groupsAccordion.getPanes().add(tp);
         return tp;
@@ -161,39 +173,82 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
     public void addFriend() {
         String text = friendName.getText();
-        //TODO: send the request to the selected user
+        UserHBoxCell userToAdd = lookForUser(text);
+
+        application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
+        Dialogs.showInformationDialog(application.getPrimaryStage(), "A friend request has been sent to " + text);
         friendName.clear();
     }
 
     public void setApp(final MainController app) {
-        //TODO treat pending friend requests from List<User> returned by app.getDATAInterfaceReceiver().emptyPendingFriendRequests()
         this.application = app;
     }
 
-    public void addUser(User user) {
-        if(user == null) {
-            return;
+    public void connectUser(User user) {
+        UserHBoxCell existingUser = lookForUser(user.getUid());
+        if(existingUser != null) {
+            String groupName = removeUserInGroup(user);
+            addUserInGroup(user, groupName);
+        } else {
+            addUserInGroup(user, Group.DEFAULT_GROUP_NAME);
         }
-        addUserInGroup(user, DEFAULT_GROUP_NAME);
-        //TODO: add the friend to the list of groups in the user model
     }
 
-    public void connectUser(UUID userId, String login) {
-        //TODO update user state with this connection notification received in async
-
-    }
-
-    public void disconnectUser(UUID userId, String login) {
-        //TODO update user state with this disconnection notification received in async
+    public void disconnectUser(User user) {
+        UserHBoxCell existingUser = lookForUser(user.getUid());
+        if(existingUser != null) {
+            String groupName = removeUserInGroup(user);
+            addUserInGroup(user, groupName);
+        }
     }
 
     public void receiveFriendRequest(User user) {
         Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
         if(ok.equals("YES")) {
-            //TODO: application.getIHMtoDATA().sendFriendResponse(user, true);
-            //TODO: add the friend
-        } else {
-            //TODO: application.getIHMtoDATA().sendFriendResponse(user, false);
+            removeUserInGroup(user);
+            addUserInGroup(user, Group.FRIENDS_GROUP_NAME);
+            application.getIHMtoDATA().acceptUserInGroup(user, application.getIHMtoDATA().getGroups().get(0));
         }
+    }
+
+    private UserHBoxCell lookForUser(UUID userId) {
+        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+            List<UserHBoxCell> users = entry.getValue();
+            for(UserHBoxCell u : users) {
+                if(u.getUser().getUid().equals(userId)) {
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
+
+    private UserHBoxCell lookForUser(String login) {
+        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+            List<UserHBoxCell> users = entry.getValue();
+            for(UserHBoxCell u : users) {
+                if(u.getUser().getLogin().equals(login)) {
+                    return u;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String removeUserInGroup(User user) {
+        UserHBoxCell userToRemove = null;
+        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+            List<UserHBoxCell> users = entry.getValue();
+            for (UserHBoxCell u : users) {
+                if(u.getUser().getUid().equals(user.getUid())) {
+                    userToRemove = u;
+                }
+            }
+            if(userToRemove != null){
+                users.remove(userToRemove);
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 }

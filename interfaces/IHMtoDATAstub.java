@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by greyna on 24/11/2014.
- */
 public class IHMtoDATAstub implements IHMtoDATA {
     List<User> listUsers = new ArrayList<User>();
     List<Group> listGroups = new ArrayList<Group>();
@@ -51,6 +48,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public void addComment(Comment comment, int idRequest) { }
 
+    @Override
+    public void addNote(Note note, int idRequest) {
+
+    }
+
     /**
      * Add a new group for the current user
      * @param group The new group
@@ -72,6 +74,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
      */
     @Override
     public void addUserInGroup(User user, Group group)  { }
+
+    @Override
+    public void acceptUserInGroup(User user, Group group) {
+
+    }
 
     /**
      * Delete a group and all its users

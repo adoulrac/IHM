@@ -1,13 +1,11 @@
 package IHM.controllers;
 
+import DATA.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialogs;
+import javafx.scene.control.*;
 import javafx.scene.control.Dialogs.DialogOptions;
 import javafx.scene.control.Dialogs.DialogResponse;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -21,107 +19,120 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import IHM.utils.FileUtil;
+import javafx.stage.Stage;
 
 /**
  * @author Sylvain_
  *
  */
-
 public class ProfileController implements Initializable {
 
-	@FXML
-	Label nickname;
+    @FXML
+    private TitledPane profile;
 
 	@FXML
-	TextField avatarPath;
+    private Label nickname;
 
 	@FXML
-	Button changeAvatar;
+    private TextField avatarPath;
 
 	@FXML
-	TextField lastname;
+    private Button changeAvatar;
 
 	@FXML
-	TextField firstname;
+    private TextField lastname;
 
 	@FXML
-	TextField birthdate;
+    private TextField firstname;
 
 	@FXML
-	TextField newIP;
+    private TextField birthdate;
 
 	@FXML
-	Button validateNewIP;
+    private TextField newIP;
 
 	@FXML
-	Button okButton;
+    private Button validateNewIP;
 
 	@FXML
-	Button cancelButton;
+    private Button okButton;
 
 	@FXML
-	ImageView avatar;
+    private Button cancelButton;
+
+	@FXML
+    private ImageView avatar;
 
 	private MainController application;
+
 	private String userFirstName, userLastName, userAvatar, userBirthDate, userNickName;
+
 	private String defaultValue = "Unknown";
+
 	private List<String> userIP;
+
+    private User user;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-		getUserInfos();
-		displayUserInfo();
+        // NOP
 	}
+
+    public void build(User userToDisplay) {
+        this.user = userToDisplay;
+        getUserInfos();
+        displayUserInfo();
+    }
 
 	public void getUserInfos() {
 		try {
-			userLastName = application.currentUser().getLastname();
+			userLastName = user.getLastname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Lastname is empty or original value cannot be retrieved, changes will not be persisted");
 			this.userLastName = defaultValue;
 		}
 		try {
-			userFirstName = application.currentUser().getFirstname();
+			userFirstName = user.getFirstname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Fistname is empty or original value cannot be retrieved, changes will not be persisted");
 			userFirstName = defaultValue;
 		}
 		try {
-			userBirthDate = application.currentUser().getBirthDate();
+			userBirthDate = user.getBirthDate();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Birthdate is empty or original value cannot be retrieved, changes will not be persisted");
 			userBirthDate = defaultValue;
 		}
 
 		try {
-			userAvatar = application.currentUser().getAvatar();
+			userAvatar = user.getAvatar();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Avatar path is empty or original value cannot be retrieved, changes will not be persisted");
 		}
 
 		try {
-			userNickName = application.currentUser().getLogin();
+			userNickName = user.getLogin();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"Login is empty or original value cannot be retrieved, changes will not be persisted");
 			userNickName = defaultValue;
 		}
 		userIP = new ArrayList<String>();
 		try {
 			
-			userIP.addAll(application.currentUser().getListIP());
+			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.SEVERE,
+					.log(Level.INFO,
 							"List of addresses is empty or original value cannot be retrieved, changes will not be persisted");
 		}
 
@@ -161,13 +172,13 @@ public class ProfileController implements Initializable {
 	}
 
 	public boolean hasInfoChanged() {
-		if (!userFirstName.equals(this.nickname.getText())) {
+		if (userFirstName != null && !userFirstName.equals(this.nickname.getText())) {
 			return true;
 		}
-		if (!userLastName.equals(this.lastname.getText())) {
+		if (userLastName != null && !userLastName.equals(this.lastname.getText())) {
 			return true;
 		}
-		if (!userBirthDate.equals(this.birthdate.getText())) {
+		if (userBirthDate != null && !userBirthDate.equals(this.birthdate.getText())) {
 			return true;
 		}
 		return false;
@@ -189,21 +200,21 @@ public class ProfileController implements Initializable {
 	}
 
 	public void onCancel() {
-		this.application.goToWelcome();
+        ((Stage) profile.getScene().getWindow()).close();
 	}
 
 	public void onOK() {
 		if (hasInfoChanged()) {
 			System.out.println("INFO HAS CHANGED");
-			DialogResponse response = Dialogs.showConfirmDialog(application.getPrimaryStage(), "Changes have been detected on your profile, do you want to persist them?", 
+			DialogResponse response = Dialogs.showConfirmDialog(application.getPrimaryStage(), "Changes have been detected on your profile, do you want to persist them ?",
 			        "Save changes", "Save changes", DialogOptions.OK_CANCEL);
 			if (response==DialogResponse.OK)
 			{
-				this.persistUserInfoChanges();
-				this.application.goToWelcome();
+				persistUserInfoChanges();
+                ((Stage) profile.getScene().getWindow()).close();
 			}
 		} else {
-			this.application.goToWelcome();
+            ((Stage) profile.getScene().getWindow()).close();
 		}
 	}
 }
