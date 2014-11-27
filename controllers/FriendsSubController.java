@@ -55,7 +55,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
             this.user = user;
 
             label = new Label();
-            label.setText((user.getFirstname() == null || user.getLastname() == null) ? user.getLogin() : user.toString());
+            label.setText(user.getLogin());
             HBox.setHgrow(label, Priority.ALWAYS);
 
             icon = new ImageView();
@@ -222,11 +222,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
         return null;
     }
 
-    private UserHBoxCell lookForUser(String firstLastName) {
+    private UserHBoxCell lookForUser(String login) {
         for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for(UserHBoxCell u : users) {
-                if(u.toString().equals(firstLastName)) {
+                if(u.toString().equals(login)) {
                     return u;
                 }
             }
