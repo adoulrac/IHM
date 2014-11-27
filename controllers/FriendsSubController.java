@@ -4,6 +4,7 @@ import DATA.model.Group;
 import DATA.model.User;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -135,9 +136,14 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * Add a user in an existing group
      */
     public void addUserInGroup(final User user, final String groupName) {
-        List<UserHBoxCell> userGroup = groups.get(groupName);
+        final List<UserHBoxCell> userGroup = groups.get(groupName);
         if(userGroup != null) {
-            userGroup.add(new UserHBoxCell(user, user.isConnected()));
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    userGroup.add(new UserHBoxCell(user, user.isConnected()));
+                }
+            });
         }
     }
 
@@ -187,8 +193,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void connectUser(User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
         if(existingUser != null) {
-            String groupName = removeUserInGroup(user);
-            addUserInGroup(user, groupName);
+            updateUser(user);
         } else {
             addUserInGroup(user, Group.DEFAULT_GROUP_NAME);
         }
@@ -197,16 +202,14 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void disconnectUser(User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
         if(existingUser != null) {
-            String groupName = removeUserInGroup(user);
-            addUserInGroup(user, groupName);
+            updateUser(user);
         }
     }
 
     public void receiveFriendRequest(User user) {
         Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
         if(ok.equals("YES")) {
-            removeUserInGroup(user);
-            addUserInGroup(user, Group.FRIENDS_GROUP_NAME);
+            updateUser(user, Group.FRIENDS_GROUP_NAME);
             application.getIHMtoDATA().acceptUserInGroup(user, application.getIHMtoDATA().getGroups().get(0));
         }
     }
@@ -250,5 +253,19 @@ public class FriendsSubController extends SplitPane implements Initializable {
             }
         }
         return null;
+    }
+
+    private void updateUser(final User user, final String groupName) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                String CurrGroupName = removeUserInGroup(user);
+                addUserInGroup(user, groupName == null ? CurrGroupName : groupName);
+            }
+        });
+    }
+
+    private void updateUser(final User user) {
+        updateUser(user, null);
     }
 }
