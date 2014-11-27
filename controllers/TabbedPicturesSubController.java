@@ -125,7 +125,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 if(split.getItems().get( i ) instanceof TilePane)
                 {
                     TilePane tile = (TilePane) split.getItems().get( i );
-                    Picture p = new Picture( f.toURI().toString() );
+                    Picture p = new Picture( f.toURI().toString(), application.currentUser().getUid() );
                     tile.getChildren().add(createMiniPicture(p));
                     exit = true;
                 }

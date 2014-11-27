@@ -16,10 +16,10 @@ public class IHMtoDATAstub implements IHMtoDATA {
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
     User selim = new User("selim", "selim", "Sélim", "Zénagui", "selim.jpg", "08/06/1992");
 
-    Picture picA = new Picture("IHM/resources/logo.jpeg");
-    Picture picB = new Picture("IHM/resources/avatar_icon.png");
-    Picture picC = new Picture("IHM/resources/avatar_icon.png");
-    Picture picD = new Picture("IHM/resources/logo.jpeg");
+    Picture picA = new Picture("IHM/resources/logo.jpeg", null);
+    Picture picB = new Picture("IHM/resources/avatar_icon.png", null);
+    Picture picC = new Picture("IHM/resources/avatar_icon.png", null);
+    Picture picD = new Picture("IHM/resources/logo.jpeg", null);
 
     public IHMtoDATAstub() {
         listUsers.add(arthur);
@@ -77,6 +77,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
 
     @Override
     public void acceptUserInGroup(User user, Group group) {
+
+    }
+
+    @Override
+    public void refuseUser(User user) {
 
     }
 
