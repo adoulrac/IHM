@@ -46,10 +46,10 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param idRequest	The idRequest
      */
     @Override
-    public void addComment(Comment comment, int idRequest) { }
+    public void addComment(Comment comment) { }
 
     @Override
-    public void addNote(Note note, int idRequest) {
+    public void addNote(Note note) {
 
     }
 
