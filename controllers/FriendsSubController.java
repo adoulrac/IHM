@@ -226,7 +226,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for(UserHBoxCell u : users) {
-                if(u.toString().equals(login)) {
+                if(u.getUser().getLogin().equals(login)) {
                     return u;
                 }
             }
