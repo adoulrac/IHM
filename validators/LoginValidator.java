@@ -9,11 +9,13 @@ import java.util.regex.Pattern;
 /*
  * 3 to 15 characters with any lower case character, digit or special symbol “_-” only
  */
-public class LoginValidator {
+public class LoginValidator extends SimpleStringValidator {
 
     private Pattern pattern;
 
     private Matcher matcher;
+
+    public static final String MESSAGE = "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.";
 
     private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
 
@@ -27,13 +29,10 @@ public class LoginValidator {
      * @return true valid username, false invalid username
      */
     public boolean validate(final String login){
-        return true;
-        /*if(Strings.isNullOrEmpty(login)) {
+        if(!super.validate(login)) {
             return false;
         }
-
         matcher = pattern.matcher(login);
-        return matcher.matches();*/
-
+        return matcher.matches();
     }
 }

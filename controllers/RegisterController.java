@@ -3,6 +3,7 @@ package IHM.controllers;
 import DATA.model.User;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.StringUtil;
+import IHM.validators.SimpleStringValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Dialogs;
@@ -46,8 +47,8 @@ public class RegisterController implements Initializable {
         String confirmText = confirmation.getText();
         String ipsText = ips.getText();
 
-        if(!ValidatorHelper.validateLogin(loginText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.");
+        if(!ValidatorHelper.validateString(loginText)) {
+            Dialogs.showInformationDialog(application.getPrimaryStage(), SimpleStringValidator.MESSAGE + " Please check your login.");
             return;
         }
 
@@ -56,8 +57,8 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        if(!ValidatorHelper.validatePassword(passwordText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Password: 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter.");
+        if(!ValidatorHelper.validateString(passwordText)) {
+            Dialogs.showInformationDialog(application.getPrimaryStage(), SimpleStringValidator.MESSAGE + " Please check your password.");
             return;
         }
 

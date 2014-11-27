@@ -3,6 +3,7 @@ package IHM.helpers;
 import IHM.validators.IPAddressValidator;
 import IHM.validators.LoginValidator;
 import IHM.validators.PasswordValidator;
+import IHM.validators.SimpleStringValidator;
 import com.google.common.base.Strings;
 
 public class ValidatorHelper {
@@ -12,8 +13,7 @@ public class ValidatorHelper {
     }
 
     public static boolean validatePassword(final String password) {
-        return true;
-        //TODO return new PasswordValidator().validate(password);
+        return new PasswordValidator().validate(password);
     }
 
     public static boolean validateIPs(final String ipsText) {
@@ -31,7 +31,10 @@ public class ValidatorHelper {
     }
 
     public static boolean validateLogin(final String login) {
-        return true;
-        //TODO return new LoginValidator().validate(login);
+        return new LoginValidator().validate(login);
+    }
+
+    public static boolean validateString(final String string) {
+        return new SimpleStringValidator().validate(string);
     }
 }
