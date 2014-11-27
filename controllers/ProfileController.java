@@ -1,11 +1,10 @@
 package IHM.controllers;
 
 import DATA.model.User;
+import Dialogs.DialogFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialogs.DialogOptions;
-import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -206,9 +205,11 @@ public class ProfileController implements Initializable {
 	public void onOK() {
 		if (hasInfoChanged()) {
 			System.out.println("INFO HAS CHANGED");
-			DialogResponse response = Dialogs.showConfirmDialog(application.getPrimaryStage(), "Changes have been detected on your profile, do you want to persist them ?",
-			        "Save changes", "Save changes", DialogOptions.OK_CANCEL);
-			if (response==DialogResponse.OK)
+			
+			DialogFX dialog = new DialogFX(DialogFX.Type.QUESTION);
+	    	dialog.setMessage("Would you like to save changes made to your profile?");
+	    	int response = dialog.showDialog();
+	    	if (response == 0) // YES
 			{
 				persistUserInfoChanges();
                 ((Stage) profile.getScene().getWindow()).close();

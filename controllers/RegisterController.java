@@ -1,11 +1,11 @@
 package IHM.controllers;
 
 import DATA.model.User;
+import Dialogs.DialogFX;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.StringUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Dialogs;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -47,22 +47,30 @@ public class RegisterController implements Initializable {
         String ipsText = ips.getText();
 
         if(!ValidatorHelper.validateLogin(loginText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
+	    	dialog.setMessage("Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.");
+	    	dialog.showDialog();
             return;
         }
 
         if(passwordText == null || confirmText == null || !passwordText.equals(confirmText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Passwords are different.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
+	    	dialog.setMessage("Password are different.");
+	    	dialog.showDialog();
             return;
         }
 
         if(!ValidatorHelper.validatePassword(passwordText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid Password: 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
+	    	dialog.setMessage("Invalid Password: 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter.");
+	    	dialog.showDialog();
             return;
         }
 
         if(!ValidatorHelper.validateIPs(ipsText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid IP Addresses.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
+	    	dialog.setMessage("Invalid IP Addresses");
+	    	dialog.showDialog();
             return;
         }
 

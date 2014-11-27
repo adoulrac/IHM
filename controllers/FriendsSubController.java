@@ -2,8 +2,11 @@ package IHM.controllers;
 
 import DATA.model.Group;
 import DATA.model.User;
+import Dialogs.DialogFX;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -182,7 +185,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
         UserHBoxCell userToAdd = lookForUser(text);
 
         application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
-        Dialogs.showInformationDialog(application.getPrimaryStage(), "A friend request has been sent to " + text);
+        DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
+    	dialog.setMessage("A friend request has been sent to " + text);
+    	dialog.showDialog();
         friendName.clear();
     }
 
@@ -207,11 +212,13 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     public void receiveFriendRequest(User user) {
-        Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), user.toString() + " wants to be your friend ! Do you accept it ? ");
-        if(ok.equals("YES")) {
-            updateUser(user, Group.FRIENDS_GROUP_NAME);
+    	DialogFX dialog = new DialogFX(DialogFX.Type.QUESTION);
+    	dialog.setMessage(user.toString() + " wants to be your friend ! Do you accept it ? ");
+    	int response = dialog.showDialog();
+    	if (response == 0) { // YES
+    		updateUser(user, Group.FRIENDS_GROUP_NAME);
             application.getIHMtoDATA().acceptUserInGroup(user, application.getIHMtoDATA().getGroups().get(0));
-        }
+    	}
     }
 
     private UserHBoxCell lookForUser(UUID userId) {

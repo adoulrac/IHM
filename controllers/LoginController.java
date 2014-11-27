@@ -1,11 +1,11 @@
 package IHM.controllers;
 
 import DATA.model.User;
+import Dialogs.*;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.FileUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Dialogs;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -16,6 +16,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 
 /**
  * Login Controller.
@@ -37,13 +39,14 @@ public class LoginController extends Pane implements Initializable {
     public void login() {
         String loginText = login.getText();
         String passwordText = password.getText();
-
         if(ValidatorHelper.validateLogin(loginText) &&
                 ValidatorHelper.validatePassword(passwordText)
                 && application.getIHMtoDATA().login(loginText, passwordText)) {
             openApplication();
         } else {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Login failed, please check if your password and login are correct.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
+	    	dialog.setMessage("Login failed, please check if your password and login are correct.");
+	    	dialog.showDialog();
         }
     }
 
@@ -53,7 +56,9 @@ public class LoginController extends Pane implements Initializable {
             application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
             openApplication();
         } catch (Exception e) {
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the profile file.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.ERROR);
+        	dialog.setMessage("Error in loading the profile file");
+        	dialog.showDialog();
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the profile file.");
         }
     }
@@ -65,7 +70,9 @@ public class LoginController extends Pane implements Initializable {
             application.setCurrentUser(user);
             application.openWelcome();
         } else {
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the current user.");
+        	DialogFX dialog = new DialogFX(DialogFX.Type.ERROR);
+        	dialog.setMessage("Error while loading the current user");
+        	dialog.showDialog();
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the current user.");
         }
     }
