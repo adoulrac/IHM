@@ -15,12 +15,12 @@ public class PictureController extends Tab implements Initializable
     }
 
     @Override
-    public void initialize( final URL url, final ResourceBundle resourceBundle )
-    {
-
+    public void initialize( final URL url, final ResourceBundle resourceBundle ){
+        // NOP
     }
 
 
-    public void build()
-    {}
+    public void build(){
+        //TODO
+    }
 }

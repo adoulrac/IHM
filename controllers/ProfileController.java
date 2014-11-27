@@ -1,16 +1,19 @@
 package IHM.controllers;
 
 import DATA.model.User;
+import IHM.utils.Dialogs;
+import IHM.utils.FileUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.Dialogs.DialogOptions;
-import javafx.scene.control.Dialogs.DialogResponse;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,71 +21,69 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import IHM.utils.FileUtil;
-import javafx.stage.Stage;
-
 /**
  * @author Sylvain_
  *
  */
 public class ProfileController implements Initializable {
 
-    @FXML
-    private TitledPane profile;
+	@FXML
+	private TitledPane profile;
 
 	@FXML
-    private Label nickname;
+	private Label nickname;
 
 	@FXML
-    private TextField avatarPath;
+	private TextField avatarPath;
 
 	@FXML
-    private Button changeAvatar;
+	private Button changeAvatar;
 
 	@FXML
-    private TextField lastname;
+	private TextField lastname;
 
 	@FXML
-    private TextField firstname;
+	private TextField firstname;
 
 	@FXML
-    private TextField birthdate;
+	private TextField birthdate;
 
 	@FXML
-    private TextField newIP;
+	private TextField newIP;
 
 	@FXML
-    private Button validateNewIP;
+	private Button validateNewIP;
 
 	@FXML
-    private Button okButton;
+	private Button okButton;
 
 	@FXML
-    private Button cancelButton;
+	private Button cancelButton;
 
 	@FXML
-    private ImageView avatar;
+	private ImageView avatar;
 
 	private MainController application;
 
-	private String userFirstName, userLastName, userAvatar, userBirthDate, userNickName;
+	private String userFirstName, userLastName, userAvatar, userBirthDate,
+			userNickName;
 
 	private String defaultValue = "Unknown";
 
 	private List<String> userIP;
 
-    private User user;
+	private User user;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-        // NOP
+		// NOP
 	}
 
-    public void build(User userToDisplay) {
-        this.user = userToDisplay;
-        getUserInfos();
-        displayUserInfo();
-    }
+	public void build(User userToDisplay) {
+		this.user = userToDisplay;
+		getUserInfos();
+		displayUserInfo();
+	}
 
 	public void getUserInfos() {
 		try {
@@ -128,7 +129,7 @@ public class ProfileController implements Initializable {
 		}
 		userIP = new ArrayList<String>();
 		try {
-			
+
 			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
@@ -147,7 +148,8 @@ public class ProfileController implements Initializable {
 		Image image = new Image(f.toURI().toString());
 		avatar.setImage(image);
 		avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
-		Logger.getLogger(ProfileController.class.getName()).log(Level.INFO, "Avatar chnged");
+		Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
+				"Avatar chnged");
 	}
 
 	public void displayUserInfo() {
@@ -172,13 +174,14 @@ public class ProfileController implements Initializable {
 	}
 
 	public boolean hasInfoChanged() {
-		if (userFirstName != null && !userFirstName.equals(this.nickname.getText())) {
+		System.out.println("Info");
+		if (!userFirstName.equals(this.nickname.getText())) {
 			return true;
 		}
-		if (userLastName != null && !userLastName.equals(this.lastname.getText())) {
+		if (!userLastName.equals(this.lastname.getText())) {
 			return true;
 		}
-		if (userBirthDate != null && !userBirthDate.equals(this.birthdate.getText())) {
+		if (!userBirthDate.equals(this.birthdate.getText())) {
 			return true;
 		}
 		return false;
@@ -186,35 +189,45 @@ public class ProfileController implements Initializable {
 
 	public void persistUserInfoChanges() {
 		try {
-		application.currentUser().setAvatar(avatarPath.getText());
-		application.currentUser().setBirthDate(birthdate.getText());
-		application.currentUser().setFirstname(firstname.getText());
-		application.currentUser().setLastname(lastname.getText());
+			application.currentUser().setAvatar(avatarPath.getText());
+			application.currentUser().setBirthDate(birthdate.getText());
+			application.currentUser().setFirstname(firstname.getText());
+			application.currentUser().setLastname(lastname.getText());
+		} catch (Exception e) {
+			Logger.getLogger(ProfileController.class.getName()).log(
+					Level.SEVERE, "Unable to persist changes");
 		}
-		catch (Exception e){
-			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.SEVERE,
-					"Unable to persist changes");
+	}
+
+	public void removeNullValues() {
+		if (userFirstName == null) {
+			userFirstName = "";
 		}
-		
+		if (userLastName == null) {
+			userLastName = "";
+		}
+		if (userBirthDate == null) {
+			userLastName = "";
+		}
+		if (userAvatar == null) {
+			userAvatar = "";
+		}
 	}
 
 	public void onCancel() {
-        ((Stage) profile.getScene().getWindow()).close();
+		((Stage) profile.getScene().getWindow()).close();
 	}
 
 	public void onOK() {
+		removeNullValues();
 		if (hasInfoChanged()) {
-			System.out.println("INFO HAS CHANGED");
-			DialogResponse response = Dialogs.showConfirmDialog(application.getPrimaryStage(), "Changes have been detected on your profile, do you want to persist them ?",
-			        "Save changes", "Save changes", DialogOptions.OK_CANCEL);
-			if (response==DialogResponse.OK)
-			{
+			boolean response = Dialogs.showConfirmationDialog("Would you like to save changes made to your profile ?");
+            if (response){
 				persistUserInfoChanges();
-                ((Stage) profile.getScene().getWindow()).close();
+				((Stage) profile.getScene().getWindow()).close();
 			}
 		} else {
-            ((Stage) profile.getScene().getWindow()).close();
+			((Stage) profile.getScene().getWindow()).close();
 		}
 	}
 }

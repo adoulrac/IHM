@@ -2,16 +2,15 @@ package IHM.controllers;
 
 import DATA.model.User;
 import IHM.helpers.ValidatorHelper;
+import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Dialogs;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -43,7 +42,7 @@ public class LoginController extends Pane implements Initializable {
                 && application.getIHMtoDATA().login(loginText, passwordText)) {
             openApplication();
         } else {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Login failed, please check if your password and login are correct.");
+            Dialogs.showInformationDialog("Login failed, please check if your password and login are correct.");
         }
     }
 
@@ -53,7 +52,7 @@ public class LoginController extends Pane implements Initializable {
             application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
             openApplication();
         } catch (Exception e) {
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the profile file.");
+            Dialogs.showErrorDialog("Error in loading the profile file");
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the profile file.");
         }
     }
@@ -65,7 +64,7 @@ public class LoginController extends Pane implements Initializable {
             application.setCurrentUser(user);
             application.openWelcome();
         } else {
-            Dialogs.showErrorDialog(application.getPrimaryStage(), "Error in loading the current user.");
+            Dialogs.showErrorDialog("Error while loading the current user");
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the current user.");
         }
     }

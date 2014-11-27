@@ -2,11 +2,11 @@ package IHM.controllers;
 
 import DATA.model.User;
 import IHM.helpers.ValidatorHelper;
+import IHM.utils.Dialogs;
 import IHM.utils.StringUtil;
 import IHM.validators.SimpleStringValidator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Dialogs;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -48,22 +48,22 @@ public class RegisterController implements Initializable {
         String ipsText = ips.getText();
 
         if(!ValidatorHelper.validateString(loginText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), SimpleStringValidator.MESSAGE + " Please check your login.");
+            Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE + " Please check your login.");
             return;
         }
 
         if(passwordText == null || confirmText == null || !passwordText.equals(confirmText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Passwords are different.");
+            Dialogs.showInformationDialog("Password are different.");
             return;
         }
 
         if(!ValidatorHelper.validateString(passwordText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), SimpleStringValidator.MESSAGE + " Please check your password.");
+            Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE + " Please check your password.");
             return;
         }
 
         if(!ValidatorHelper.validateIPs(ipsText)) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "Invalid IP Addresses.");
+            Dialogs.showInformationDialog("Invalid IP Addresses. Please check the IP format.");
             return;
         }
 

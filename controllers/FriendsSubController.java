@@ -2,6 +2,7 @@ package IHM.controllers;
 
 import DATA.model.Group;
 import DATA.model.User;
+import IHM.utils.Dialogs;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.application.Platform;
@@ -178,11 +179,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     public void addFriend() {
-        String text = friendName.getText();
-        UserHBoxCell userToAdd = lookForUser(text);
-
+        String friend = friendName.getText();
+        UserHBoxCell userToAdd = lookForUser(friend);
         application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
-        Dialogs.showInformationDialog(application.getPrimaryStage(), "A friend request has been sent to " + text);
+        Dialogs.showInformationDialog("A friend request has been sent to " + friend);
         friendName.clear();
     }
 
@@ -206,22 +206,22 @@ public class FriendsSubController extends SplitPane implements Initializable {
         }
     }
 
+    public void receiveFriendResponse(User sender, boolean response) {
+        if (response) {
+            Dialogs.showInformationDialog("The user " + sender.getLogin() + " has accepted your friend request.");
+            updateUser(sender, Group.FRIENDS_GROUP_NAME);
+        } else {
+            Dialogs.showInformationDialog("The user " + sender.getLogin() + " has refused your friend request.");
+        }
+    }
+
     public void receiveFriendRequest(User sender) {
-        Dialogs.DialogResponse ok = Dialogs.showConfirmDialog(application.getPrimaryStage(), sender.toString() + " wants to be your friend ! Do you accept it ? ");
-        if(ok.equals("YES")) {
+        boolean response = Dialogs.showConfirmationDialog(sender.getLogin() + " wants to be your friend ! Do you accept it ? ");
+        if (response) {
             updateUser(sender, Group.FRIENDS_GROUP_NAME);
             application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
         }else {
             application.getIHMtoDATA().refuseUser(sender);
-        }
-    }
-
-    public void receiveFriendResponse(User sender, boolean response) {
-        if(response) {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "The user " + sender.getLogin() + " has accepted your friend request.");
-            updateUser(sender, Group.FRIENDS_GROUP_NAME);
-        }else {
-            Dialogs.showInformationDialog(application.getPrimaryStage(), "The user " + sender.getLogin() + " has refused your friend request.");
         }
     }
 
