@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,13 +38,7 @@ public class WelcomeController implements Initializable {
 
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
-        /* TODO Find exited click to call logout method
-        welcome.setOnMouseDragExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-
-            }
-        });*/
+        // NOP
     }
 
     public void setApp(final MainController app) {
@@ -95,6 +91,13 @@ public class WelcomeController implements Initializable {
         {
             Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Friends sub controller is null." );
         }
+
+        ((Stage) welcome.getScene().getWindow()).setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                logout();
+            }
+        });
     }
 
     public FriendsSubController getFriendsSubController() {
