@@ -172,13 +172,13 @@ public class ProfileController implements Initializable {
 	}
 
 	public boolean hasInfoChanged() {
-		if (!userFirstName.equals(this.nickname.getText())) {
+		if (userFirstName != null && !userFirstName.equals(this.nickname.getText())) {
 			return true;
 		}
-		if (!userLastName.equals(this.lastname.getText())) {
+		if (userLastName != null && !userLastName.equals(this.lastname.getText())) {
 			return true;
 		}
-		if (!userBirthDate.equals(this.birthdate.getText())) {
+		if (userBirthDate != null && !userBirthDate.equals(this.birthdate.getText())) {
 			return true;
 		}
 		return false;
@@ -206,7 +206,7 @@ public class ProfileController implements Initializable {
 	public void onOK() {
 		if (hasInfoChanged()) {
 			System.out.println("INFO HAS CHANGED");
-			DialogResponse response = Dialogs.showConfirmDialog(application.getPrimaryStage(), "Changes have been detected on your profile, do you want to persist them?", 
+			DialogResponse response = Dialogs.showConfirmDialog(application.getPrimaryStage(), "Changes have been detected on your profile, do you want to persist them ?",
 			        "Save changes", "Save changes", DialogOptions.OK_CANCEL);
 			if (response==DialogResponse.OK)
 			{

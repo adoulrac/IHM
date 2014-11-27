@@ -41,7 +41,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     @FXML
     private TextField friendName;
 
-    private Map<String, List<UserHBoxCell>> groups;
+    private Map<String, ObservableList<UserHBoxCell>> groups;
 
     private class UserHBoxCell extends HBox {
         private User user;
@@ -55,7 +55,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
             this.user = user;
 
             label = new Label();
-            label.setText(user.toString());
+            label.setText((user.getFirstname() == null || user.getLastname() == null) ? user.getLogin() : user.toString());
             HBox.setHgrow(label, Priority.ALWAYS);
 
             icon = new ImageView();
@@ -136,8 +136,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addUserInGroup(final User user, final String groupName) {
         List<UserHBoxCell> userGroup = groups.get(groupName);
-        if(userGroup != null)
+        if(userGroup != null) {
             userGroup.add(new UserHBoxCell(user, user.isConnected()));
+        }
     }
 
     public void addUsersInGroup(final List<User> users, final String groupName) {
@@ -164,7 +165,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         listView.setEditable(true);
 
         tp.setContent(listView);
-        groups.put(groupName, users);
+        groups.put(groupName, myObservableList);
 
         groupsAccordion.getPanes().add(tp);
         return tp;
@@ -208,7 +209,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     private UserHBoxCell lookForUser(UUID userId) {
-        for(Entry<String, List<UserHBoxCell>> entry : groups.entrySet()) {
+        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for(UserHBoxCell u : users) {
                 if(u.getUser().getUid().equals(userId)) {
@@ -220,7 +221,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     private UserHBoxCell lookForUser(String firstLastName) {
-        for(Entry<String, List<UserHBoxCell>> entry : groups.entrySet()) {
+        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for(UserHBoxCell u : users) {
                 if(u.toString().equals(firstLastName)) {
