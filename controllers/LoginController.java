@@ -38,8 +38,8 @@ public class LoginController extends Pane implements Initializable {
         String loginText = login.getText();
         String passwordText = password.getText();
 
-        if(ValidatorHelper.validateLogin(loginText) &&
-                ValidatorHelper.validatePassword(passwordText)
+        if(ValidatorHelper.validateString(loginText) &&
+                ValidatorHelper.validateString(passwordText)
                 && application.getIHMtoDATA().login(loginText, passwordText)) {
             openApplication();
         } else {
