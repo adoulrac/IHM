@@ -45,7 +45,7 @@ public class RegisterController implements Initializable {
         String passwordText = password.getText();
         String confirmText = confirmation.getText();
         String ipsText = ips.getText();
-
+        
         if(!ValidatorHelper.validateLogin(loginText)) {
         	DialogFX dialog = new DialogFX(DialogFX.Type.INFO);
 	    	dialog.setMessage("Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.");

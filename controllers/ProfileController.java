@@ -26,62 +26,63 @@ import javafx.stage.Stage;
  */
 public class ProfileController implements Initializable {
 
-    @FXML
-    private TitledPane profile;
+	@FXML
+	private TitledPane profile;
 
 	@FXML
-    private Label nickname;
+	private Label nickname;
 
 	@FXML
-    private TextField avatarPath;
+	private TextField avatarPath;
 
 	@FXML
-    private Button changeAvatar;
+	private Button changeAvatar;
 
 	@FXML
-    private TextField lastname;
+	private TextField lastname;
 
 	@FXML
-    private TextField firstname;
+	private TextField firstname;
 
 	@FXML
-    private TextField birthdate;
+	private TextField birthdate;
 
 	@FXML
-    private TextField newIP;
+	private TextField newIP;
 
 	@FXML
-    private Button validateNewIP;
+	private Button validateNewIP;
 
 	@FXML
-    private Button okButton;
+	private Button okButton;
 
 	@FXML
-    private Button cancelButton;
+	private Button cancelButton;
 
 	@FXML
-    private ImageView avatar;
+	private ImageView avatar;
 
 	private MainController application;
 
-	private String userFirstName, userLastName, userAvatar, userBirthDate, userNickName;
+	private String userFirstName, userLastName, userAvatar, userBirthDate,
+			userNickName;
 
 	private String defaultValue = "Unknown";
 
 	private List<String> userIP;
 
-    private User user;
+	private User user;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-        // NOP
+		// NOP
 	}
 
-    public void build(User userToDisplay) {
-        this.user = userToDisplay;
-        getUserInfos();
-        displayUserInfo();
-    }
+	public void build(User userToDisplay) {
+		this.user = userToDisplay;
+		getUserInfos();
+		displayUserInfo();
+	}
 
 	public void getUserInfos() {
 		try {
@@ -127,7 +128,7 @@ public class ProfileController implements Initializable {
 		}
 		userIP = new ArrayList<String>();
 		try {
-			
+
 			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
@@ -146,7 +147,8 @@ public class ProfileController implements Initializable {
 		Image image = new Image(f.toURI().toString());
 		avatar.setImage(image);
 		avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
-		Logger.getLogger(ProfileController.class.getName()).log(Level.INFO, "Avatar chnged");
+		Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
+				"Avatar chnged");
 	}
 
 	public void displayUserInfo() {
@@ -171,13 +173,14 @@ public class ProfileController implements Initializable {
 	}
 
 	public boolean hasInfoChanged() {
-		if (userFirstName != null && !userFirstName.equals(this.nickname.getText())) {
+		System.out.println("Info");
+		if (!userFirstName.equals(this.nickname.getText())) {
 			return true;
 		}
-		if (userLastName != null && !userLastName.equals(this.lastname.getText())) {
+		if (!userLastName.equals(this.lastname.getText())) {
 			return true;
 		}
-		if (userBirthDate != null && !userBirthDate.equals(this.birthdate.getText())) {
+		if (!userBirthDate.equals(this.birthdate.getText())) {
 			return true;
 		}
 		return false;
@@ -185,37 +188,50 @@ public class ProfileController implements Initializable {
 
 	public void persistUserInfoChanges() {
 		try {
-		application.currentUser().setAvatar(avatarPath.getText());
-		application.currentUser().setBirthDate(birthdate.getText());
-		application.currentUser().setFirstname(firstname.getText());
-		application.currentUser().setLastname(lastname.getText());
+			application.currentUser().setAvatar(avatarPath.getText());
+			application.currentUser().setBirthDate(birthdate.getText());
+			application.currentUser().setFirstname(firstname.getText());
+			application.currentUser().setLastname(lastname.getText());
+		} catch (Exception e) {
+			Logger.getLogger(ProfileController.class.getName()).log(
+					Level.SEVERE, "Unable to persist changes");
 		}
-		catch (Exception e){
-			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.SEVERE,
-					"Unable to persist changes");
+	}
+
+	public void removeNullValues() {
+		if (userFirstName == null) {
+			userFirstName = "";
 		}
-		
+		if (userLastName == null) {
+			userLastName = "";
+		}
+		if (userBirthDate == null) {
+			userLastName = "";
+		}
+		if (userAvatar == null) {
+			userAvatar = "";
+		}
 	}
 
 	public void onCancel() {
-        ((Stage) profile.getScene().getWindow()).close();
+		((Stage) profile.getScene().getWindow()).close();
 	}
 
 	public void onOK() {
+		removeNullValues();
 		if (hasInfoChanged()) {
 			System.out.println("INFO HAS CHANGED");
-			
+
 			DialogFX dialog = new DialogFX(DialogFX.Type.QUESTION);
-	    	dialog.setMessage("Would you like to save changes made to your profile?");
-	    	int response = dialog.showDialog();
-	    	if (response == 0) // YES
+			dialog.setMessage("Would you like to save changes made to your profile?");
+			int response = dialog.showDialog();
+			if (response == 0) // YES
 			{
 				persistUserInfoChanges();
-                ((Stage) profile.getScene().getWindow()).close();
+				((Stage) profile.getScene().getWindow()).close();
 			}
 		} else {
-            ((Stage) profile.getScene().getWindow()).close();
+			((Stage) profile.getScene().getWindow()).close();
 		}
 	}
 }
