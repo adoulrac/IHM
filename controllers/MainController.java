@@ -64,6 +64,7 @@ public class MainController {
         try {
             LoginController login = (LoginController) replaceSceneContent("views/connexion.fxml");
             login.setApp(this);
+            removeAllRequests(currentController);
             currentController = login;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,6 +75,7 @@ public class MainController {
         try {
             RegisterController register = (RegisterController) replaceSceneContent("views/inscription.fxml");
             register.setApp(this);
+            removeAllRequests(currentController);
             currentController = register;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,6 +86,7 @@ public class MainController {
         try {
             GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml", true);
             groups.setApp(this);
+            removeAllRequests(currentController);
             currentController = groups;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,6 +141,7 @@ public class MainController {
             ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml", true);
             profile.setApp(this);
             profile.build(user);
+            removeAllRequests(currentController);
             currentController = profile;
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -150,6 +154,7 @@ public class MainController {
             welcome.setApp(this);
             welcome.build();
             welcomeController = welcome;
+            removeAllRequests(welcomeController);
         } catch (Exception ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -182,6 +187,19 @@ public class MainController {
 
     public WelcomeController getWelcomeController() {
         return this.welcomeController;
+    }
+
+    public void removeAllRequests(Initializable controller) {
+        List<Parent> allControllers = new ArrayList<>();
+        if (controller instanceof WelcomeController) {
+            allControllers.add(((WelcomeController) controller).getFriendsSubController());
+            allControllers.add(((WelcomeController) controller).getTabbedPicturesSubController());
+        }
+        for (Map.Entry item : requests.entrySet()) {
+            if (allControllers.contains(item.getValue())) {
+                requests.remove(item.getKey());
+            }
+        }
     }
 
     public Map<Integer, Parent> getRequests() {

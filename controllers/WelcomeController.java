@@ -100,4 +100,8 @@ public class WelcomeController implements Initializable {
     public FriendsSubController getFriendsSubController() {
         return friendsSubController;
     }
+
+    public TabbedPicturesSubController getTabbedPicturesSubController() {
+        return tabbedPicturesSubController;
+    }
 }

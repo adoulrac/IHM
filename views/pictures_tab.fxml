@@ -21,59 +21,21 @@
             </AnchorPane>
       </content>
     </Tab>
-    <Tab text="Mes images">
+    <Tab text="Mes images" fx:id="myImgTab">
       <content>
         <SplitPane orientation="VERTICAL" minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
-              <!--<Separator layoutX="-1.0" layoutY="59.0" prefHeight="5.0" prefWidth="629.0" />
-              <ScrollBar layoutX="610.0" layoutY="61.0" orientation="VERTICAL" prefHeight="461.0" prefWidth="17.0" />
-              <CheckBox layoutX="207.0" layoutY="78.0" mnemonicParsing="false" />-->
             <StackPane alignment="TOP_CENTER" maxHeight="62.0">
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
               <HBox alignment="CENTER_RIGHT" spacing="10.0">
                 <Button mnemonicParsing="false" styleClass="delete-btn"  text="Supprimer" />
-                <Button depthTest="DISABLE" mnemonicParsing="false" styleClass="add-btn"  text="Ajouter">
+                <Button depthTest="DISABLE" mnemonicParsing="false" styleClass="add-btn"  text="Ajouter" onAction="#addLocalePicture">
                         <Insets bottom="5.0" left="30.0" right="5.0" top="5.0" />
                 </Button>
                 <Rectangle width="10.0"></Rectangle>
               </HBox>
             </StackPane>
-                <TilePane fx:id="myImgPane" />
         </SplitPane>
       </content>
     </Tab>
-      <Tab text="Jolie photo.png">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #EFEFEF;">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-                  <TextField layoutX="521.0" layoutY="71.0" prefHeight="25.0" prefWidth="28.0" promptText="3" />
-                  <Button layoutX="558.0" layoutY="70.0" mnemonicParsing="false" text="Voter" />
-                  <Label layoutX="326.0" layoutY="110.0" text="Tags :">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="326.0" layoutY="139.0" text="Descriptif :">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="325.0" layoutY="304.0" text="Commentaires :">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <TextArea layoutX="325.0" layoutY="447.0" prefHeight="39.0" prefWidth="226.0" promptText="Ecrire un commentaire..." />
-                  <Button layoutX="558.0" layoutY="447.0" mnemonicParsing="false" text="Envoyer" />
-                  <Label layoutX="59.0" layoutY="75.0" text="adoulrac">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="59.0" layoutY="90.0" text="a partagé l'image" />
-               </children>
-            </AnchorPane>
-        </content>
-      </Tab>
   </tabs>
 </TabPane>
