@@ -71,29 +71,18 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     }
 
     @Override
-    public void receiveFriendRequest(User user, Integer queryId) {
-        if(queryId == null) {
-            // Default behavior on welcome page
-            app.getWelcomeController().getFriendsSubController().receiveFriendRequest(user);
-        } else {
-            Parent controller = app.getRequests().get(queryId);
-            if (controller==null){
-                //no entry or it's deleted in the map
-                if (app.getCurrentController() instanceof WelcomeController) {
-                    FriendsSubController c = ((WelcomeController) app.getCurrentController()).getFriendsSubController();
-                    c.receiveFriendRequest(user);
-                } else {
-                    // store friend request to be fetched later with this.emptyPendingFriendRequests
-                    friendRequests.add(user);
-                }
-            }
-            else {
-                if (controller instanceof FriendsSubController) {
-                    // Confirmation of our friend request
-                    ((FriendsSubController) controller).receiveFriendRequest(user);
-                    app.removeRequest(queryId);
-                }
-            }
+    public void receiveFriendRequest(User user) {
+        WelcomeController welcome = app.getWelcomeController();
+        if(welcome != null){
+            welcome.getFriendsSubController().receiveFriendRequest(user);
+        }
+    }
+
+    @Override
+    public void receiveFriendResponse(User user, boolean response) {
+        WelcomeController welcome = app.getWelcomeController();
+        if(welcome != null){
+            welcome.getFriendsSubController().receiveFriendResponse(user, response);
         }
     }
 

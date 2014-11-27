@@ -40,5 +40,11 @@ public interface DATAtoIHM
      * Receive a friend request by another user
      * @param user the other user who sent the request.
      */
-    void receiveFriendRequest(User user, Integer queryId);
+    void receiveFriendRequest(User user);
+
+    /**
+     * Receive a friend response by another user
+     * @param user the other user who sent the request.
+     */
+    void receiveFriendResponse(User user, boolean response);
 }
