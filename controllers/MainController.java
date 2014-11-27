@@ -136,7 +136,12 @@ public class MainController {
     public void userLogout(){
         for(Stage stage : newStages)
             stage.close();
+        resetCurrentUser();
         goToLogin();
+    }
+
+    private void resetCurrentUser() {
+        currentUser = null;
     }
 
     public void goToProfile(User user) {

@@ -59,7 +59,8 @@ public class WelcomeController implements Initializable {
 
     public void logout() {
         try {
-            application.getIHMtoDATA().logout();
+            if(application.currentUser() != null)
+                application.getIHMtoDATA().logout();
         } catch (IOException e) {
             Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Error in disconnecting the user." );
         }
