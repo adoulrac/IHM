@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -85,7 +86,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             } );
             StackPane sP = new StackPane();
             sP.getChildren().addAll( r );
-            sP.setAlignment( Pos.CENTER );
+            sP.setAlignment(Pos.CENTER);
+        }
+
+        public Picture getPicture() {
+            return picture;
         }
 
     }
@@ -186,13 +191,12 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         File f = FileUtil.chooseFile();
         if(f != null){
             SplitPane split = (SplitPane) myImgTab.getContent();
-            boolean exit = false;
-            for(int i=0; i < split.getItems().size() && !exit; ++i){
-                if(split.getItems().get(i) instanceof TilePane){
-                    TilePane tile = (TilePane) split.getItems().get( i );
+            for(Node n : split.getItems()){
+                if(n instanceof TilePane){
+                    TilePane tile = (TilePane) n;
                     Picture p = new Picture(f.toURI().toString(), application.currentUser().getUid());
                     tile.getChildren().add(new PicturePane(p));
-                    exit = true;
+                    return;
                 }
             }
         }
