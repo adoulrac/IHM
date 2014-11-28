@@ -168,11 +168,12 @@ public class MainController {
         }
     }
 
-    public void addRequest(Parent controller) {
+    public Integer addRequest(Parent controller) {
         if(controller == null) {
-            return;
+            return null;
         }
-        this.requests.put(currentId++, controller);
+        requests.put(++currentId, controller);
+        return currentId;
     }
 
     public void removeRequest(Integer requestId) {
