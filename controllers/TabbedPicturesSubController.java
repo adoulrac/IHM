@@ -1,7 +1,6 @@
 package IHM.controllers;
 
 import DATA.model.Picture;
-import DATA.model.User;
 import IHM.utils.FileUtil;
 import com.google.common.base.Strings;
 import javafx.event.EventHandler;
@@ -10,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,16 +17,19 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class TabbedPicturesSubController extends TabPane implements Initializable{
+public class TabbedPicturesSubController extends TabPane implements Initializable {
 
     private static final String TAG_SEPARATOR = ",";
 
@@ -56,47 +59,78 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     @FXML
     private Tab allImgTab;
 
-    private class PicturePane extends StackPane{
+    private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
+
+    private class PicturePane extends StackPane {
 
         private Picture picture;
 
+        private boolean isSelected;
+
+        private final int GLOW_DEPTH = 50;
+
         public PicturePane(Picture p) {
             picture = p;
+            isSelected = false;
             build();
         }
 
-        private void build(){
+        private void build() {
             final Rectangle r = new Rectangle(PICTURE_DIM, PICTURE_DIM);
             ImagePattern imagePattern = new ImagePattern(new Image(picture.getFilename()));
             r.setFill(imagePattern);
             //TODO Add a checkbox to select this image
-            r.setOnMouseClicked( new EventHandler<MouseEvent>()
+            r.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
-                public void handle( MouseEvent mouseEvent )
-                {
+                public void handle(MouseEvent mouseEvent) {
                     if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                        if(mouseEvent.getClickCount() == 2){
+                        if(mouseEvent.getClickCount() == 2) {
+                            r.setEffect(null);
+                            isSelected = false;
                             PictureController pC = new PictureController(picture);
                             pC.build();
                             addTab(pC);
                         }
+                        else if(mouseEvent.getClickCount() == 1) {
+                            if(isSelected == true) {
+                                isSelected = false;
+                                r.setEffect(null);
+                            }
+                            else {
+                                isSelected = true;
+                                createGlow(r);
+                            }
+                        }
                     }
                 }
             } );
-            this.getChildren().addAll( r );
+            this.getChildren().addAll(r);
             this.setAlignment(Pos.CENTER);
+        }
+
+        private void createGlow(Rectangle r) {
+            DropShadow borderGlow= new DropShadow();
+            borderGlow.setOffsetY(0.0f);
+            borderGlow.setOffsetX(0.0f);
+            borderGlow.setColor(Color.ORANGE);
+            borderGlow.setWidth(GLOW_DEPTH);
+            borderGlow.setHeight(GLOW_DEPTH);
+            r.setEffect(borderGlow);
         }
 
         public Picture getPicture() {
             return picture;
         }
 
+        public boolean toDelete() {
+            return isSelected;
+        }
     }
 
-    public TabbedPicturesSubController()
-    {
+    public TabbedPicturesSubController() {
         super();
+        myImgList = new CopyOnWriteArrayList<PicturePane>();
     }
 
     @Override
@@ -161,13 +195,17 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         TilePane tP = new TilePane();
         tP.setVgap(VGAP_PICTURES);
         tP.setHgap(HGAP_PICTURES);
+        boolean empty = myImgList.isEmpty();
         for(Picture p : pictures){
             PicturePane picturePane = new PicturePane(p);
+            if(empty) {
+                myImgList.add(picturePane);
+            }
             tP.getChildren().add(picturePane);
         }
         SplitPane sP = (SplitPane) tab.getContent();
         sP.getItems().add(tP);
-        tab.setContent(sP);
+        tab.setContent( sP );
     }
 
     private void clearTab(Tab tab){
@@ -189,20 +227,37 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addLocalPicture(){
         File f = FileUtil.chooseFile();
         if(f != null){
-            SplitPane split = (SplitPane) myImgTab.getContent();
-            for(Node n : split.getItems()){
-                if(n instanceof TilePane){
-                    TilePane tile = (TilePane) n;
-                    Picture p = new Picture(f.toURI().toString(), application.currentUser().getUid());
-                    tile.getChildren().add(new PicturePane(p));
-                    return;
-                }
-            }
+            Picture p = new Picture(f.toURI().toString(), application.currentUser().getUid());
+            PicturePane pP = new PicturePane(p);
+            myImgList.add(pP);
+            displayMyImg();
+            //TODO : call for DATA to add picture
         }
     }
 
     public void deleteSelectedPicture() {
-        //TODO Find the selected picture(s) and delete it(them)
+        for(PicturePane picturePane : myImgList) {
+            if(picturePane.toDelete()) {
+                myImgList.remove(picturePane);
+                //TODO : call for DATA to delete picture
+            }
+        }
+        displayMyImg();
+    }
+
+    private void displayMyImg()
+    {
+        SplitPane split = (SplitPane) myImgTab.getContent();
+        for (Node n : split.getItems()) {
+            if(n instanceof TilePane) {
+                TilePane tile = (TilePane) n;
+                tile.getChildren().clear();
+                for (PicturePane picturePane : myImgList) {
+                    tile.getChildren().add( picturePane );
+                }
+                return;
+            }
+        }
     }
 
     public void setApp(final MainController app) {
