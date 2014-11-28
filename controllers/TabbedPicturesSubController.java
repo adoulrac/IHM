@@ -1,13 +1,17 @@
 package IHM.controllers;
 
 import DATA.model.Picture;
+import DATA.model.User;
 import IHM.utils.FileUtil;
+import com.google.common.base.Strings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -17,10 +21,13 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class TabbedPicturesSubController extends TabPane implements Initializable{
+
+    private static final String TAG_SEPARATOR = ",";
 
     private static final double HGAP_PICTURES = 40.0;
 
@@ -61,6 +68,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             final Rectangle r = new Rectangle(PICTURE_DIM, PICTURE_DIM);
             ImagePattern imagePattern = new ImagePattern(new Image(picture.getFilename()));
             r.setFill(imagePattern);
+            //TODO Add a checkbox to select this image
             r.setOnMouseClicked( new EventHandler<MouseEvent>()
             {
                 @Override
@@ -92,9 +100,6 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         //NOP
     }
 
-    /**
-     * Set local data
-     */
     public void build() {
         // Set the user pictures
         List<Picture> myPictures = application.currentUser().getListPictures();
@@ -104,6 +109,43 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         Integer requestId = application.addRequest(this);
         if(requestId != null)
             application.getIHMtoDATA().getPictures(requestId);
+
+        // Add enter key press handler on search text field
+        searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                    if (tagSearch.isSelected()) {
+                        searchPicturesByTag(searchField.getText());
+                    } else {
+                        searchPicturesByUser(searchField.getText());
+                    }
+                    // We clear the tab because it will be fill in asynchronously
+                    clearTab(allImgTab);
+                }
+            }
+        });
+    }
+
+    private void searchPicturesByTag(final String text) {
+        if(Strings.isNullOrEmpty(text)) {
+            return;
+        }
+        Integer requestId = application.addRequest(this);
+        if(requestId != null) {
+            application.getIHMtoDATA().getPictures(Arrays.asList(text.split(TAG_SEPARATOR)), requestId);
+        }
+    }
+
+    private void searchPicturesByUser(final String text) {
+        if(Strings.isNullOrEmpty(text)) {
+            return;
+        }
+        Integer requestId = application.addRequest(this);
+        if(requestId != null) {
+            //ASK DATA: Add a new method with a string parameter to look for all pictures using username/login, etc.
+            //application.getIHMtoDATA().getPictures(, requestId);
+        }
     }
 
     public void addTab(Tab tab) {
@@ -124,12 +166,20 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         tab.setContent(sP);
     }
 
+    private void clearTab(Tab tab){
+        //TODO remove all pictures from the tab
+    }
+
     public void addPictures(List<Picture> pictures) {
-        //TODO receive async pictures
+        if(pictures != null){
+            addPicturesInTab(pictures, allImgTab);
+        }
     }
 
     public void addPicture(Picture picture) {
-        //TODO receive async picture
+       if(picture != null){
+           addPicturesInTab(Arrays.asList(picture), allImgTab);
+       }
     }
 
     public void addLocalPicture(){
@@ -146,6 +196,10 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 }
             }
         }
+    }
+
+    public void deleteSelectedPicture() {
+        //TODO Find the selected picture(s) and delete it(them)
     }
 
     public void setApp(final MainController app) {
