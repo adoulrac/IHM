@@ -59,6 +59,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     @FXML
     private Tab allImgTab;
 
+    @FXML
+    private Button deleteBtn;
+
     private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
 
     private class PicturePane extends StackPane {
@@ -96,10 +99,12 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                             if(isSelected == true) {
                                 isSelected = false;
                                 r.setEffect(null);
+                                deleteBtnDisplay();
                             }
                             else {
                                 isSelected = true;
                                 createGlow(r);
+                                deleteBtnDisplay();
                             }
                         }
                     }
@@ -139,6 +144,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     public void build() {
+        deleteBtn.setDisable(true);
         // Set the user pictures
         List<Picture> myPictures = application.currentUser().getListPictures();
         addPicturesInTab(myPictures, myImgTab);
@@ -255,9 +261,21 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 for (PicturePane picturePane : myImgList) {
                     tile.getChildren().add( picturePane );
                 }
+                deleteBtnDisplay();
                 return;
             }
         }
+    }
+
+
+    public void deleteBtnDisplay() {
+        for (PicturePane picturePane : myImgList) {
+            if(picturePane.toDelete()) {
+                deleteBtn.setDisable(false);
+                return;
+            }
+        }
+        deleteBtn.setDisable(true);
     }
 
     public void setApp(final MainController app) {
