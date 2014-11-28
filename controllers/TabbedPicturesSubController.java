@@ -84,9 +84,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                     }
                 }
             } );
-            StackPane sP = new StackPane();
-            sP.getChildren().addAll( r );
-            sP.setAlignment(Pos.CENTER);
+            this.getChildren().addAll( r );
+            this.setAlignment(Pos.CENTER);
         }
 
         public Picture getPicture() {
