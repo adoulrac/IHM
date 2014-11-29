@@ -34,7 +34,7 @@ public class MainController {
 
     private User currentUser;
 
-    private Map<Integer, Parent> requests;
+    private Map<Integer, Initializable> requests;
 
     private int currentId;
 
@@ -54,8 +54,10 @@ public class MainController {
         stage.setTitle(APP_NAME);
         newStages = Lists.newArrayList();
         requests = Maps.newHashMap();
-        DATAInterface = new IHMtoDATAImpl();
+
+        // receiver must be instanciated BEFORE DATA own interface, because its construction will statically use the receiver from Main
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
+        DATAInterface = new IHMtoDATAImpl();
 
         goToLogin();
         primaryStage.show();
@@ -168,7 +170,7 @@ public class MainController {
         }
     }
 
-    public Integer addRequest(Parent controller) {
+    public Integer addRequest(Initializable controller) {
         if(controller == null) {
             return null;
         }
@@ -211,7 +213,7 @@ public class MainController {
         }
     }
 
-    public Map<Integer, Parent> getRequests() {
+    public Map<Integer, Initializable> getRequests() {
         return requests;
     }
 
