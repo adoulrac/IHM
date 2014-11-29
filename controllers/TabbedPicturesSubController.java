@@ -1,16 +1,19 @@
 package IHM.controllers;
 
 import DATA.model.Picture;
+import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
 import com.google.common.base.Strings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -23,7 +26,6 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,6 +40,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     private static final double VGAP_PICTURES = 20.0;
 
     private static final int PICTURE_DIM = 100;
+
+    private static final String CONFIRM_SUPPRESSION = "Confirmez-vous la suppression ?";
 
     private MainController application;
 
@@ -63,6 +67,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     private Button deleteBtn;
 
     private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
+    private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
 
     private class PicturePane extends StackPane {
 
@@ -79,17 +84,22 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
 
         private void build() {
-            final Rectangle r = new Rectangle(PICTURE_DIM, PICTURE_DIM);
-            ImagePattern imagePattern = new ImagePattern(new Image(picture.getFilename()));
-            r.setFill(imagePattern);
-            //TODO Add a checkbox to select this image
-            r.setOnMouseClicked(new EventHandler<MouseEvent>()
+            //final Rectangle r = new Rectangle(PICTURE_DIM, PICTURE_DIM);
+            final ImageView imgView = new ImageView( new Image(picture.getFilename()) );
+            imgView.setFitWidth(PICTURE_DIM);
+            imgView.setFitHeight(PICTURE_DIM);
+            imgView.setPreserveRatio(true);
+            imgView.setSmooth(true);
+            imgView.setCache(true);
+            //ImagePattern imagePattern = new ImagePattern(new Image(picture.getFilename()));
+            //r.setFill(imagePattern);
+            imgView.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
                         if(mouseEvent.getClickCount() == 2) {
-                            r.setEffect(null);
+                            imgView.setEffect( null );
                             isSelected = false;
                             PictureController pC = new PictureController(picture);
                             pC.build();
@@ -98,37 +108,37 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         else if(mouseEvent.getClickCount() == 1) {
                             if(isSelected == true) {
                                 isSelected = false;
-                                r.setEffect(null);
+                                imgView.setEffect(null);
                                 deleteBtnDisplay();
                             }
                             else {
                                 isSelected = true;
-                                createGlow(r);
+                                createGlow(imgView);
                                 deleteBtnDisplay();
                             }
                         }
                     }
                 }
             } );
-            this.getChildren().addAll(r);
+            this.getChildren().addAll(imgView);
             this.setAlignment(Pos.CENTER);
         }
 
-        private void createGlow(Rectangle r) {
+        private void createGlow(ImageView img) {
             DropShadow borderGlow= new DropShadow();
             borderGlow.setOffsetY(0.0f);
             borderGlow.setOffsetX(0.0f);
             borderGlow.setColor(Color.ORANGE);
             borderGlow.setWidth(GLOW_DEPTH);
             borderGlow.setHeight(GLOW_DEPTH);
-            r.setEffect(borderGlow);
+            img.setEffect(borderGlow);
         }
 
         public Picture getPicture() {
             return picture;
         }
 
-        public boolean toDelete() {
+        public boolean isSelected() {
             return isSelected;
         }
     }
@@ -136,6 +146,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public TabbedPicturesSubController() {
         super();
         myImgList = new CopyOnWriteArrayList<PicturePane>();
+        allImgList = new CopyOnWriteArrayList<PicturePane>();
     }
 
     @Override
@@ -145,14 +156,30 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     public void build() {
         deleteBtn.setDisable(true);
+        // init tabs
+        TilePane tP = new TilePane();
+        tP.setPadding( new Insets( 20, 0, 0, 0 ) );
+        tP.setVgap(VGAP_PICTURES);
+        tP.setHgap(HGAP_PICTURES);
+        SplitPane sP = (SplitPane) myImgTab.getContent();
+        sP.getItems().add(tP);
+
+        TilePane tP2 = new TilePane();
+        tP2.setPadding( new Insets( 20, 0, 0, 0 ) );
+        tP2.setVgap(VGAP_PICTURES);
+        tP2.setHgap(HGAP_PICTURES);
+        SplitPane sP2 = (SplitPane) allImgTab.getContent();
+        sP2.getItems().add(tP2);
+
         // Set the user pictures
         List<Picture> myPictures = application.currentUser().getListPictures();
         addPicturesInTab(myPictures, myImgTab);
 
         // Set All pictures asynchronously
         Integer requestId = application.addRequest(this);
-        if(requestId != null)
-            application.getIHMtoDATA().getPictures(requestId);
+        if(requestId != null) {
+            application.getIHMtoDATA().getPictures( requestId );
+        }
 
         // Add enter key press handler on search text field
         searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -198,24 +225,33 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
-        TilePane tP = new TilePane();
-        tP.setVgap(VGAP_PICTURES);
-        tP.setHgap(HGAP_PICTURES);
-        boolean empty = myImgList.isEmpty();
-        for(Picture p : pictures){
-            PicturePane picturePane = new PicturePane(p);
-            if(empty) {
-                myImgList.add(picturePane);
+        SplitPane split = (SplitPane) tab.getContent();
+        for (int i=0; i < split.getItems().size(); ++i) { // thread-safe
+            if(split.getItems().get(i) instanceof TilePane) {
+                for (Picture p : pictures) {
+                    PicturePane picturePane = new PicturePane(p);
+                    if(tab.getText().equals("Mes images")) {
+                        myImgList.add(picturePane);
+                    }
+                    else {
+                        allImgList.add(picturePane);
+                    }
+                    ((TilePane) split.getItems().get(i)).getChildren().add(picturePane);
+                }
+                //split.getItems().add(split.getItems().get(i));
+                tab.setContent(split);
             }
-            tP.getChildren().add(picturePane);
         }
-        SplitPane sP = (SplitPane) tab.getContent();
-        sP.getItems().add(tP);
-        tab.setContent( sP );
     }
 
     private void clearTab(Tab tab){
-        //TODO remove all pictures from the tab
+        SplitPane split = (SplitPane) tab.getContent();
+        for (Node n : split.getItems()) {
+            if(n instanceof TilePane) {
+                TilePane tile = (TilePane) n;
+                tile.getChildren().clear();
+            }
+        }
     }
 
     public void addPictures(List<Picture> pictures) {
@@ -242,10 +278,12 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     public void deleteSelectedPicture() {
-        for(PicturePane picturePane : myImgList) {
-            if(picturePane.toDelete()) {
-                myImgList.remove(picturePane);
-                //TODO : call for DATA to delete picture
+        if(Dialogs.showConfirmationDialog(CONFIRM_SUPPRESSION)) {
+            for(PicturePane picturePane : myImgList) {
+                if(picturePane.isSelected()) {
+                    myImgList.remove(picturePane);
+                    //TODO : call for DATA to delete picture
+                }
             }
         }
         displayMyImg();
@@ -259,9 +297,24 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 TilePane tile = (TilePane) n;
                 tile.getChildren().clear();
                 for (PicturePane picturePane : myImgList) {
-                    tile.getChildren().add( picturePane );
+                    tile.getChildren().add(picturePane);
                 }
                 deleteBtnDisplay();
+                return;
+            }
+        }
+    }
+
+    private void displayAllImg()
+    {
+        SplitPane split = (SplitPane) allImgTab.getContent();
+        for (Node n : split.getItems()) {
+            if(n instanceof TilePane) {
+                TilePane tile = (TilePane) n;
+                tile.getChildren().clear();
+                for (PicturePane picturePane : allImgList) {
+                    tile.getChildren().add(picturePane);
+                }
                 return;
             }
         }
@@ -270,7 +323,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     public void deleteBtnDisplay() {
         for (PicturePane picturePane : myImgList) {
-            if(picturePane.toDelete()) {
+            if(picturePane.isSelected()) {
                 deleteBtn.setDisable(false);
                 return;
             }
