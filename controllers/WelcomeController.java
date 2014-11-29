@@ -80,12 +80,14 @@ public class WelcomeController implements Initializable {
         if(application.currentUser() != null)
         {
             File f = new File(application.currentUser().getAvatar());
-            avatarUser.setImage( new Image(f.toURI().toString()) );
-            avatarUser.setFitWidth(AVATAR_DIM);
-            avatarUser.setFitHeight(AVATAR_DIM);
-            avatarUser.setPreserveRatio(true);
-            avatarUser.setSmooth(true);
-            avatarUser.setCache(true);
+            if(f.isFile()) {
+                avatarUser.setImage( new Image(f.toURI().toString()) );
+                avatarUser.setFitWidth(AVATAR_DIM);
+                avatarUser.setFitHeight(AVATAR_DIM);
+                avatarUser.setPreserveRatio(true);
+                avatarUser.setSmooth(true);
+                avatarUser.setCache(true);
+            }
             lblUserName.setText( " Connecté (" + application.currentUser().getLogin() + ")" );
         }
 
