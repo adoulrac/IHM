@@ -1,87 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"  text="Gestion des groupes" textFill="WHITE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Gestion des groupes" textFill="WHITE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.GroupsController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="485.0" prefWidth="638.0">
          <children>
             <Pane layoutX="299.0" layoutY="14.0" prefHeight="329.0" prefWidth="281.0" style="-fx-background-color: grey;">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" text="Nom" textFill="WHITE" />
-                  <TextField layoutX="51.0" layoutY="10.0" prefHeight="25.0" prefWidth="139.0" text="Famille" />
-                  <ScrollPane layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="254.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="222.0">
-                           <children>
-                              <Label layoutX="48.0" layoutY="21.0" text="Rachid ADOUL" />
-                              <Label layoutX="48.0" layoutY="89.0" text="Sylvain MANDRAU" />
-                              <Label layoutX="48.0" layoutY="124.0" text="Arthur VAN CEULEN" />
-                              <Label layoutX="48.0" layoutY="160.0" text="Arthur TRAN" />
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="36.0" layoutX="-1.0" layoutY="46.0" opacity="0.8" stroke="#d7d3d3" strokeType="INSIDE" width="239.0" />
-                              <Label layoutX="48.0" layoutY="55.0" text="Sélim ZENAGUI" />
-                              <ImageView fitHeight="27.0" fitWidth="22.0" layoutX="208.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/remove_icon.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/avatar_icon.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/avatar_icon.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/avatar_icon.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="13.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/avatar_icon.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="24.0" fitWidth="26.0" layoutX="14.0" layoutY="157.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/avatar_icon.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </AnchorPane>
-                    </content>
-                  </ScrollPane>
-                  <TextField layoutX="14.0" layoutY="272.0" prefHeight="25.0" prefWidth="110.0" text="Ajouter membre..." />
-                  <Button layoutX="132.0" layoutY="272.0" mnemonicParsing="false" styleClass="add-friend-btn"  text="+" />
+                  <TextField id="groupSelected" fx:id="groupSelected" layoutX="51.0" layoutY="10.0" onAction="#changeGroupName" prefHeight="25.0" prefWidth="139.0" />
+                  <TextField id="addMember" fx:id="addUserName" layoutX="14.0" layoutY="272.0" prefHeight="37.0" prefWidth="115.0" />
+                  <Button id="addMemberBtn" fx:id="addUserBtn" layoutX="132.0" layoutY="272.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="37.0" styleClass="add-friend-btn" text="+" />
                   <Label layoutX="13.0" layoutY="46.0" text="Membres :" textFill="WHITE" />
+                  <ListView fx:id="members" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="252.0" />
                </children>
             </Pane>
-            <ListView layoutX="27.0" layoutY="14.0" prefHeight="266.0" prefWidth="234.0" />
-            <Label layoutX="48.0" layoutY="33.0" text="Travail">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label layoutX="46.0" layoutY="125.0" text="Amis">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="47.0" layoutX="29.0" layoutY="63.0" opacity="0.79" stroke="#d7d3d3" strokeType="INSIDE" width="230.0" />
-            <Label layoutX="46.0" layoutY="76.0" text="Famille">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Button layoutX="142.0" layoutY="287.0" mnemonicParsing="false" styleClass="add-group-btn"  text="+" />
-            <TextField layoutX="27.0" layoutY="287.0" prefHeight="25.0" prefWidth="110.0" text="Ajouter groupe..." />
+            <ListView id="groups" fx:id="groups" layoutX="27.0" layoutY="14.0" prefHeight="266.0" prefWidth="234.0" />
+            <Button id="addGroupBtn" fx:id="addGroupBtn" layoutX="142.0" layoutY="287.0" mnemonicParsing="false" onAction="#addNewGroup" prefHeight="38.0" prefWidth="36.0" styleClass="add-group-btn" text="+" />
+            <TextField id="newGroupName" fx:id="newGroupName" layoutX="27.0" layoutY="287.0" prefHeight="38.0" prefWidth="110.0" />
+            <Button fx:id="deleteGroupBtn" layoutX="194.0" layoutY="292.0" mnemonicParsing="false" onAction="#deleteGroup" text="Delete" />
          </children></AnchorPane>
   </content>
    <font>
