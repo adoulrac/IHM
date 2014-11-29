@@ -4,6 +4,7 @@ import DATA.model.Picture;
 import DATA.model.User;
 import IHM.controllers.*;
 import com.google.common.collect.Lists;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
 
     @Override
     public void receivePicture(Picture picture, int queryId) {
-        Parent controller = app.getRequests().get(queryId);
+        Initializable controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)
@@ -51,13 +52,17 @@ public class DATAtoIHMimpl implements DATAtoIHM {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPicture(picture);
                 app.removeRequest(queryId);
+            } else
+            if (controller instanceof PictureController) {
+                ((PictureController) controller).receiveFullImage(picture);
+                app.removeRequest(queryId);
             }
         }
     }
 
     @Override
     public void receivePictures(List<Picture> pictures, int queryId) {
-        Parent controller = app.getRequests().get(queryId);
+        Initializable controller = app.getRequests().get(queryId);
         if (controller==null){
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)

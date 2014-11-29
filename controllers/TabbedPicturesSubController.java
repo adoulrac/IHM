@@ -91,8 +91,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         if(mouseEvent.getClickCount() == 2) {
                             r.setEffect(null);
                             isSelected = false;
-                            PictureController pC = new PictureController(picture);
-                            pC.build();
+                            PictureController pC = new PictureController(picture, application);
                             addTab(pC);
                         }
                         else if(mouseEvent.getClickCount() == 1) {
@@ -233,7 +232,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addLocalPicture(){
         File f = FileUtil.chooseFile();
         if(f != null){
-            Picture p = new Picture(f.toURI().toString(), application.currentUser().getUid());
+            Picture p = new Picture(f./*getName()*/toURI().toString(), application.currentUser().getUid());
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
             displayMyImg();
