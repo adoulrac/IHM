@@ -10,16 +10,17 @@
   <tabs>
     <Tab text="Toutes les images" fx:id="allImgTab">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area" >
-               <children>
-                  <Separator layoutY="59.0" prefHeight="5.0" prefWidth="629.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-                  <TextField layoutX="464.0" layoutY="21.0" text="Rechercher..." fx:id="searchField"/>
-                  <CheckBox layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" fx:id="tagSearch" />
-                  <CheckBox layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" fx:id="userSearch" />
-                  <ScrollBar layoutX="611.0" layoutY="61.0" orientation="VERTICAL" prefHeight="461.0" prefWidth="17.0" />
-               </children>
-            </AnchorPane>
+        <SplitPane  orientation="VERTICAL" minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area" >
+            <StackPane alignment="TOP_CENTER" maxHeight="62.0">
+              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                <TextField layoutX="464.0" layoutY="21.0" text="Rechercher..." fx:id="searchField"/>
+                <CheckBox layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" fx:id="tagSearch" />
+                <CheckBox layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" fx:id="userSearch" />
+                <Rectangle width="10.0"></Rectangle>
+                </HBox>
+            </StackPane>
+        </SplitPane>
       </content>
     </Tab>
     <Tab text="Mes images" fx:id="myImgTab">
