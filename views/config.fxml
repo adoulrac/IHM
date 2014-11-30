@@ -41,7 +41,7 @@
                   <Image url="@../resources/avatar_icon.png" />
                </image>
             </ImageView>
-            <Label fx:id="nickname" layoutX="206.0" layoutY="71.0" text="Adoulrac">
+            <Label fx:id="nickname" layoutX="206.0" layoutY="71.0" text="usrname">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -62,10 +62,10 @@
                </font>
             </Label>
             <Button fx:id="changeAvatar" layoutX="205.0" layoutY="155.0" mnemonicParsing="false" onAction="#avatarPicker" prefHeight="29.0" prefWidth="104.0" text="Changer avatar" />
-            <TextField fx:id="lastname" layoutX="205.0" layoutY="234.0" text="ADOUL" />
-            <TextField fx:id="firstname" layoutX="205.0" layoutY="280.0" text="Rachid" />
-            <TextField fx:id="birthdate" layoutX="205.0" layoutY="325.0" text="13 Juin 1992" />
-            <TextField fx:id="avatarPath" layoutX="205.0" layoutY="130.0" prefHeight="25.0" prefWidth="152.0" promptText="C:\Users\Rachid\Documents\Cours UTC\GI05\API13\PicShare\Scene Builder" />
+            <TextField fx:id="lastname" layoutX="205.0" layoutY="234.0" promptText="NOM" />
+            <TextField fx:id="firstname" layoutX="205.0" layoutY="280.0" promptText="Prénom" />
+            <TextField fx:id="birthdate" layoutX="205.0" layoutY="325.0" promptText="Date de naissance" />
+            <TextField fx:id="avatarPath" layoutX="205.0" layoutY="130.0" prefHeight="25.0" prefWidth="152.0" promptText="Avatar Path" />
          </children></AnchorPane>
   </content>
    <font>
