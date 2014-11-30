@@ -1,5 +1,6 @@
 package IHM.controllers;
 
+import DATA.model.Note;
 import DATA.model.Picture;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
@@ -18,8 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -69,30 +69,32 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
     private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
 
-    private class PicturePane extends StackPane {
+    private class PicturePane extends BorderPane
+    {
 
         private Picture picture;
 
         private boolean isSelected;
 
+        private Label lblVotes;
+
+        private HBox hBoxStars;
+
         private final int GLOW_DEPTH = 50;
+
+        private final int STARS_DIM = 23;
 
         public PicturePane(Picture p) {
             picture = p;
             isSelected = false;
+            hBoxStars = new HBox();
+            lblVotes = new Label();
             build();
         }
 
         private void build() {
-            //final Rectangle r = new Rectangle(PICTURE_DIM, PICTURE_DIM);
             final ImageView imgView = new ImageView( new Image(picture.getFilename()) );
-            imgView.setFitWidth(PICTURE_DIM);
-            imgView.setFitHeight(PICTURE_DIM);
-            imgView.setPreserveRatio(true);
-            imgView.setSmooth(true);
-            imgView.setCache(true);
-            //ImagePattern imagePattern = new ImagePattern(new Image(picture.getFilename()));
-            //r.setFill(imagePattern);
+            setImage( imgView, PICTURE_DIM, PICTURE_DIM );
             imgView.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
@@ -119,8 +121,42 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                     }
                 }
             } );
-            this.getChildren().addAll(imgView);
-            this.setAlignment(Pos.CENTER);
+            this.buildVotes();
+            this.setCenter(imgView);
+            Label publisher = new Label("  Posté par " + application.currentUser().getLogin()); // TODO: change with owner of pic
+            VBox vBox = new VBox();
+            vBox.getChildren().addAll( publisher, hBoxStars );
+            this.setBottom(vBox);
+        }
+
+        private void buildVotes() {
+            if (picture.getListNotes()!=null && !picture.getListNotes().isEmpty()) {
+                float note = 0;
+                for (Note n : picture.getListNotes()) {
+                    note += n.getValue();
+                }
+                note = note / (float) picture.getListNotes().size();
+                int note_round = Math.round(note);
+                for (int i = 1; i <= 5; i++) {
+                    ImageView img = new ImageView();
+                    if (note_round >= i) {
+                        img.setImage(new Image("IHM/resources/star_active.png"));
+                        setImage( img, STARS_DIM, STARS_DIM );
+                    } else {
+                        img.setImage(new Image("IHM/resources/star_inactive.png"));
+                        setImage( img, STARS_DIM, STARS_DIM );
+                    }
+                    hBoxStars.getChildren().add(img);
+                }
+                lblVotes.setText("(" + picture.getListNotes().size() + " votes)");
+            } else {
+                for (int i = 1; i <= 5; i++) {
+                    ImageView img = new ImageView();
+                    img.setImage(new Image("IHM/resources/star_inactive.png"));
+                    setImage( img, STARS_DIM, STARS_DIM );
+                    hBoxStars.getChildren().add(img);
+                }
+            }
         }
 
         private void createGlow(ImageView img) {
@@ -304,21 +340,6 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
-    private void displayAllImg()
-    {
-        SplitPane split = (SplitPane) allImgTab.getContent();
-        for (Node n : split.getItems()) {
-            if(n instanceof TilePane) {
-                TilePane tile = (TilePane) n;
-                tile.getChildren().clear();
-                for (PicturePane picturePane : allImgList) {
-                    tile.getChildren().add(picturePane);
-                }
-                return;
-            }
-        }
-    }
-
 
     public void deleteBtnDisplay() {
         for (PicturePane picturePane : myImgList) {
@@ -328,6 +349,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             }
         }
         deleteBtn.setDisable(true);
+    }
+
+    private static void setImage(ImageView img, int fitWidth, int fitHeight) {
+        img.setFitWidth(fitWidth);
+        img.setFitHeight(fitHeight);
+        img.setPreserveRatio(true);
+        img.setSmooth(true);
+        img.setCache(true);
     }
 
     public void setApp(final MainController app) {
