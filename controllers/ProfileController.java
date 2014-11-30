@@ -4,6 +4,8 @@ import DATA.model.User;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -66,9 +68,12 @@ public class ProfileController implements Initializable {
 
 	@FXML
 	private ImageView avatar;
-	
+
 	@FXML
-	private ListView listView;
+	private ListView<String> listView;
+
+	@FXML
+	private Button removeButton;
 
 	private MainController application;
 
@@ -90,6 +95,15 @@ public class ProfileController implements Initializable {
 		this.user = userToDisplay;
 		getUserInfos();
 		displayUserInfo();
+		removeButton.setDisable(true);
+		listView.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<String>() {
+					@Override
+					public void changed(ObservableValue<? extends String> arg0,
+							String arg1, String arg2) {
+						removeButton.setDisable(false);
+					}
+				});
 	}
 
 	public void getUserInfos() {
@@ -181,50 +195,59 @@ public class ProfileController implements Initializable {
 		}
 	}
 
-    public void displayIPAddressesList() {
-        ObservableList<String> addressesObservable = FXCollections.observableArrayList();
-        for (String s : userIP) {
-            addressesObservable.add(s);
-        }
-        listView.setItems(addressesObservable);
-    }
+	public void displayIPAddressesList() {
+		ObservableList<String> addressesObservable = FXCollections
+				.observableArrayList();
+		for (String s : userIP) {
+			addressesObservable.add(s);
+		}
+		listView.setItems(addressesObservable);
+	}
 
-    public void addIPAddress() {
-        System.out.println("addIPAddress");
-        if(!ValidatorHelper.validateIPs(newIP.getText())) {
-        	 Dialogs.showErrorDialog("Incorrect address format.");
-        }
-        else {
-            if (!userIP.contains(newIP.getText())){
-                this.userIP.add(newIP.getText());
-                try {
-                    application.currentUser().setListIP(this.userIP);
-                } catch (Exception e) {
-                    Logger.getLogger(ProfileController.class.getName())
-                            .log(Level.SEVERE,
-                                    "New IP address cannot be persisted");
-                }
-            }
-            else {
-            	 Dialogs.showInformationDialog("You have already added this address. ");
-            }
-        }
-        displayIPAddressesList();
-    }
+	public void addIPAddress() {
+		System.out.println("addIPAddress");
+		if (!ValidatorHelper.validateIPs(newIP.getText())) {
+			Dialogs.showErrorDialog("Incorrect address format.");
+		} else {
+			if (!userIP.contains(newIP.getText())) {
+				this.userIP.add(newIP.getText());
+				try {
+					application.currentUser().setListIP(this.userIP);
+				} catch (Exception e) {
+					Logger.getLogger(ProfileController.class.getName()).log(
+							Level.SEVERE, "New IP address cannot be persisted");
+				}
+			} else {
+				Dialogs.showInformationDialog("You have already added this address. ");
+			}
+		}
+		displayIPAddressesList();
+	}
 
-    public void removeIPAddress() {
-    	// TODO
-    }
-	
+	public void removeIPAddress() {
+		int selectedId = listView.getSelectionModel().getSelectedIndex();
+		if (selectedId != -1) {
+			int newSelectedId = (selectedId == listView.getItems().size() - 1) ? selectedId - 1
+					: selectedId;
+			listView.getItems().remove(selectedId);
+			listView.getSelectionModel().select(newSelectedId);
+			userIP.remove(listView.getItems().get(selectedId));
+			application.currentUser().setListIP(userIP);
+		}
+	}
+
 	public boolean hasInfoChanged() {
 		System.out.println("Info");
 		if (!userFirstName.equals(this.nickname.getText())) {
+			System.out.println("First name changed");
 			return true;
 		}
 		if (!userLastName.equals(this.lastname.getText())) {
+			System.out.println("Last name changed");
 			return true;
 		}
 		if (!userBirthDate.equals(this.birthdate.getText())) {
+			System.out.println("BD changed");
 			return true;
 		}
 		return false;
@@ -264,8 +287,9 @@ public class ProfileController implements Initializable {
 	public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {
-			boolean response = Dialogs.showConfirmationDialog("Would you like to save changes made to your profile ?");
-            if (response){
+			boolean response = Dialogs
+					.showConfirmationDialog("Would you like to save changes made to your profile ?");
+			if (response) {
 				persistUserInfoChanges();
 				((Stage) profile.getScene().getWindow()).close();
 			}

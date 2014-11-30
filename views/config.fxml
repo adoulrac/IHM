@@ -28,7 +28,8 @@
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <ListView fx:id="listView" layoutX="14.0" layoutY="81.0" prefHeight="277.0" prefWidth="271.0" />
+                        <ListView fx:id="listView" layoutX="14.0" layoutY="81.0" prefHeight="255.0" prefWidth="271.0" />
+                        <Button fx:id="removeButton" layoutX="9.0" layoutY="339.0" mnemonicParsing="false" onAction="#removeIPAddress" prefHeight="29.0" prefWidth="104.0" text="Supprimer" />
                      </children>
                   </AnchorPane>
             </content>
@@ -41,7 +42,7 @@
                   <Image url="@../resources/avatar_icon.png" />
                </image>
             </ImageView>
-            <Label fx:id="nickname" layoutX="206.0" layoutY="71.0" text="usrname">
+            <Label fx:id="nickname" layoutX="206.0" layoutY="71.0" text="username">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -61,11 +62,11 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button fx:id="changeAvatar" layoutX="205.0" layoutY="155.0" mnemonicParsing="false" onAction="#avatarPicker" prefHeight="29.0" prefWidth="104.0" text="Changer avatar" />
             <TextField fx:id="lastname" layoutX="205.0" layoutY="234.0" promptText="NOM" />
             <TextField fx:id="firstname" layoutX="205.0" layoutY="280.0" promptText="Prénom" />
             <TextField fx:id="birthdate" layoutX="205.0" layoutY="325.0" promptText="Date de naissance" />
             <TextField fx:id="avatarPath" layoutX="205.0" layoutY="130.0" prefHeight="25.0" prefWidth="152.0" promptText="Avatar Path" />
+            <Button fx:id="changeAvatar" layoutX="205.0" layoutY="159.0" mnemonicParsing="false" onAction="#avatarPicker" text="Parcourir" />
          </children></AnchorPane>
   </content>
    <font>
