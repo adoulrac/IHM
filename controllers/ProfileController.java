@@ -28,74 +28,104 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author Sylvain_
+ * The Class ProfileController.
  *
+ * @author Sylvain_
  */
 public class ProfileController implements Initializable {
 
+	/** The profile. */
 	@FXML
 	private TitledPane profile;
 
+	/** The nickname. */
 	@FXML
 	private Label nickname;
 
+	/** The avatar path. */
 	@FXML
 	private TextField avatarPath;
 
+	/** The change avatar button. */
 	@FXML
 	private Button changeAvatar;
 
+	/** The lastname. */
 	@FXML
 	private TextField lastname;
 
+	/** The firstname. */
 	@FXML
 	private TextField firstname;
 
+	/** The birthdate. */
 	@FXML
 	private TextField birthdate;
 
+	/** The new ip. */
 	@FXML
 	private TextField newIP;
 
+	/** The validate new ip. */
 	@FXML
 	private Button validateNewIP;
 
+	/** The ok button. */
 	@FXML
 	private Button okButton;
 
+	/** The cancel button. */
 	@FXML
 	private Button cancelButton;
 
+	/** The avatar. */
 	@FXML
 	private ImageView avatar;
 
+	/** The list view. */
 	@FXML
 	private ListView<String> listView;
 
+	/** The remove button. */
 	@FXML
 	private Button removeButton;
 	
+	/** The IP panel. */
 	@FXML
 	private TitledPane IPPanel;
 	
+	/** The application. */
 	private MainController application;
 
+	/** The user nick name. */
 	private String userFirstName, userLastName, userAvatar, userBirthDate,
 			userNickName;
 
+	/** The default value. */
 	private String defaultValue = "Unknown";
 
+	/** The user ip. */
 	private List<String> userIP;
 
+	/** The user. */
 	private User user;
 
+	/** The editable. */
 	private boolean editable=false;
 	
+	/* (non-Javadoc)
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// NOP
 	}
 
+	/**
+	 * Builds and initializes the content.
+	 *
+	 * @param userToDisplay the user to display
+	 */
 	public void build(User userToDisplay) {
 		this.user = userToDisplay;
 		if (userToDisplay.getUid().equals(application.currentUser().getUid())) {
@@ -119,6 +149,11 @@ public class ProfileController implements Initializable {
 				});
 	}
 
+	/**
+	 * Gets the user infos.
+	 *
+	 * @return the user infos
+	 */
 	public void getUserInfos() {
 		try {
 			userLastName = user.getLastname();
@@ -173,13 +208,27 @@ public class ProfileController implements Initializable {
 
 	}
 
+	/**
+	 * Sets the app.
+	 *
+	 * @param application the new app
+	 */
 	public void setApp(MainController application) {
 		this.application = application;
 	}
 
+	/**
+	 * Checks if the user is editable.
+	 *
+	 * @return true, if is editable
+	 */
 	public boolean isEditable() {
 		return editable;
 	}
+	
+	/**
+	 * Display Avatar picker and persists data.
+	 */
 	public void avatarPicker() {
 		File f = null;
 		try {
@@ -196,16 +245,23 @@ public class ProfileController implements Initializable {
 		}
 	}
 
+	/**
+	 * Display user info.
+	 */
 	public void displayUserInfo() {
-		displayPicture();
+		displayUserAvatar();
 		this.nickname.setText(this.userNickName);
 		this.lastname.setText(this.userLastName);
 		this.firstname.setText(this.userFirstName);
 		this.birthdate.setText(this.userBirthDate);
+		this.avatarPath.setText(this.userAvatar);
 		displayIPAddressesList();
 	}
 
-	public void displayPicture() {
+	/**
+	 * Display the user's avatar.
+	 */
+	public void displayUserAvatar() {
 		try {
 			String userAvatarPath = userAvatar;
 			File file = new File(userAvatarPath);
@@ -218,6 +274,9 @@ public class ProfileController implements Initializable {
 		}
 	}
 
+	/**
+	 * Display ip addresses list.
+	 */
 	public void displayIPAddressesList() {
 		ObservableList<String> addressesObservable = FXCollections
 				.observableArrayList();
@@ -227,8 +286,10 @@ public class ProfileController implements Initializable {
 		listView.setItems(addressesObservable);
 	}
 
+	/**
+	 * Adds an ip address and persists changes
+	 */
 	public void addIPAddress() {
-		System.out.println("addIPAddress");
 		if (!ValidatorHelper.validateIPs(newIP.getText())) {
 			Dialogs.showErrorDialog("Incorrect address format.");
 		} else {
@@ -247,6 +308,9 @@ public class ProfileController implements Initializable {
 		displayIPAddressesList();
 	}
 
+	/**
+	 * Removes the selected ip address.
+	 */
 	public void removeIPAddress() {
 		int selectedId = listView.getSelectionModel().getSelectedIndex();
 		if (selectedId != -1) {
@@ -259,6 +323,11 @@ public class ProfileController implements Initializable {
 		}
 	}
 
+	/**
+	 * Checks for info changed.
+	 *
+	 * @return true, if info has changed, else return false
+	 */
 	public boolean hasInfoChanged() {
 		if (!userFirstName.equals(this.firstname.getText())) {
 			return true;
@@ -272,6 +341,9 @@ public class ProfileController implements Initializable {
 		return false;
 	}
 
+	/**
+	 * Persist user info changes.
+	 */
 	public void persistUserInfoChanges() {
 		if (!isEditable()) { return; }
 		try {
@@ -284,6 +356,9 @@ public class ProfileController implements Initializable {
 		}
 	}
 
+	/**
+	 * Replace null values by empty string to avoid issues.
+	 */
 	public void removeNullValues() {
 		if (userFirstName == null) {
 			userFirstName = "";
@@ -299,10 +374,16 @@ public class ProfileController implements Initializable {
 		}
 	}
 
+	/**
+	 * On cancel: return to main window.
+	 */
 	public void onCancel() {
 		((Stage) profile.getScene().getWindow()).close();
 	}
 
+	/**
+	 * On ok: persists changes if needed, then return to main window.
+	 */
 	public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {

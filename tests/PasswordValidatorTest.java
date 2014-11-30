@@ -10,11 +10,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PasswordValidatorTest.
+ */
 @RunWith(JUnit4.class)
 public class PasswordValidatorTest {
 
+    /** The tester. */
     PasswordValidator tester = new PasswordValidator();
 
+    /**
+     * Validate.
+     */
     @Test
     public void validate() {
         assertTrue("Validate right password", tester.validate("mkYOn12$"));

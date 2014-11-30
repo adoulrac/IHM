@@ -25,40 +25,84 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PictureController.
+ */
 public class PictureController extends Tab implements Initializable
 {
     //TODO how to close tab + admin mode
 
+    /** The app. */
     private final MainController app;
+    
+    /** The picture. */
     private Picture picture;
 
+    /** The ihm. */
     private ScrollPane ihm = new ScrollPane();
+    
+    /** The content. */
     private VBox content = new VBox(8);
 
+    /** The avatar_img. */
     private ImageView avatar_img = new ImageView();
+    
+    /** The partage_txt. */
     private Text partage_txt = new Text();
+    
+    /** The refresh_btn. */
     private Button refresh_btn = new Button("Refresh");
 
+    /** The picture_img. */
     private ImageView picture_img = new ImageView();
 
+    /** The note_title. */
     private Text note_title = new Text("Note : ");
+    
+    /** The note_img. */
     private HBox note_img = new HBox();
+    
+    /** The vote_txt. */
     private Text vote_txt = new Text();
+    
+    /** The vote_field. */
     private TextField vote_field = new TextField("3");
+    
+    /** The vote_btn. */
     private Button vote_btn = new Button("Voter");
 
+    /** The tags_title. */
     private Text tags_title = new Text("Tags : ");
+    
+    /** The tags_txt. */
     private Text tags_txt = new Text();
 
+    /** The desc_title. */
     private Text desc_title = new Text("Description : ");
+    
+    /** The desc_txt. */
     private Text desc_txt = new Text();
 
+    /** The com_title. */
     private Text com_title = new Text("Commentaires : ");
+    
+    /** The comments. */
     private List<CommentPane> comments = new ArrayList<CommentPane>();
+    
+    /** The write_area. */
     private TextArea write_area = new TextArea();
+    
+    /** The send_btn. */
     private Button send_btn = new Button("Envoyer");
 
 
+    /**
+     * Instantiates a new picture controller.
+     *
+     * @param picture the picture
+     * @param app the app
+     */
     public PictureController(Picture picture, MainController app) {
         super(picture.getFilename().substring(picture.getFilename().lastIndexOf("/") + 1));
 
@@ -70,6 +114,9 @@ public class PictureController extends Tab implements Initializable
         app.getIHMtoDATA().getPictureById(this.picture.getUid(), app.addRequest(this));
     }
 
+    /**
+     * Builds the.
+     */
     public void build(){
         if (app.currentUser().getAvatar()==null) {
             setImage(avatar_img, new Image("IHM/resources/avatar_icon.png"), 75, 75);
@@ -115,6 +162,9 @@ public class PictureController extends Tab implements Initializable
         addCssClasses();
     }
 
+    /**
+     * Builds the votes.
+     */
     private void buildVotes() {
         note_img.getChildren().clear();
         if (picture.getListNotes()!=null && !picture.getListNotes().isEmpty()) {
@@ -151,6 +201,9 @@ public class PictureController extends Tab implements Initializable
         });
     }
 
+    /**
+     * Builds the tags.
+     */
     private void buildTags() {
         StringBuilder sb_tags = new StringBuilder();
         for (Tag tag : picture.getListTags()) {
@@ -163,6 +216,9 @@ public class PictureController extends Tab implements Initializable
         tags_txt.setText(sb_tags.toString());
     }
 
+    /**
+     * Adds the content.
+     */
     private void addContent(){
 
         // Left side
@@ -194,6 +250,9 @@ public class PictureController extends Tab implements Initializable
         setContent(ihm);
     }
 
+    /**
+     * Adds the css classes.
+     */
     private void addCssClasses(){
         ihm.getStyleClass().add("pic-ihm");
         content.getStyleClass().add("pic-content");
@@ -205,6 +264,9 @@ public class PictureController extends Tab implements Initializable
         com_title.getStyleClass().add("pic-title");
     }
 
+    /**
+     * Clear and build.
+     */
     private void clearAndBuild() {
         ihm = new ScrollPane();
         content = new VBox(8);
@@ -235,11 +297,21 @@ public class PictureController extends Tab implements Initializable
         build();
     }
 
+    /**
+     * Receive full image.
+     *
+     * @param picture the picture
+     */
     public void receiveFullImage(Picture picture) {
         this.picture = picture;
         clearAndBuild();
     }
 
+    /**
+     * Refresh.
+     *
+     * @param mouseEvent the mouse event
+     */
     public void refresh(MouseEvent mouseEvent) {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 1) {
@@ -248,6 +320,11 @@ public class PictureController extends Tab implements Initializable
         }
     }
 
+    /**
+     * Comment.
+     *
+     * @param mouseEvent the mouse event
+     */
     private void comment(MouseEvent mouseEvent) {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 1) {
@@ -266,6 +343,11 @@ public class PictureController extends Tab implements Initializable
         }
     }
 
+    /**
+     * Vote.
+     *
+     * @param mouseEvent the mouse event
+     */
     private void vote(MouseEvent mouseEvent) {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 1) {
@@ -283,21 +365,38 @@ public class PictureController extends Tab implements Initializable
     }
 
 
+    /**
+     * The Class CommentPane.
+     */
     private class CommentPane extends HBox {
         //TODO admin mode
 
+        /** The comment. */
         public Comment comment;
 
+        /** The avatar_img. */
         public ImageView avatar_img = new ImageView();
+        
+        /** The user_txt. */
         public Text user_txt = new Text();
+        
+        /** The comment_txt. */
         public Text comment_txt = new Text();
 
+        /**
+         * Instantiates a new comment pane.
+         *
+         * @param comment the comment
+         */
         public CommentPane(Comment comment) {
             super(10);
             this.comment = comment;
             build();
         }
 
+        /**
+         * Builds the.
+         */
         public void build(){
             if (comment.getUser().getAvatar()==null) {
                 setImage(avatar_img, new Image("IHM/resources/avatar_icon.png"), 75, 75);
@@ -315,6 +414,9 @@ public class PictureController extends Tab implements Initializable
             addCssClasses();
         }
 
+        /**
+         * Adds the content.
+         */
         private void addContent(){
             VBox sp = new VBox(5);
             sp.getChildren().addAll(user_txt, comment_txt);
@@ -322,11 +424,22 @@ public class PictureController extends Tab implements Initializable
             getChildren().addAll(avatar_img, sp);
         }
 
+        /**
+         * Adds the css classes.
+         */
         private void addCssClasses(){
             user_txt.getStyleClass().add("pic-title");
         }
     }
 
+    /**
+     * Sets the image.
+     *
+     * @param img the img
+     * @param source the source
+     * @param fitWidth the fit width
+     * @param fitHeight the fit height
+     */
     private static void setImage(ImageView img, Image source, int fitWidth, int fitHeight) {
         img.setImage(source);
         img.setFitWidth(fitWidth);
@@ -336,6 +449,9 @@ public class PictureController extends Tab implements Initializable
         img.setCache(true);
     }
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @Override
     public void initialize( final URL url, final ResourceBundle resourceBundle ){
         // NOP
