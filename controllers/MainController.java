@@ -88,6 +88,7 @@ public class MainController {
         try {
             LoginController login = (LoginController) replaceSceneContent("views/connexion.fxml");
             login.setApp(this);
+            login.build();
             removeAllRequests(currentController);
             currentController = login;
         } catch (Exception ex) {

@@ -4,10 +4,13 @@ import DATA.model.User;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
@@ -40,6 +43,19 @@ public class LoginController extends Pane implements Initializable {
         //NOP
     }
 
+    /**
+     * Build: adds listener to Enter key.
+     */
+    public void build() {
+        password.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                   login();
+                }
+            }
+        });
+    }
     /**
      * Login.
      */

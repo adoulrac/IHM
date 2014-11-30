@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-	/**
+/**
  * The Class TabbedPicturesSubController.
  */
 public class TabbedPicturesSubController extends TabPane implements Initializable {
