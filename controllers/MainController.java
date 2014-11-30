@@ -87,6 +87,7 @@ public class MainController {
         try {
             GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml", true);
             groups.setApp(this);
+            groups.loadGroups();
             removeAllRequests(currentController);
             currentController = groups;
         } catch (Exception ex) {
