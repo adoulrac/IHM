@@ -23,49 +23,100 @@ import java.util.List;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GroupsController.
+ */
 public class GroupsController implements Initializable {
+    
+    /** The groups. */
     @FXML
     private ListView groups;
+    
+    /** The members. */
     @FXML
     private ListView members;
+    
+    /** The group selected. */
     @FXML
     private TextField groupSelected;
+    
+    /** The new group name. */
     @FXML
     private TextField newGroupName;
+    
+    /** The add group btn. */
     @FXML
     private Button addGroupBtn;
+    
+    /** The add user name. */
     @FXML
     private TextField addUserName;
+    
+    /** The add user btn. */
     @FXML
     private Button addUserBtn;
+    
+    /** The delete group btn. */
     @FXML
     private Button deleteGroupBtn;
 
 
+    /** The application. */
     private MainController application;
 
+    /** The obs groups list. */
     private final ObservableList obsGroupsList= observableArrayList();
+    
+    /** The obs members list. */
     private final ObservableList obsMembersList= observableArrayList();
 
     //List<Group> listGroups = null;
+    /** The list groups. */
     List<Group> listGroups = new ArrayList<Group>();
+    
+    /** The list users. */
     List<User> listUsers = new ArrayList<User>();
+    
+    /** The list users2. */
     List<User> listUsers2 = new ArrayList<User>();
+    
+    /** The amis. */
     Group amis = new Group("Amis");
+    
+    /** The famille. */
     Group famille = new Group("Famille");
+    
+    /** The travail. */
     Group travail = new Group("Travail");
+    
+    /** The arthur. */
     User arthur = new User("avanceul", "password", "Arthur", "Van Ceulen", "arthur.jpg", "16/08/1991");
+    
+    /** The rachid. */
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
+    
+    /** The selim. */
     User selim = new User("szenagui", "password", "Selim", "Zenagui", "selim.jpg", "08/06/1992");
+    
+    /** The arthurt. */
     User arthurt = new User("tranarth", "password", "Arthur", "Tran", "arthurt.jpg", "08/06/1992");
 
 
 
 
+    /**
+     * Sets the app.
+     *
+     * @param application the new app
+     */
     public void setApp(MainController application){
         this.application = application;
     }
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -81,6 +132,9 @@ public class GroupsController implements Initializable {
 
     }
 
+    /**
+     * Load groups.
+     */
     public void loadGroups() {
 
         disableFields(true);
@@ -133,6 +187,11 @@ public class GroupsController implements Initializable {
         }
     }
 
+    /**
+     * Change group name.
+     *
+     * @param event the event
+     */
     @FXML
     private void changeGroupName(ActionEvent event) {
         //application.getIHMtoDATA().addGroup(new Group(groupSelected.getText()));
@@ -140,6 +199,11 @@ public class GroupsController implements Initializable {
     }
 
 
+    /**
+     * Delete group.
+     *
+     * @param event the event
+     */
     @FXML
     private void deleteGroup(ActionEvent event) {
         loop :
@@ -157,6 +221,11 @@ public class GroupsController implements Initializable {
         members.setItems(obsMembersList);
     }
 
+    /**
+     * Adds the new group.
+     *
+     * @param event the event
+     */
     @FXML
     public void addNewGroup(ActionEvent event){
         //application.getIHMtoDATA().addGroup(new Group(newGroupName.getText()));
@@ -164,6 +233,11 @@ public class GroupsController implements Initializable {
         newGroupName.clear();
     }
 
+    /**
+     * Display users.
+     *
+     * @param groupName the group name
+     */
     public void displayUsers(String groupName) {
         if(groupName.equals(null)) {
             obsMembersList.clear();
@@ -181,6 +255,11 @@ public class GroupsController implements Initializable {
         members.setItems(obsMembersList);
     }
 
+    /**
+     * Disable fields.
+     *
+     * @param b the b
+     */
     public void disableFields (Boolean b) {
         groupSelected.setDisable(b);
         deleteGroupBtn.setDisable(b);

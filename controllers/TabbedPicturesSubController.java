@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -21,8 +20,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 
 import java.io.File;
 import java.net.URL;
@@ -31,59 +28,93 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TabbedPicturesSubController.
+ */
 public class TabbedPicturesSubController extends TabPane implements Initializable {
 
+    /** The Constant TAG_SEPARATOR. */
     private static final String TAG_SEPARATOR = ",";
 
+    /** The Constant HGAP_PICTURES. */
     private static final double HGAP_PICTURES = 40.0;
 
+    /** The Constant VGAP_PICTURES. */
     private static final double VGAP_PICTURES = 20.0;
 
+    /** The Constant PICTURE_DIM. */
     private static final int PICTURE_DIM = 100;
 
+    /** The Constant CONFIRM_SUPPRESSION. */
     private static final String CONFIRM_SUPPRESSION = "Confirmez-vous la suppression ?";
 
+    /** The application. */
     private MainController application;
 
+    /** The search field. */
     @FXML
     private TextField searchField;
 
+    /** The tag search. */
     @FXML
     private CheckBox tagSearch;
 
+    /** The user search. */
     @FXML
     private CheckBox userSearch;
 
+    /** The tabbed pictures sub. */
     @FXML
     private TabPane tabbedPicturesSub;
 
+    /** The my img tab. */
     @FXML
     private Tab myImgTab;
 
+    /** The all img tab. */
     @FXML
     private Tab allImgTab;
 
+    /** The delete btn. */
     @FXML
     private Button deleteBtn;
 
+    /** The my img list. */
     private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
+    
+    /** The all img list. */
     private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
 
+    /**
+     * The Class PicturePane.
+     */
     private class PicturePane extends BorderPane
     {
 
+        /** The picture. */
         private Picture picture;
 
+        /** The is selected. */
         private boolean isSelected;
 
+        /** The lbl votes. */
         private Label lblVotes;
 
+        /** The h box stars. */
         private HBox hBoxStars;
 
+        /** The glow depth. */
         private final int GLOW_DEPTH = 50;
 
+        /** The stars dim. */
         private final int STARS_DIM = 23;
 
+        /**
+         * Instantiates a new picture pane.
+         *
+         * @param p the p
+         */
         public PicturePane(Picture p) {
             picture = p;
             isSelected = false;
@@ -92,6 +123,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             build();
         }
 
+        /**
+         * Builds the.
+         */
         private void build() {
             final ImageView imgView = new ImageView( new Image(picture.getFilename()) );
             setImage( imgView, PICTURE_DIM, PICTURE_DIM );
@@ -129,6 +163,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             this.setBottom(vBox);
         }
 
+        /**
+         * Builds the votes.
+         */
         private void buildVotes() {
             if (picture.getListNotes()!=null && !picture.getListNotes().isEmpty()) {
                 float note = 0;
@@ -159,6 +196,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             }
         }
 
+        /**
+         * Creates the glow.
+         *
+         * @param img the img
+         */
         private void createGlow(ImageView img) {
             DropShadow borderGlow= new DropShadow();
             borderGlow.setOffsetY(0.0f);
@@ -169,26 +211,45 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             img.setEffect(borderGlow);
         }
 
+        /**
+         * Gets the picture.
+         *
+         * @return the picture
+         */
         public Picture getPicture() {
             return picture;
         }
 
+        /**
+         * Checks if is selected.
+         *
+         * @return true, if is selected
+         */
         public boolean isSelected() {
             return isSelected;
         }
     }
 
+    /**
+     * Instantiates a new tabbed pictures sub controller.
+     */
     public TabbedPicturesSubController() {
         super();
         myImgList = new CopyOnWriteArrayList<PicturePane>();
         allImgList = new CopyOnWriteArrayList<PicturePane>();
     }
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
         //NOP
     }
 
+    /**
+     * Builds the.
+     */
     public void build() {
         deleteBtn.setDisable(true);
         // init tabs
@@ -233,6 +294,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         });
     }
 
+    /**
+     * Search pictures by tag.
+     *
+     * @param text the text
+     */
     private void searchPicturesByTag(final String text) {
         if(Strings.isNullOrEmpty(text)) {
             return;
@@ -243,6 +309,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
+    /**
+     * Search pictures by user.
+     *
+     * @param text the text
+     */
     private void searchPicturesByUser(final String text) {
         if(Strings.isNullOrEmpty(text)) {
             return;
@@ -254,11 +325,22 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
+    /**
+     * Adds the tab.
+     *
+     * @param tab the tab
+     */
     public void addTab(Tab tab) {
         tabbedPicturesSub.getTabs().add(tab);
         tabbedPicturesSub.getSelectionModel().select(tab);
     }
 
+    /**
+     * Adds the pictures in tab.
+     *
+     * @param pictures the pictures
+     * @param tab the tab
+     */
     public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
         SplitPane split = (SplitPane) tab.getContent();
         for (int i=0; i < split.getItems().size(); ++i) { // thread-safe
@@ -279,6 +361,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
+    /**
+     * Clear tab.
+     *
+     * @param tab the tab
+     */
     private void clearTab(Tab tab){
         SplitPane split = (SplitPane) tab.getContent();
         for (Node n : split.getItems()) {
@@ -289,18 +376,31 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
+    /**
+     * Adds the pictures.
+     *
+     * @param pictures the pictures
+     */
     public void addPictures(List<Picture> pictures) {
         if(pictures != null){
             addPicturesInTab(pictures, allImgTab);
         }
     }
 
+    /**
+     * Adds the picture.
+     *
+     * @param picture the picture
+     */
     public void addPicture(Picture picture) {
        if(picture != null){
            addPicturesInTab(Arrays.asList(picture), allImgTab);
        }
     }
 
+    /**
+     * Adds the local picture.
+     */
     public void addLocalPicture(){
         File f = FileUtil.chooseFile();
         if(f != null){
@@ -312,6 +412,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
+    /**
+     * Delete selected picture.
+     */
     public void deleteSelectedPicture() {
         if(Dialogs.showConfirmationDialog(CONFIRM_SUPPRESSION)) {
             for(PicturePane picturePane : myImgList) {
@@ -324,6 +427,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         displayMyImg();
     }
 
+    /**
+     * Display my img.
+     */
     private void displayMyImg()
     {
         SplitPane split = (SplitPane) myImgTab.getContent();
@@ -341,6 +447,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
 
+    /**
+     * Delete btn display.
+     */
     public void deleteBtnDisplay() {
         for (PicturePane picturePane : myImgList) {
             if(picturePane.isSelected()) {
@@ -351,6 +460,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         deleteBtn.setDisable(true);
     }
 
+    /**
+     * Sets the image.
+     *
+     * @param img the img
+     * @param fitWidth the fit width
+     * @param fitHeight the fit height
+     */
     private static void setImage(ImageView img, int fitWidth, int fitHeight) {
         img.setFitWidth(fitWidth);
         img.setFitHeight(fitHeight);
@@ -359,6 +475,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         img.setCache(true);
     }
 
+    /**
+     * Sets the app.
+     *
+     * @param app the new app
+     */
     public void setApp(final MainController app) {
         this.application = app;
     }

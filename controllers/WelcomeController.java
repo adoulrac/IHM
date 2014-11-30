@@ -18,52 +18,83 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class WelcomeController.
+ */
 public class WelcomeController implements Initializable {
 
+    /** The application. */
     private MainController application;
 
+    /** The Constant AVATAR_DIM. */
     private static final double AVATAR_DIM = 30.0;
 
+    /** The welcome. */
     @FXML
     private Pane welcome;
 
+    /** The tabbed pictures sub controller. */
     @FXML
     private TabbedPicturesSubController tabbedPicturesSubController;
 
+    /** The friends sub controller. */
     @FXML
     private FriendsSubController friendsSubController;
 
+    /** The lbl user name. */
     @FXML
     private Label lblUserName;
 
+    /** The avatar user. */
     @FXML
     private ImageView avatarUser;
 
+    /**
+     * Instantiates a new welcome controller.
+     */
     public WelcomeController() {
         super();
     }
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
         // NOP
     }
 
+    /**
+     * Sets the app.
+     *
+     * @param app the new app
+     */
     public void setApp(final MainController app) {
         this.application = app;
     }
 
+    /**
+     * Launch preferences.
+     */
     public void launchPreferences() {
         if(application != null) {
             application.goToProfile(application.currentUser());
         }
     }
 
+    /**
+     * Launch groups.
+     */
     public void launchGroups() {
        if(application != null) {
            application.goToGroups();
        }
     }
 
+    /**
+     * Logout.
+     */
     public void logout() {
         try
         {
@@ -76,6 +107,9 @@ public class WelcomeController implements Initializable {
         application.userLogout();
     }
 
+    /**
+     * Builds the.
+     */
     public void build() {
         if(application.currentUser() != null && application.currentUser().getAvatar() != null)
         {
@@ -119,10 +153,20 @@ public class WelcomeController implements Initializable {
         });
     }
 
+    /**
+     * Gets the friends sub controller.
+     *
+     * @return the friends sub controller
+     */
     public FriendsSubController getFriendsSubController() {
         return friendsSubController;
     }
 
+    /**
+     * Gets the tabbed pictures sub controller.
+     *
+     * @return the tabbed pictures sub controller
+     */
     public TabbedPicturesSubController getTabbedPicturesSubController() {
         return tabbedPicturesSubController;
     }
