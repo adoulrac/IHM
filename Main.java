@@ -5,7 +5,6 @@ import IHM.interfaces.DATAtoIHM;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-// TODO: Auto-generated Javadoc
 /**
  * Main Application. This class handles navigation and user session.
  */

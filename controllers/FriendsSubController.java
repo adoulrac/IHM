@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class FriendsSubController.
  */

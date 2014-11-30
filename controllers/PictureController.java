@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PictureController.
  */

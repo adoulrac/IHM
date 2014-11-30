@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TabbedPicturesSubController.
  */

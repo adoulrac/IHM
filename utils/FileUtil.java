@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class FileUtil.
  */

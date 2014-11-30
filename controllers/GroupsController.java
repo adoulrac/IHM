@@ -23,7 +23,6 @@ import java.util.List;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GroupsController.
  */
