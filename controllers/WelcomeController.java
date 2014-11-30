@@ -77,7 +77,7 @@ public class WelcomeController implements Initializable {
     }
 
     public void build() {
-        if(application.currentUser() != null)
+        if(application.currentUser() != null && application.currentUser().getAvatar() != null)
         {
             File f = new File(application.currentUser().getAvatar());
             if(f.isFile()) {
