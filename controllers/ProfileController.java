@@ -1,12 +1,16 @@
 package IHM.controllers;
 
 import DATA.model.User;
+import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
@@ -62,6 +66,9 @@ public class ProfileController implements Initializable {
 
 	@FXML
 	private ImageView avatar;
+	
+	@FXML
+	private ListView listView;
 
 	private MainController application;
 
@@ -158,6 +165,7 @@ public class ProfileController implements Initializable {
 		this.lastname.setText(this.userLastName);
 		this.firstname.setText(this.userFirstName);
 		this.birthdate.setText(this.userBirthDate);
+		displayIPAddressesList();
 	}
 
 	public void displayPicture() {
@@ -173,6 +181,41 @@ public class ProfileController implements Initializable {
 		}
 	}
 
+    public void displayIPAddressesList() {
+        ObservableList<String> addressesObservable = FXCollections.observableArrayList();
+        for (String s : userIP) {
+            addressesObservable.add(s);
+        }
+        listView.setItems(addressesObservable);
+    }
+
+    public void addIPAddress() {
+        System.out.println("addIPAddress");
+        if(!ValidatorHelper.validateIPs(newIP.getText())) {
+        	 Dialogs.showErrorDialog("Incorrect address format.");
+        }
+        else {
+            if (!userIP.contains(newIP.getText())){
+                this.userIP.add(newIP.getText());
+                try {
+                    application.currentUser().setListIP(this.userIP);
+                } catch (Exception e) {
+                    Logger.getLogger(ProfileController.class.getName())
+                            .log(Level.SEVERE,
+                                    "New IP address cannot be persisted");
+                }
+            }
+            else {
+            	 Dialogs.showInformationDialog("You have already added this address. ");
+            }
+        }
+        displayIPAddressesList();
+    }
+
+    public void removeIPAddress() {
+    	// TODO
+    }
+	
 	public boolean hasInfoChanged() {
 		System.out.println("Info");
 		if (!userFirstName.equals(this.nickname.getText())) {
