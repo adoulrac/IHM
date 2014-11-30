@@ -101,7 +101,7 @@ public class ProfileController implements Initializable {
 		if (userToDisplay.getUid().equals(application.currentUser().getUid())) {
 			editable = true;
 		}
-		if (isEditable()) {
+		if (!isEditable()) {
 			removeButton.setVisible(false);
 			okButton.setVisible(false);
 			changeAvatar.setVisible(false);
@@ -184,13 +184,16 @@ public class ProfileController implements Initializable {
 		File f = null;
 		try {
 			f = FileUtil.chooseFile();
+			Image image = new Image(f.toURI().toString());
+			avatar.setImage(image);
+			avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
+			if (isEditable()) {
+				application.currentUser().setAvatar(avatarPath.getText());
+			}
+			Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
+					"Avatar changed");
 		} catch (Exception e) {
 		}
-		Image image = new Image(f.toURI().toString());
-		avatar.setImage(image);
-		avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
-		Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
-				"Avatar chnged");
 	}
 
 	public void displayUserInfo() {
@@ -257,8 +260,7 @@ public class ProfileController implements Initializable {
 	}
 
 	public boolean hasInfoChanged() {
-		System.out.println("Info");
-		if (!userFirstName.equals(this.nickname.getText())) {
+		if (!userFirstName.equals(this.firstname.getText())) {
 			return true;
 		}
 		if (!userLastName.equals(this.lastname.getText())) {
@@ -273,7 +275,6 @@ public class ProfileController implements Initializable {
 	public void persistUserInfoChanges() {
 		if (!isEditable()) { return; }
 		try {
-			application.currentUser().setAvatar(avatarPath.getText());
 			application.currentUser().setBirthDate(birthdate.getText());
 			application.currentUser().setFirstname(firstname.getText());
 			application.currentUser().setLastname(lastname.getText());
