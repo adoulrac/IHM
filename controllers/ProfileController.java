@@ -74,7 +74,10 @@ public class ProfileController implements Initializable {
 
 	@FXML
 	private Button removeButton;
-
+	
+	@FXML
+	private TitledPane IPPanel;
+	
 	private MainController application;
 
 	private String userFirstName, userLastName, userAvatar, userBirthDate,
@@ -86,6 +89,8 @@ public class ProfileController implements Initializable {
 
 	private User user;
 
+	private boolean editable=false;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// NOP
@@ -93,6 +98,14 @@ public class ProfileController implements Initializable {
 
 	public void build(User userToDisplay) {
 		this.user = userToDisplay;
+		if (userToDisplay.getUid().equals(application.currentUser().getUid())) {
+			editable = true;
+		}
+		if (isEditable()) {
+			removeButton.setVisible(false);
+			okButton.setVisible(false);
+			changeAvatar.setVisible(false);
+		}
 		getUserInfos();
 		displayUserInfo();
 		removeButton.setDisable(true);
@@ -164,8 +177,15 @@ public class ProfileController implements Initializable {
 		this.application = application;
 	}
 
+	public boolean isEditable() {
+		return editable;
+	}
 	public void avatarPicker() {
-		File f = FileUtil.chooseFile();
+		File f = null;
+		try {
+			f = FileUtil.chooseFile();
+		} catch (Exception e) {
+		}
 		Image image = new Image(f.toURI().toString());
 		avatar.setImage(image);
 		avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
@@ -209,7 +229,7 @@ public class ProfileController implements Initializable {
 		if (!ValidatorHelper.validateIPs(newIP.getText())) {
 			Dialogs.showErrorDialog("Incorrect address format.");
 		} else {
-			if (!userIP.contains(newIP.getText())) {
+			if (!userIP.contains(newIP.getText()) && isEditable()) {
 				this.userIP.add(newIP.getText());
 				try {
 					application.currentUser().setListIP(this.userIP);
@@ -239,21 +259,19 @@ public class ProfileController implements Initializable {
 	public boolean hasInfoChanged() {
 		System.out.println("Info");
 		if (!userFirstName.equals(this.nickname.getText())) {
-			System.out.println("First name changed");
 			return true;
 		}
 		if (!userLastName.equals(this.lastname.getText())) {
-			System.out.println("Last name changed");
 			return true;
 		}
 		if (!userBirthDate.equals(this.birthdate.getText())) {
-			System.out.println("BD changed");
 			return true;
 		}
 		return false;
 	}
 
 	public void persistUserInfoChanges() {
+		if (!isEditable()) { return; }
 		try {
 			application.currentUser().setAvatar(avatarPath.getText());
 			application.currentUser().setBirthDate(birthdate.getText());

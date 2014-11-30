@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane fx:id="profile" prefHeight="501.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.ProfileController">
+<TitledPane fx:id="profile" prefHeight="501.0" prefWidth="735.0" text="Profil" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.ProfileController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="419.0" prefWidth="600.0" styleClass="settings-pane">
          <children>
@@ -17,7 +17,7 @@
             <Accordion layoutX="14.0" layoutY="28.0" />
             <Button fx:id="okButton" layoutX="595.0" layoutY="430.0" mnemonicParsing="false" onAction="#onOK" text="OK" />
             <Button fx:id="cancelButton" layoutX="642.0" layoutY="430.0" mnemonicParsing="false" onAction="#onCancel" text="Annuler" />
-                    <TitledPane animated="false" layoutX="407.0" layoutY="17.0" prefHeight="408.0" prefWidth="318.0" text="Gestion des IPs ..." textFill="WHITE">
+                    <TitledPane fx:id="IPPanel" animated="false" layoutX="407.0" layoutY="17.0" prefHeight="408.0" prefWidth="318.0" text="Gestion des IPs ..." textFill="WHITE">
             <content>
               <AnchorPane fx:id="addressesPanel" minHeight="0.0" minWidth="0.0" prefHeight="322.0" prefWidth="316.0">
                      <children>
