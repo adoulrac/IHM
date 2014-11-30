@@ -124,13 +124,3 @@
 .pic-title {
  	-fx-font-weight: bold;
 }
-.pic-content *.split-pane-divider {
-	-fx-padding: 0 1 0 1;
-}
-
-.pic-content *.vertical-grabber {
-    -fx-padding: 0;
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-shape: " ";
-}
