@@ -19,7 +19,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.File;
@@ -36,6 +39,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     /** The Constant TAG_SEPARATOR. */
     private static final String TAG_SEPARATOR = ",";
+
+    private static final int LEFT_PADDING = 20;
 
     /** The Constant HGAP_PICTURES. */
     private static final double HGAP_PICTURES = 40.0;
@@ -80,6 +85,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     @FXML
     private Button deleteBtn;
 
+    private int pendingRequestId;
+
     /** The my img list. */
     private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
     
@@ -104,13 +111,17 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         private HBox hBoxStars;
 
         /** The glow depth. */
-        private final int GLOW_DEPTH = 50;
+        private static final int GLOW_DEPTH = 50;
 
         /** The stars dim. */
-        private final int STARS_DIM = 23;
+        private static final int STARS_DIM = 23;
 
         /** The number of stars. */
-        private final int NB_STARS = 5;
+        private static final int NB_STARS = 5;
+
+        private static final String STAR_ACTIVE = "IHM/resources/star_active.png";
+
+        private static final String STAR_INACTIVE = "IHM/resources/star_inactive.png";
 
         /**
          * Instantiates a new picture pane.
@@ -159,7 +170,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             });
             this.buildVotes();
             this.setCenter(imgView);
-            Label publisher = new Label("Posté par " + application.currentUser().getLogin()); // TODO: change with owner of pic
+            Label publisher = new Label("Posté par " + application.currentUser().getLogin()); // TODO change with pic owner
             VBox vBox = new VBox();
             vBox.getChildren().addAll(publisher, hBoxStars);
             vBox.setAlignment(Pos.CENTER);
@@ -180,10 +191,10 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 for (int i = 1; i <= NB_STARS; ++i) {
                     ImageView img = new ImageView();
                     if (note_round >= i) {
-                        img.setImage(new Image("IHM/resources/star_active.png"));
+                        img.setImage(new Image(STAR_ACTIVE));
                         setImage( img, STARS_DIM, STARS_DIM );
                     } else {
-                        img.setImage(new Image("IHM/resources/star_inactive.png"));
+                        img.setImage(new Image(STAR_INACTIVE));
                         setImage( img, STARS_DIM, STARS_DIM );
                     }
                     hBoxStars.getChildren().add(img);
@@ -192,7 +203,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             } else {
                 for (int i = 1; i <= NB_STARS; ++i) {
                     ImageView img = new ImageView();
-                    img.setImage(new Image("IHM/resources/star_inactive.png"));
+                    img.setImage(new Image(STAR_INACTIVE));
                     setImage(img, STARS_DIM, STARS_DIM);
                     hBoxStars.getChildren().add(img);
                 }
@@ -238,6 +249,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     public TabbedPicturesSubController() {
         super();
+
+        pendingRequestId = 0;
         myImgList = new CopyOnWriteArrayList<PicturePane>();
         allImgList = new CopyOnWriteArrayList<PicturePane>();
     }
@@ -255,34 +268,16 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     public void build() {
         deleteBtn.setDisable(true);
-        // init tabs
         tabbedPicturesSub.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
-        TilePane tP = new TilePane();
-        final int LEFT_PADDING = 20;
-        tP.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
-        tP.setVgap(VGAP_PICTURES);
-        tP.setHgap(HGAP_PICTURES);
-        SplitPane sP = (SplitPane) myImgTab.getContent();
-        sP.getItems().add(tP);
-        myImgTab.setClosable(false);
-
-        TilePane tP2 = new TilePane();
-        tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
-        tP2.setVgap(VGAP_PICTURES);
-        tP2.setHgap(HGAP_PICTURES);
-        SplitPane sP2 = (SplitPane) allImgTab.getContent();
-        sP2.getItems().add(tP2);
-        allImgTab.setClosable(false);
+        buildStaticTab(myImgTab);
+        buildStaticTab(allImgTab);
 
         // Set the user pictures
         List<Picture> myPictures = application.currentUser().getListPictures();
         addPicturesInTab(myPictures, myImgTab);
 
         // Set All pictures asynchronously
-        Integer requestId = application.addRequest(this);
-        if(requestId != null) {
-            application.getIHMtoDATA().getPictures( requestId );
-        }
+        requestAllPictures();
 
         // Add enter key press handler on search text field
         searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -295,10 +290,20 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         searchPicturesByUser(searchField.getText());
                     }
                     // We clear the tab because it will be fill in asynchronously
-                    clearTab(allImgTab);
+                    clearTabContent(allImgTab);
                 }
             }
         });
+    }
+
+    private void buildStaticTab(Tab tab) {
+        TilePane tP2 = new TilePane();
+        tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
+        tP2.setVgap(VGAP_PICTURES);
+        tP2.setHgap(HGAP_PICTURES);
+        SplitPane sP2 = (SplitPane) tab.getContent();
+        sP2.getItems().add(tP2);
+        tab.setClosable(false);
     }
 
     /**
@@ -312,6 +317,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
         Integer requestId = application.addRequest(this);
         if(requestId != null) {
+            pendingRequestId = requestId;
             application.getIHMtoDATA().getPictures(Arrays.asList(text.split(TAG_SEPARATOR)), requestId);
         }
     }
@@ -327,8 +333,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
         Integer requestId = application.addRequest(this);
         if(requestId != null) {
-            //ASK DATA: Add a new method with a string parameter to look for all pictures using username/login, etc.
-            //application.getIHMtoDATA().getPictures(, requestId);
+            pendingRequestId = requestId;
+            //TODO Add a new method with a string parameter to look for all pictures using username/login, etc.
         }
     }
 
@@ -363,7 +369,6 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                     }
                     ((TilePane) split.getItems().get(i)).getChildren().add(picturePane);
                 }
-                //split.getItems().add(split.getItems().get(i));
                 tab.setContent(split);
             }
         }
@@ -374,7 +379,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param tab the tab
      */
-    private void clearTab(Tab tab){
+    private void clearTabContent(Tab tab){
         SplitPane split = (SplitPane) tab.getContent();
         for (Node n : split.getItems()) {
             if(n instanceof TilePane) {
@@ -416,7 +421,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
             displayMyImg();
-            //TODO : call for DATA to add picture
+            //TODO call for DATA to add picture
         }
     }
 
@@ -428,7 +433,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             for(PicturePane picturePane : myImgList) {
                 if(picturePane.isSelected()) {
                     myImgList.remove(picturePane);
-                    //TODO : call for DATA to delete picture
+                    //TODO call for DATA to delete picture
                 }
             }
         }
@@ -453,7 +458,6 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
     }
 
-
     /**
      * Handles the display of the delete button.
      */
@@ -474,12 +478,25 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param fitWidth the fit width
      * @param fitHeight the fit height
      */
-    private static void setImage(ImageView img, final int fitWidth, final int fitHeight) {
+    private void setImage(ImageView img, final int fitWidth, final int fitHeight) {
         img.setFitWidth(fitWidth);
         img.setFitHeight(fitHeight);
         img.setPreserveRatio(true);
         img.setSmooth(true);
         img.setCache(true);
+    }
+
+    private void requestAllPictures() {
+        Integer requestId = application.addRequest(this);
+        if(requestId != null) {
+            pendingRequestId = requestId;
+            application.getIHMtoDATA().getPictures(requestId);
+        }
+    }
+
+    public void loadAllPictures(){
+        clearTabContent(allImgTab);
+        requestAllPictures();
     }
 
     /**
@@ -489,5 +506,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     public void setApp(final MainController app) {
         this.application = app;
+    }
+
+    public boolean isPendingRequest(int requestId) {
+        return pendingRequestId == requestId;
     }
 }
