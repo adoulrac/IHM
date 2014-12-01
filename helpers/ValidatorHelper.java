@@ -6,7 +6,6 @@ import IHM.validators.PasswordValidator;
 import IHM.validators.SimpleStringValidator;
 import com.google.common.base.Strings;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ValidatorHelper.
  */

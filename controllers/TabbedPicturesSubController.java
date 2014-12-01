@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class TabbedPicturesSubController.
  */
@@ -257,6 +256,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void build() {
         deleteBtn.setDisable(true);
         // init tabs
+        tabbedPicturesSub.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
         TilePane tP = new TilePane();
         final int LEFT_PADDING = 20;
         tP.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
@@ -264,6 +264,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         tP.setHgap(HGAP_PICTURES);
         SplitPane sP = (SplitPane) myImgTab.getContent();
         sP.getItems().add(tP);
+        myImgTab.setClosable(false);
 
         TilePane tP2 = new TilePane();
         tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
@@ -271,6 +272,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         tP2.setHgap(HGAP_PICTURES);
         SplitPane sP2 = (SplitPane) allImgTab.getContent();
         sP2.getItems().add(tP2);
+        allImgTab.setClosable(false);
 
         // Set the user pictures
         List<Picture> myPictures = application.currentUser().getListPictures();
@@ -336,6 +338,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param tab the tab
      */
     public void addTab(Tab tab) {
+        tab.setClosable(true);
         tabbedPicturesSub.getTabs().add(tab);
         tabbedPicturesSub.getSelectionModel().select(tab);
     }
