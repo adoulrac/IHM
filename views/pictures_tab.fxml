@@ -2,40 +2,54 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
-<TabPane prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs"  tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" fx:id="tabbedPicturesSub" fx:controller="IHM.controllers.TabbedPicturesSubController">
+<TabPane fx:id="tabbedPicturesSub" prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="IHM.controllers.TabbedPicturesSubController">
   <tabs>
-    <Tab text="Toutes les images" fx:id="allImgTab">
+    <Tab fx:id="allImgTab" text="Toutes les images">
       <content>
-        <SplitPane  orientation="VERTICAL" minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area" >
-            <StackPane alignment="TOP_CENTER" maxHeight="62.0">
-              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-                <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                <TextField layoutX="464.0" layoutY="21.0" text="Rechercher..." fx:id="searchField"/>
-                <CheckBox layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" fx:id="tagSearch" />
-                <CheckBox layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" fx:id="userSearch" />
-                <Rectangle width="10.0"></Rectangle>
-                </HBox>
-            </StackPane>
+        <SplitPane minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
+           <items>
+               <StackPane alignment="TOP_CENTER" maxHeight="62.0">
+                  <children>
+                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
+                      <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                         <children>
+                              <Button mnemonicParsing="false" text="Reload" onAction="#loadAllPictures"/>
+                         <CheckBox fx:id="tagSearch" layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" />
+                         <CheckBox fx:id="userSearch" layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" />
+                         <TextField fx:id="searchField" layoutX="464.0" layoutY="21.0" text="Rechercher..." />
+                         <Rectangle width="10.0" />
+                         </children>
+                      </HBox>
+                  </children>
+               </StackPane>
+           </items>
         </SplitPane>
       </content>
     </Tab>
-    <Tab text="Mes images" fx:id="myImgTab">
+    <Tab fx:id="myImgTab" text="Mes images">
       <content>
-        <SplitPane orientation="VERTICAL" minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
-            <StackPane alignment="TOP_CENTER" maxHeight="62.0">
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
-              <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                <Button mnemonicParsing="false" styleClass="delete-btn"  text="Supprimer" onAction="#deleteSelectedPicture" fx:id="deleteBtn"/>
-                <Button depthTest="DISABLE" mnemonicParsing="false" styleClass="add-btn"  text="Ajouter" onAction="#addLocalPicture">
-                        <Insets bottom="5.0" left="30.0" right="5.0" top="5.0" />
-                </Button>
-                <Rectangle width="10.0"></Rectangle>
-              </HBox>
-            </StackPane>
+        <SplitPane minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
+           <items>
+               <StackPane alignment="TOP_CENTER" maxHeight="62.0">
+                  <children>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
+                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                       <children>
+                         <Button fx:id="deleteBtn" mnemonicParsing="false" onAction="#deleteSelectedPicture" styleClass="delete-btn" text="Supprimer" />
+                         <Button depthTest="DISABLE" mnemonicParsing="false" onAction="#addLocalPicture" styleClass="add-btn" text="Ajouter">
+                            <text>
+                                    <Insets bottom="5.0" left="30.0" right="5.0" top="5.0" />
+                            </text>
+                         </Button>
+                         <Rectangle width="10.0" />
+                       </children>
+                    </HBox>
+                  </children>
+               </StackPane>
+           </items>
         </SplitPane>
       </content>
     </Tab>

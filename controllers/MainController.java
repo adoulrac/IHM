@@ -6,7 +6,6 @@ import DATA.model.User;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
 import IHM.interfaces.DATAtoIHMimpl;
-import IHM.interfaces.IHMtoDATAstub;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;

@@ -25,13 +25,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class PictureController.
  */
 public class PictureController extends Tab implements Initializable
 {
-    //TODO how to close tab + admin mode
+    //TODO Edition mode
 
     /** The app. */
     private final MainController app;
