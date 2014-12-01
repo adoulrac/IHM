@@ -7,25 +7,56 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IHMtoDATAstub.
+ */
 public class IHMtoDATAstub implements IHMtoDATA {
+    
+    /** The list users. */
     List<User> listUsers = new ArrayList<User>();
     List<User> listUsers2 = new ArrayList<User>();
     List<User> listUsers3 = new ArrayList<User>();
+
+    /** The list groups. */
     List<Group> listGroups = new ArrayList<Group>();
+    
+    /** The pictures. */
     List<Picture> pictures = new ArrayList<>();
+    
+    /** The amis. */
     Group amis = new Group("Amis");
     Group famille = new Group("Famille");
     Group travail = new Group("Travail");
+
+    
+    /** The arthur. */
     User arthur = new User("avanceul", "password", "Arthur", "Van Ceulen", "arthur.jpg", "16/08/1991");
+    
+    /** The rachid. */
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
-    User selim = new User("szenagui", "password", "Selim", "Zenagui", "selim.jpg", "08/06/1992");
+    
     User arthurt = new User("tranarth", "password", "Arthur", "Tran", "arthurt.jpg", "03/07/1991");
 
+    
+    /** The selim. */
+    User selim = new User("selim", "selim", "Sélim", "Zénagui", "selim.jpg", "08/06/1992");
+
+    /** The pic a. */
     Picture picA = new Picture("IHM/resources/logo.jpeg", null);
+    
+    /** The pic b. */
     Picture picB = new Picture("IHM/resources/avatar_icon.png", null);
+    
+    /** The pic c. */
     Picture picC = new Picture("IHM/resources/avatar_icon.png", null);
+    
+    /** The pic d. */
     Picture picD = new Picture("IHM/resources/logo.jpeg", null);
 
+    /**
+     * Instantiates a new IH mto dat astub.
+     */
     public IHMtoDATAstub() {
         listUsers.add(arthur);
         listUsers.add(rachid);
@@ -54,20 +85,24 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * Add a new comment for a picture 
-     * @param comment	The comment
-     * @param idRequest	The idRequest
+     * Add a new comment for a picture .
+     *
+     * @param comment The comment
      */
     @Override
     public void addComment(Comment comment) { }
 
+    /* (non-Javadoc)
+     * @see DATA.interfaces.IHMtoDATA#addNote(DATA.model.Note)
+     */
     @Override
     public void addNote(Note note) {
 
     }
 
     /**
-     * Add a new group for the current user
+     * Add a new group for the current user.
+     *
      * @param group The new group
      */
     @Override
@@ -76,35 +111,44 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * Add a picture for the current user
-     * @param picture	The picture
+     * Add a picture for the current user.
+     *
+     * @param picture The picture
      */
     @Override
     public void addPicture(Picture picture)  { }
 
     /**
-     * Add a user in a group
-     * @param user	The user to add
-     * @param group	The group
+     * Add a user in a group.
+     *
+     * @param user The user to add
+     * @param group The group
      */
     @Override
     public void addUserInGroup(User user, Group group)  {
         group.getUsers().add(user);
     }
 
+    /* (non-Javadoc)
+     * @see DATA.interfaces.IHMtoDATA#acceptUserInGroup(DATA.model.User, DATA.model.Group)
+     */
     @Override
     public void acceptUserInGroup(User user, Group group) {
 
     }
 
+    /* (non-Javadoc)
+     * @see DATA.interfaces.IHMtoDATA#refuseUser(DATA.model.User)
+     */
     @Override
     public void refuseUser(User user) {
 
     }
 
     /**
-     * Delete a group and all its users
-     * @param group	The gorup to delete
+     * Delete a group and all its users.
+     *
+     * @param group The gorup to delete
      */
     @Override
     public void deleteGroup(Group group)  {
@@ -112,14 +156,16 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * Delete a picture and all its comments, notes and tags
-     * @param picture	The picture to delete
+     * Delete a picture and all its comments, notes and tags.
+     *
+     * @param picture The picture to delete
      */
     @Override
     public void deletePicture(Picture picture)  { }
 
     /**
-     * Delete the user from the group specified
+     * Delete the user from the group specified.
+     *
      * @param user : The user to delete
      * @param group : The group
      */
@@ -129,22 +175,26 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * Save the current user in a JSON file
+     * Save the current user in a JSON file.
      */
     @Override
     public void export()  { }
 
     /**
-     * Get the user information
-     * @param idUser	: The user ID
-     * @param idRequest	: The request ID (for IHM)
+     * Get the user information.
+     *
+     * @param idUser : The user ID
+     * @param idRequest : The request ID (for IHM)
+     * @return the user by id
      */
     @Override
     public void getUserById(UUID idUser, String idRequest)  { }
 
     /**
-     * Get all the users in the specified group
-     * @return	The user list
+     * Get all the users in the specified group.
+     *
+     * @param g the g
+     * @return The user list
      */
     @Override
     public List<User> getUsersInGroup(Group g)  {
@@ -155,9 +205,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * @Brief : Request the list of users who are not in this group
-     * @param : Group
+     * Gets the user not in group.
+     *
+     * @param group the group
      * @return : list of user
+     * @Brief : Request the list of users who are not in this group
      */
     @Override
     public List<User> getUserNotInGroup(Group group)  {
@@ -168,9 +220,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * @Brief Request the Group with the name in param
+     * Gets the group.
+     *
      * @param group of the group searched
      * @return the Group searched
+     * @Brief Request the Group with the name in param
      */
     @Override
     public Group getGroup(String group)  {
@@ -180,9 +234,10 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * @Brief : Request all the group of the current user
-     * @param : None
+     * Gets the groups.
+     *
      * @return : list of all the group
+     * @Brief : Request all the group of the current user
      */
     @Override
     public List<Group> getGroups()  {
@@ -192,9 +247,11 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * @Brief : Request all the group where the user is not in
-     * @param : user
+     * Gets the groups user not in.
+     *
+     * @param user the user
      * @return : list of this group
+     * @Brief : Request all the group where the user is not in
      */
     @Override
     public List<Group> getGroupsUserNotIn(User user)  {
@@ -202,67 +259,88 @@ public class IHMtoDATAstub implements IHMtoDATA {
     }
 
     /**
-     * @Brief : Request a picture (with the id) on the network 
+     * Gets the picture by id.
+     *
      * @param picture : id of the picture
+     * @param idRequest the id request
      * @return : None (catch exception)
+     * @Brief : Request a picture (with the id) on the network
      */
     @Override
     public void getPictureById(UUID picture, int idRequest)  { }
 
     /**
+     * Gets the pictures.
+     *
+     * @param user the user
+     * @param idRequest the id request
+     * @return the pictures
      * @Brief Request a user’s pictures on the network
-     * @param user
-     * @param idRequest
      */
     @Override
     public void getPictures(User user, int idRequest)  { }
 
     /**
+     * Gets the pictures.
+     *
+     * @param listtag the listtag
+     * @param idRequest the id request
+     * @return the pictures
      * @Brief Request a picture from a list of tags
-     * @param listtag
-     * @param idRequest
      */
     @Override
     public void getPictures(List<String> listtag, int idRequest)  { }
 
     /**
+     * Gets the pictures.
+     *
+     * @param idRequest the id request
+     * @return the pictures
      * @Brief Request all the pictures from all connected users
-     * @param idRequest
      */
     @Override
     public void getPictures(int idRequest)  { }
 
     /**
-     * @Brief Visit current user’s profile
+     * Gets the current user.
+     *
      * @return User
+     * @Brief Visit current user’s profile
      */
     @Override
     public User getCurrentUser()  { return rachid; }
 
     /**
-     * @Brief Import a user from JSON file’s path
-     * @param parameter
+     * Import_.
+     *
+     * @param parameter the parameter
      * @return User
+     * @Brief Import a user from JSON file’s path
      */
     @Override
     public User import_(String parameter)  { return rachid; }
 
     /**
+     * Update picture.
+     *
+     * @param picture the picture
      * @Brief Update current picture
-     * @param picture
      */
     @Override
     public void updatePicture(Picture picture)  { }
 
     /**
+     * Update profile.
+     *
+     * @param parameter the parameter
      * @Brief Update user in the JSON file
-     * @param parameter
      */
     @Override
     public void updateProfile(User parameter)  { }
 
     /**
-     * Sign Up a new user, start the server and connect the user
+     * Sign Up a new user, start the server and connect the user.
+     *
      * @param u : A light User with the login information
      * @return true : signup OK
      * 		   false : signup KO
@@ -271,9 +349,10 @@ public class IHMtoDATAstub implements IHMtoDATA {
     public boolean signup(User u) { return true; }
 
     /**
-     * Connect the user, check the password and username
-     * @param username
-     * @param password
+     * Connect the user, check the password and username.
+     *
+     * @param username the username
+     * @param password the password
      * @return true : Connect OK
      * 		 false : Connect KO
      */
@@ -286,6 +365,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
             return false;
     }
 
+    /* (non-Javadoc)
+     * @see DATA.interfaces.IHMtoDATA#getAllUsers()
+     */
     @Override
     public List<Group> getAllUsers() {
         return null;
@@ -293,7 +375,8 @@ public class IHMtoDATAstub implements IHMtoDATA {
 
     /**
      * Logout the current user
-     * Save its state
+     * Save its state.
+     *
      * @return true : OK
      * 			false : KO
      */
@@ -301,9 +384,10 @@ public class IHMtoDATAstub implements IHMtoDATA {
     public boolean logout() { return true; }
 
     /**
-     * Edit the current profile
+     * Edit the current profile.
+     *
      * @param u : The new light user with the new information
-     * @return	true : edit OK
+     * @return true : edit OK
      * 			false : edit KO
      */
     @Override

@@ -16,31 +16,49 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RegisterController.
+ */
 public class RegisterController implements Initializable {
 
+    /** The application. */
     private MainController application;
 
+    /** The login. */
     @FXML
     private TextField login;
 
+    /** The password. */
     @FXML
     private PasswordField password;
 
+    /** The confirmation. */
     @FXML
     private PasswordField confirmation;
 
+    /** The ips. */
     @FXML
     private TextArea ips;
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //NOP
     }
 
+    /**
+     * Login.
+     */
     public void login() {
         application.goToLogin();
     }
 
+    /**
+     * Subscribe.
+     */
     public void subscribe() {
         String loginText = login.getText();
         String passwordText = password.getText();
@@ -82,6 +100,11 @@ public class RegisterController implements Initializable {
     }
 
 
+    /**
+     * Sets the app.
+     *
+     * @param application the new app
+     */
     public void setApp(MainController application){
         this.application = application;
     }

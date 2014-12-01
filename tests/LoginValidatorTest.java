@@ -9,11 +9,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LoginValidatorTest.
+ */
 @RunWith(JUnit4.class)
 public class LoginValidatorTest {
 
+    /** The tester. */
     LoginValidator tester = new LoginValidator();
 
+    /**
+     * Validate.
+     */
     @Test
     public void validate() {
         assertTrue("Validate right login", tester.validate("adoulrac34"));

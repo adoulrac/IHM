@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.*;
 
-import IHM.ListView.ButtonListCell;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,41 +29,78 @@ import static IHM.utils.Dialogs.showErrorDialog;
 import static IHM.utils.Dialogs.showWarningDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GroupsController.
+ */
 public class GroupsController implements Initializable {
+    
+    /** The groups. */
     @FXML
     private TitledPane gestionGroupes;
+
     @FXML
     private ListView groups;
+    
+    /** The members. */
     @FXML
     private ListView members;
+    
+    /** The group selected. */
     @FXML
     private TextField groupSelected;
+    
+    /** The new group name. */
     @FXML
     private TextField newGroupName;
+    
+    /** The add group btn. */
     @FXML
     private Button addGroupBtn;
+    
+    /** The add user name. */
     @FXML
     private TextField addUserName;
+    
+    /** The add user btn. */
     @FXML
     private Button addUserBtn;
+    
+    /** The delete group btn. */
     @FXML
     private Button deleteGroupBtn;
+
     @FXML
     private Button deleteMemberBtn;
+
     @FXML
     private Button finishBtn;
 
+    /** The application. */
     private MainController application;
+
+    /** The obs groups list. */
     private final ObservableList obsGroupsList= observableArrayList();
+    
+    /** The obs members list. */
     private final ObservableList obsMembersList= observableArrayList();
+
 
     List<Group> listGroups = null;
     IHMtoDATA stub = new IHMtoDATAstub();
 
+    /**
+     * Sets the app.
+     *
+     * @param application the new app
+     */
     public void setApp(MainController application){
         this.application = application;
     }
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -80,6 +116,9 @@ public class GroupsController implements Initializable {
 
     }
 
+    /**
+     * Load groups.
+     */
     public void loadGroups() {
 
         disableFields(true);
@@ -135,6 +174,11 @@ public class GroupsController implements Initializable {
         }
     }
 
+    /**
+     * Change group name.
+     *
+     * @param event the event
+     */
     @FXML
     public void changeGroupName(ActionEvent event) {
         //application.getIHMtoDATA().addGroup(new Group(groupSelected.getText()));
@@ -142,6 +186,11 @@ public class GroupsController implements Initializable {
     }
 
 
+    /**
+     * Delete group.
+     *
+     * @param event the event
+     */
     @FXML
     public void deleteGroup(ActionEvent event){
         boolean response = Dialogs.showConfirmationDialog("Are you sure you want to delete this group ?");
@@ -187,6 +236,11 @@ public class GroupsController implements Initializable {
         }
     }
 
+    /**
+     * Adds the new group.
+     *
+     * @param event the event
+     */
     @FXML
     public void addNewGroup(ActionEvent event){
         if(newGroupName.getText().equals("")) {
@@ -211,6 +265,11 @@ public class GroupsController implements Initializable {
         }
     }
 
+    /**
+     * Display users.
+     *
+     * @param groupName the group name
+     */
     public void displayUsers(String groupName) {
         if(groupName.equals(null)) {
             obsMembersList.clear();
@@ -228,6 +287,11 @@ public class GroupsController implements Initializable {
         members.setItems(obsMembersList);
     }
 
+    /**
+     * Disable fields.
+     *
+     * @param b the b
+     */
     public void disableFields (Boolean b) {
         groupSelected.setDisable(b);
         deleteGroupBtn.setDisable(b);

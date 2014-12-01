@@ -6,6 +6,7 @@ import DATA.model.User;
 import java.util.List;
 import java.util.UUID;
 
+// TODO: Auto-generated Javadoc
 /**
  * Interface DATA uses to call IHM with asynchronous results.
  * queryId the id of the query if the result was previously requested by IHM, -1 if not.
@@ -26,25 +27,32 @@ public interface DATAtoIHM
 
     /**
      * Send back the picture requested.
+     *
      * @param picture the picture requested.
+     * @param queryId the query id
      */
     void receivePicture(Picture picture, int queryId);
 
     /**
      * Send back the list of pictures requested.
+     *
      * @param pictures the list of pictures requested.
+     * @param queryId the query id
      */
     void receivePictures(List<Picture> pictures, int queryId);
 
     /**
-     * Receive a friend request by another user
+     * Receive a friend request by another user.
+     *
      * @param user the other user who sent the request.
      */
     void receiveFriendRequest(User user);
 
     /**
-     * Receive a friend response by another user
+     * Receive a friend response by another user.
+     *
      * @param user the other user who sent the request.
+     * @param response the response
      */
     void receiveFriendResponse(User user, boolean response);
 }

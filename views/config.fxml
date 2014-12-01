@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TitledPane fx:id="profile" prefHeight="501.0" prefWidth="735.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.ProfileController">
+<TitledPane fx:id="profile" prefHeight="501.0" prefWidth="735.0" text="Profil" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.ProfileController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="419.0" prefWidth="600.0" styleClass="settings-pane">
          <children>
@@ -17,35 +17,19 @@
             <Accordion layoutX="14.0" layoutY="28.0" />
             <Button fx:id="okButton" layoutX="595.0" layoutY="430.0" mnemonicParsing="false" onAction="#onOK" text="OK" />
             <Button fx:id="cancelButton" layoutX="642.0" layoutY="430.0" mnemonicParsing="false" onAction="#onCancel" text="Annuler" />
-          <TitledPane animated="false" layoutX="407.0" layoutY="17.0" prefHeight="206.0" prefWidth="318.0" text="Gestion des IPs ..." textFill="WHITE">
+                    <TitledPane fx:id="IPPanel" animated="false" layoutX="407.0" layoutY="17.0" prefHeight="408.0" prefWidth="318.0" text="Gestion des IPs ..." textFill="WHITE">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="181.0" prefWidth="275.0">
+              <AnchorPane fx:id="addressesPanel" minHeight="0.0" minWidth="0.0" prefHeight="322.0" prefWidth="316.0">
                      <children>
-                        <TextField fx:id="newIP" layoutX="14.0" layoutY="14.0" text="Nouvelle IP ..." />
-                        <Button fx:id="validateNewIP" layoutX="196.0" layoutY="14.0" mnemonicParsing="false" text="Valider" />
-                        <Label layoutX="14.0" layoutY="51.0" text="Vos IPs :">
+                        <TextField fx:id="newIP" layoutX="14.0" layoutY="14.0" promptText="Nouvelle IP ..." />
+                        <Button fx:id="validateNewIP" layoutX="196.0" layoutY="14.0" mnemonicParsing="false" onAction="#addIPAddress" text="Ajouter" />
+                        <Label layoutX="16.0" layoutY="57.0" text="Adresses IP configurées:">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="14.0" layoutY="73.0" text="192.168.1.1" />
-                        <Label layoutX="14.0" layoutY="98.0" text="102.0.0.0" />
-                        <Label layoutX="14.0" layoutY="124.0" text="118.218.0.0" />
-                        <ImageView fitHeight="14.0" fitWidth="11.0" layoutX="90.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/delete_btn_black.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="14.0" fitWidth="11.0" layoutX="90.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/delete_btn_black.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="14.0" fitWidth="11.0" layoutX="90.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/delete_btn_black.png" />
-                           </image>
-                        </ImageView>
+                        <ListView fx:id="listView" layoutX="14.0" layoutY="81.0" prefHeight="255.0" prefWidth="271.0" />
+                        <Button fx:id="removeButton" layoutX="14.0" layoutY="339.0" mnemonicParsing="false" onAction="#removeIPAddress" prefHeight="29.0" prefWidth="72.0" text="Supprimer" />
                      </children>
                   </AnchorPane>
             </content>
@@ -58,7 +42,7 @@
                   <Image url="@../resources/avatar_icon.png" />
                </image>
             </ImageView>
-            <Label fx:id="nickname" layoutX="206.0" layoutY="71.0" text="Adoulrac">
+            <Label fx:id="nickname" layoutX="206.0" layoutY="71.0">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -78,11 +62,11 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Button fx:id="changeAvatar" layoutX="205.0" layoutY="155.0" mnemonicParsing="false" onAction="#avatarPicker" prefHeight="29.0" prefWidth="104.0" text="Changer avatar" />
-            <TextField fx:id="lastname" layoutX="205.0" layoutY="234.0" text="ADOUL" />
-            <TextField fx:id="firstname" layoutX="205.0" layoutY="280.0" text="Rachid" />
-            <TextField fx:id="birthdate" layoutX="205.0" layoutY="325.0" text="13 Juin 1992" />
-            <TextField fx:id="avatarPath" layoutX="205.0" layoutY="130.0" prefHeight="25.0" prefWidth="152.0" promptText="C:\Users\Rachid\Documents\Cours UTC\GI05\API13\PicShare\Scene Builder" />
+            <TextField fx:id="lastname" layoutX="205.0" layoutY="234.0" promptText="NOM" />
+            <TextField fx:id="firstname" layoutX="205.0" layoutY="280.0" promptText="Prénom" />
+            <TextField fx:id="birthdate" layoutX="205.0" layoutY="325.0" promptText="Date de naissance" />
+            <TextField fx:id="avatarPath" layoutX="205.0" layoutY="130.0" prefHeight="25.0" prefWidth="152.0" promptText="Avatar Path" />
+            <Button fx:id="changeAvatar" layoutX="205.0" layoutY="159.0" mnemonicParsing="false" onAction="#avatarPicker" text="Parcourir" />
          </children></AnchorPane>
   </content>
    <font>

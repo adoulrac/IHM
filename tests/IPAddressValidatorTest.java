@@ -9,11 +9,19 @@ import org.junit.runners.JUnit4;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IPAddressValidatorTest.
+ */
 @RunWith(JUnit4.class)
 public class IPAddressValidatorTest {
 
+    /** The tester. */
     IPAddressValidator tester = new IPAddressValidator();
 
+    /**
+     * Validate.
+     */
     @Test
     public void validate() {
         assertTrue("Validate right IP address", tester.validate("192.168.1.1"));

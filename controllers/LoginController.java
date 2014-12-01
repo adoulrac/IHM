@@ -16,23 +16,34 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+// TODO: Auto-generated Javadoc
 /**
  * Login Controller.
  */
 public class LoginController extends Pane implements Initializable {
 
+    /** The login. */
     @FXML
     TextField login;
+    
+    /** The password. */
     @FXML
     PasswordField password;
 
+    /** The application. */
     private MainController application;
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //NOP
     }
 
+    /**
+     * Login.
+     */
     public void login() {
         String loginText = login.getText();
         String passwordText = password.getText();
@@ -46,6 +57,9 @@ public class LoginController extends Pane implements Initializable {
         }
     }
 
+    /**
+     * Load profile.
+     */
     public void loadProfile() {
         File profileFile = FileUtil.chooseFile();
         try {
@@ -57,6 +71,9 @@ public class LoginController extends Pane implements Initializable {
         }
     }
 
+    /**
+     * Open application.
+     */
     private void openApplication() {
         User user = application.getIHMtoDATA().getCurrentUser();
         if(user != null) {
@@ -69,10 +86,18 @@ public class LoginController extends Pane implements Initializable {
         }
     }
 
+    /**
+     * Register.
+     */
     public void register() {
         application.goToRegister();
     }
 
+    /**
+     * Sets the app.
+     *
+     * @param application the new app
+     */
     public void setApp(MainController application){
         this.application = application;
     }
