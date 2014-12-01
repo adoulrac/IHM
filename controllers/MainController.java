@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
@@ -78,6 +79,7 @@ public class MainController {
         DATAInterfaceReceiver = new DATAtoIHMimpl(this);
         DATAInterface = new IHMtoDATAImpl();
 
+        stage.getIcons().add(new Image("IHM/resources/logo.jpeg"));
         goToLogin();
         primaryStage.show();
     }

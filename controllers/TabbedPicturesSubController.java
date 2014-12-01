@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -89,19 +90,18 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /**
      * The Class PicturePane.
      */
-    private class PicturePane extends BorderPane
-    {
+    private class PicturePane extends BorderPane {
 
         /** The picture. */
         private Picture picture;
 
-        /** The is selected. */
+        /** The picture is selected. */
         private boolean isSelected;
 
         /** The lbl votes. */
         private Label lblVotes;
 
-        /** The h box stars. */
+        /** The hbox containing stars (marks). */
         private HBox hBoxStars;
 
         /** The glow depth. */
@@ -109,6 +109,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
         /** The stars dim. */
         private final int STARS_DIM = 23;
+
+        /** The number of stars. */
+        private final int NB_STARS = 5;
 
         /**
          * Instantiates a new picture pane.
@@ -124,18 +127,18 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
 
         /**
-         * Builds the.
+         * Builds the Picture box.
          */
         private void build() {
-            final ImageView imgView = new ImageView( new Image(picture.getFilename()) );
-            setImage( imgView, PICTURE_DIM, PICTURE_DIM );
+            final ImageView imgView = new ImageView(new Image(picture.getFilename()));
+            setImage(imgView, PICTURE_DIM, PICTURE_DIM);
             imgView.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                public void handle(final MouseEvent mouseEvent) {
+                    if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                         if(mouseEvent.getClickCount() == 2) {
-                            imgView.setEffect( null );
+                            imgView.setEffect(null);
                             isSelected = false;
                             PictureController pC = new PictureController(picture, application);
                             addTab(pC);
@@ -154,12 +157,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         }
                     }
                 }
-            } );
+            });
             this.buildVotes();
             this.setCenter(imgView);
-            Label publisher = new Label("  Posté par " + application.currentUser().getLogin()); // TODO: change with owner of pic
+            Label publisher = new Label("Posté par " + application.currentUser().getLogin()); // TODO: change with owner of pic
             VBox vBox = new VBox();
-            vBox.getChildren().addAll( publisher, hBoxStars );
+            vBox.getChildren().addAll(publisher, hBoxStars);
+            vBox.setAlignment(Pos.CENTER);
             this.setBottom(vBox);
         }
 
@@ -167,14 +171,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          * Builds the votes.
          */
         private void buildVotes() {
-            if (picture.getListNotes()!=null && !picture.getListNotes().isEmpty()) {
+            if (picture.getListNotes() != null && !picture.getListNotes().isEmpty()) {
                 float note = 0;
                 for (Note n : picture.getListNotes()) {
                     note += n.getValue();
                 }
                 note = note / (float) picture.getListNotes().size();
                 int note_round = Math.round(note);
-                for (int i = 1; i <= 5; i++) {
+                for (int i = 1; i <= NB_STARS; ++i) {
                     ImageView img = new ImageView();
                     if (note_round >= i) {
                         img.setImage(new Image("IHM/resources/star_active.png"));
@@ -187,10 +191,10 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 }
                 lblVotes.setText("(" + picture.getListNotes().size() + " votes)");
             } else {
-                for (int i = 1; i <= 5; i++) {
+                for (int i = 1; i <= NB_STARS; ++i) {
                     ImageView img = new ImageView();
                     img.setImage(new Image("IHM/resources/star_inactive.png"));
-                    setImage( img, STARS_DIM, STARS_DIM );
+                    setImage(img, STARS_DIM, STARS_DIM);
                     hBoxStars.getChildren().add(img);
                 }
             }
@@ -202,7 +206,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          * @param img the img
          */
         private void createGlow(ImageView img) {
-            DropShadow borderGlow= new DropShadow();
+            DropShadow borderGlow = new DropShadow();
             borderGlow.setOffsetY(0.0f);
             borderGlow.setOffsetX(0.0f);
             borderGlow.setColor(Color.ORANGE);
@@ -248,20 +252,21 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Builds the.
+     * Builds the Tabbed Pictures.
      */
     public void build() {
         deleteBtn.setDisable(true);
         // init tabs
         TilePane tP = new TilePane();
-        tP.setPadding( new Insets( 20, 0, 0, 0 ) );
+        final int LEFT_PADDING = 20;
+        tP.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
         tP.setVgap(VGAP_PICTURES);
         tP.setHgap(HGAP_PICTURES);
         SplitPane sP = (SplitPane) myImgTab.getContent();
         sP.getItems().add(tP);
 
         TilePane tP2 = new TilePane();
-        tP2.setPadding( new Insets( 20, 0, 0, 0 ) );
+        tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
         tP2.setVgap(VGAP_PICTURES);
         tP2.setHgap(HGAP_PICTURES);
         SplitPane sP2 = (SplitPane) allImgTab.getContent();
@@ -326,7 +331,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Adds the tab.
+     * Adds the tab to the tab Pane.
      *
      * @param tab the tab
      */
@@ -343,7 +348,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
         SplitPane split = (SplitPane) tab.getContent();
-        for (int i=0; i < split.getItems().size(); ++i) { // thread-safe
+        for (int i = 0; i < split.getItems().size(); ++i) { // thread-safe
             if(split.getItems().get(i) instanceof TilePane) {
                 for (Picture p : pictures) {
                     PicturePane picturePane = new PicturePane(p);
@@ -377,7 +382,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Adds the pictures.
+     * Adds pictures in All Images tab sent by asynchronous call.
      *
      * @param pictures the pictures
      */
@@ -388,7 +393,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Adds the picture.
+     * Adds a picture in All Images tab sent by asynchronous call.
      *
      * @param picture the picture
      */
@@ -399,11 +404,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Adds the local picture.
+     * Adds a local picture.
      */
-    public void addLocalPicture(){
+    public void addLocalPicture() {
         File f = FileUtil.chooseFile();
-        if(f != null){
+        if(f != null) {
             Picture p = new Picture(f./*getName()*/toURI().toString(), application.currentUser().getUid());
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
@@ -413,7 +418,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Delete selected picture.
+     * Delete selected picture(s).
      */
     public void deleteSelectedPicture() {
         if(Dialogs.showConfirmationDialog(CONFIRM_SUPPRESSION)) {
@@ -428,10 +433,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Display my img.
+     * Refresh the display of My Images tab.
      */
-    private void displayMyImg()
-    {
+    private void displayMyImg() {
         SplitPane split = (SplitPane) myImgTab.getContent();
         for (Node n : split.getItems()) {
             if(n instanceof TilePane) {
@@ -448,9 +452,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
 
     /**
-     * Delete btn display.
+     * Handles the display of the delete button.
      */
-    public void deleteBtnDisplay() {
+    private void deleteBtnDisplay() {
         for (PicturePane picturePane : myImgList) {
             if(picturePane.isSelected()) {
                 deleteBtn.setDisable(false);
@@ -461,13 +465,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Sets the image.
+     * Sets an image to keep its ratio.
      *
      * @param img the img
      * @param fitWidth the fit width
      * @param fitHeight the fit height
      */
-    private static void setImage(ImageView img, int fitWidth, int fitHeight) {
+    private static void setImage(ImageView img, final int fitWidth, final int fitHeight) {
         img.setFitWidth(fitWidth);
         img.setFitHeight(fitHeight);
         img.setPreserveRatio(true);
