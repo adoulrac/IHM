@@ -188,7 +188,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @return the user by id
      */
     @Override
-    public void getUserById(UUID idUser, String idRequest)  { }
+    public void getUserById(UUID idUser, int idRequest)  { }
 
     /**
      * Get all the users in the specified group.
