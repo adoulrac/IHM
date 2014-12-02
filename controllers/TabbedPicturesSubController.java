@@ -2,6 +2,7 @@ package IHM.controllers;
 
 import DATA.model.Note;
 import DATA.model.Picture;
+import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
 import com.google.common.base.Strings;
@@ -39,6 +40,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     /** The Constant TAG_SEPARATOR. */
     private static final String TAG_SEPARATOR = ",";
+
+    private static final String USER_SEPARATOR = ",";
 
     private static final int LEFT_PADDING = 20;
 
@@ -113,16 +116,6 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         /** The glow depth. */
         private static final int GLOW_DEPTH = 50;
 
-        /** The stars dim. */
-        private static final int STARS_DIM = 23;
-
-        /** The number of stars. */
-        private static final int NB_STARS = 5;
-
-        private static final String STAR_ACTIVE = "IHM/resources/star_active.png";
-
-        private static final String STAR_INACTIVE = "IHM/resources/star_inactive.png";
-
         /**
          * Instantiates a new picture pane.
          *
@@ -141,7 +134,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          */
         private void build() {
             final ImageView imgView = new ImageView(new Image(picture.getFilename()));
-            setImage(imgView, PICTURE_DIM, PICTURE_DIM);
+            NoteHelper.adaptImage(imgView, PICTURE_DIM, PICTURE_DIM);
             imgView.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
                 @Override
@@ -168,46 +161,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                     }
                 }
             });
-            this.buildVotes();
-            this.setCenter(imgView);
-            Label publisher = new Label("Posté par " + application.currentUser().getLogin()); // TODO change with pic owner
+            NoteHelper.getPictureAverage(picture, hBoxStars);
+            lblVotes.setText("(" + picture.getListNotes().size() + " votes)");
+            setCenter(imgView);
+            Label publisher = new Label("Posté par " /*TODO + picture.getUser()*/);
             VBox vBox = new VBox();
             vBox.getChildren().addAll(publisher, hBoxStars);
             vBox.setAlignment(Pos.CENTER);
-            this.setBottom(vBox);
-        }
-
-        /**
-         * Builds the votes.
-         */
-        private void buildVotes() {
-            if (picture.getListNotes() != null && !picture.getListNotes().isEmpty()) {
-                float note = 0;
-                for (Note n : picture.getListNotes()) {
-                    note += n.getValue();
-                }
-                note = note / (float) picture.getListNotes().size();
-                int note_round = Math.round(note);
-                for (int i = 1; i <= NB_STARS; ++i) {
-                    ImageView img = new ImageView();
-                    if (note_round >= i) {
-                        img.setImage(new Image(STAR_ACTIVE));
-                        setImage( img, STARS_DIM, STARS_DIM );
-                    } else {
-                        img.setImage(new Image(STAR_INACTIVE));
-                        setImage( img, STARS_DIM, STARS_DIM );
-                    }
-                    hBoxStars.getChildren().add(img);
-                }
-                lblVotes.setText("(" + picture.getListNotes().size() + " votes)");
-            } else {
-                for (int i = 1; i <= NB_STARS; ++i) {
-                    ImageView img = new ImageView();
-                    img.setImage(new Image(STAR_INACTIVE));
-                    setImage(img, STARS_DIM, STARS_DIM);
-                    hBoxStars.getChildren().add(img);
-                }
-            }
+            setBottom(vBox);
         }
 
         /**
@@ -335,6 +296,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         if(requestId != null) {
             pendingRequestId = requestId;
             //TODO Add a new method with a string parameter to look for all pictures using username/login, etc.
+            //application.getIHMtoDATA().getPictures(Arrays.asList(text.split(USER_SEPARATOR));
         }
     }
 
@@ -417,11 +379,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addLocalPicture() {
         File f = FileUtil.chooseFile();
         if(f != null) {
-            Picture p = new Picture(f./*getName()*/toURI().toString(), application.currentUser().getUid());
+            Picture p = new Picture(f.toURI().toString(), application.currentUser().getUid());
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
             displayMyImg();
-            //TODO call for DATA to add picture
+            application.getIHMtoDATA().addPicture(p);
         }
     }
 
@@ -433,7 +395,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             for(PicturePane picturePane : myImgList) {
                 if(picturePane.isSelected()) {
                     myImgList.remove(picturePane);
-                    //TODO call for DATA to delete picture
+                    application.getIHMtoDATA().deletePicture(picturePane.getPicture());
                 }
             }
         }
@@ -469,21 +431,6 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             }
         }
         deleteBtn.setDisable(true);
-    }
-
-    /**
-     * Sets an image to keep its ratio.
-     *
-     * @param img the img
-     * @param fitWidth the fit width
-     * @param fitHeight the fit height
-     */
-    private void setImage(ImageView img, final int fitWidth, final int fitHeight) {
-        img.setFitWidth(fitWidth);
-        img.setFitHeight(fitHeight);
-        img.setPreserveRatio(true);
-        img.setSmooth(true);
-        img.setCache(true);
     }
 
     private void requestAllPictures() {

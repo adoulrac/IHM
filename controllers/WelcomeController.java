@@ -1,6 +1,5 @@
 package IHM.controllers;
 
-import IHM.utils.Dialogs;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
