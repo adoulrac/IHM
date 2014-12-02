@@ -2,6 +2,7 @@ package IHM.controllers;
 
 import DATA.model.Note;
 import DATA.model.Picture;
+import DATA.model.Tag;
 import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
@@ -27,7 +28,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -164,7 +167,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             NoteHelper.getPictureAverage(picture, hBoxStars);
             lblVotes.setText("(" + picture.getListNotes().size() + " votes)");
             setCenter(imgView);
-            Label publisher = new Label("Posté par " /*TODO + picture.getUser()*/);
+            Label publisher = new Label("Posté par " + picture.getUser().getLogin());
             VBox vBox = new VBox();
             vBox.getChildren().addAll(publisher, hBoxStars);
             vBox.setAlignment(Pos.CENTER);
@@ -228,8 +231,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Builds the Tabbed Pictures.
      */
     public void build() {
-        deleteBtn.setDisable(true);
-        tabbedPicturesSub.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
+        deleteBtn.setDisable( true );
+        tabbedPicturesSub.setTabClosingPolicy( TabClosingPolicy.SELECTED_TAB );
         buildStaticTab(myImgTab);
         buildStaticTab(allImgTab);
 
@@ -241,20 +244,26 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         requestAllPictures();
 
         // Add enter key press handler on search text field
-        searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        searchField.setOnKeyPressed( new EventHandler<KeyEvent>()
+        {
             @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                    if (tagSearch.isSelected()) {
-                        searchPicturesByTag(searchField.getText());
-                    } else {
-                        searchPicturesByUser(searchField.getText());
+            public void handle( KeyEvent keyEvent )
+            {
+                if( keyEvent.getCode().equals( KeyCode.ENTER ) )
+                {
+                    if( tagSearch.isSelected() )
+                    {
+                        searchPicturesByTag( searchField.getText() );
+                    }
+                    else
+                    {
+                        searchPicturesByUser( searchField.getText() );
                     }
                     // We clear the tab because it will be fill in asynchronously
-                    clearTabContent(allImgTab);
+                    clearTabContent( allImgTab );
                 }
             }
-        });
+        } );
     }
 
     private void buildStaticTab(Tab tab) {
@@ -279,7 +288,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         Integer requestId = application.addRequest(this);
         if(requestId != null) {
             pendingRequestId = requestId;
-            application.getIHMtoDATA().getPictures(Arrays.asList(text.split(TAG_SEPARATOR)), requestId);
+            ArrayList<String> arrayListStr = new ArrayList<String>(Arrays.asList(text.split(TAG_SEPARATOR)));
+            ArrayList<Tag> arrayListTag = new ArrayList<Tag>();
+            for(String name : arrayListStr)
+            {
+                arrayListTag.add(new Tag(name));
+            }
+            application.getIHMtoDATA().getPictures(arrayListTag, requestId);
         }
     }
 
@@ -379,11 +394,15 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addLocalPicture() {
         File f = FileUtil.chooseFile();
         if(f != null) {
-            Picture p = new Picture(f.toURI().toString(), application.currentUser().getUid());
+            Picture p = new Picture(f.toURI().toString(), "", application.currentUser());
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
             displayMyImg();
-            application.getIHMtoDATA().addPicture(p);
+            try {
+                application.getIHMtoDATA().addPicture(p);
+            } catch (IOException e) {
+                Dialogs.showWarningDialog(e.getMessage());
+            }
         }
     }
 

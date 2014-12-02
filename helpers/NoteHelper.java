@@ -18,7 +18,7 @@ public class NoteHelper {
     private static final String STAR_INACTIVE = "IHM/resources/star_inactive.png";
 
     public static float getPictureAverage(Picture picture, HBox hBoxStars) {
-        float average = 0.f;
+        float average = picture.getNoteAverage();
         if (picture.getListNotes() != null && !picture.getListNotes().isEmpty()) {
             for (int i = 1; i <= NB_STARS; ++i) {
                 ImageView img = new ImageView();

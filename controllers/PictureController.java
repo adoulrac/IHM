@@ -127,7 +127,7 @@ public class PictureController extends Tab implements Initializable
         String filename = Files.getNameWithoutExtension(picture.getFilename());
 
         //Set Owner name
-        partageTxt.setText("L'image " + filename + " a été partagée par " + /*TODO picture.getOwner()+ */"Unknown.");
+        partageTxt.setText("L'image " + filename + " a été partagée par " + picture.getUser().getLogin() + "Unknown.");
 
         //Refresh button
         final PictureController current = this;
@@ -143,7 +143,7 @@ public class PictureController extends Tab implements Initializable
 
         //Set Description
         descTxt.setWrappingWidth(480);
-        descTxt.setText(""/*TODO picture.getDescription()*/);
+        descTxt.setText(picture.getDescription());
 
         if (picture.getComments() != null) {
             for (Comment c : picture.getComments()) {
@@ -303,7 +303,7 @@ public class PictureController extends Tab implements Initializable
                 if (ValidatorHelper.validateString(msg)) {
                     User currentUser = app.currentUser();
                     try {
-                        Comment c = new Comment(msg, new Date(), currentUser.getUid(), picture.getUid(), picture.getUserId());
+                        Comment c = new Comment(msg, new Date(), currentUser, picture.getUid(), picture.getUser().getUid());
                         app.getIHMtoDATA().addComment(c);
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
                     }catch(BadInformationException e) {
@@ -329,7 +329,7 @@ public class PictureController extends Tab implements Initializable
                 if (VoteValidator.validate(voteField.getText())) {
                     int vote = Integer.parseInt(voteField.getText());
                     try {
-                        Note note = new Note(vote, app.currentUser().getUid(), picture.getUid(), picture.getUserId());
+                        Note note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
                         picture.getListNotes().add(note);
                         buildVotes();
                         app.getIHMtoDATA().addNote(note);
