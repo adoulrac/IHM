@@ -287,7 +287,7 @@ public class ProfileController implements Initializable {
 	 */
 	public void addIPAddress() {
 		if (!ValidatorHelper.validateIPs(newIP.getText())) {
-			Dialogs.showErrorDialog("Incorrect address format.");
+			Dialogs.showErrorDialog("Le format de l'adresse est incorrecte.");
 		} else {
 			if (!userIP.contains(newIP.getText()) && isEditable()) {
 				this.userIP.add(newIP.getText());
@@ -298,7 +298,7 @@ public class ProfileController implements Initializable {
 							Level.SEVERE, "New IP address cannot be persisted");
 				}
 			} else {
-				Dialogs.showInformationDialog("You have already added this address. ");
+				Dialogs.showInformationDialog("Cette adresse existe déjà.");
 			}
 		}
 		displayIPAddressesList();
@@ -384,13 +384,17 @@ public class ProfileController implements Initializable {
 		removeNullValues();
 		if (hasInfoChanged()) {
 			boolean response = Dialogs
-					.showConfirmationDialog("Would you like to save changes made to your profile ?");
+					.showConfirmationDialog("Voulez-vous sauvegarder vos changements ?");
 			if (response) {
 				persistUserInfoChanges();
 				((Stage) profile.getScene().getWindow()).close();
+                return;
 			}
-		} else {
-			((Stage) profile.getScene().getWindow()).close();
 		}
+        ((Stage) profile.getScene().getWindow()).close();
 	}
+
+    public void exportProfile() {
+        //TODO
+    }
 }

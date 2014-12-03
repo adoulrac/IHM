@@ -241,20 +241,19 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         requestAllPictures();
 
         // Add enter key press handler on search text field
+        final TabbedPicturesSubController current = this;
         searchField.setOnKeyPressed( new EventHandler<KeyEvent>()
         {
             @Override
             public void handle( KeyEvent keyEvent )
             {
-                if( keyEvent.getCode().equals( KeyCode.ENTER ) )
-                {
-                    if( tagSearch.isSelected() )
-                    {
-                        searchPicturesByTag( searchField.getText() );
-                    }
-                    else
-                    {
-                        searchPicturesByUser( searchField.getText() );
+                if( keyEvent.getCode().equals( KeyCode.ENTER ) && (tagSearch.isSelected() || userSearch.isSelected())){
+                    Integer requestId = application.addRequest(current);
+                    pendingRequestId = requestId;
+                    if( tagSearch.isSelected() ){
+                        searchPicturesByTag(searchField.getText(), requestId);
+                    } else if ( userSearch.isSelected() ) {
+                        searchPicturesByUser(searchField.getText(), requestId);
                     }
                     // We clear the tab because it will be fill in asynchronously
                     clearTabContent( allImgTab );
@@ -278,13 +277,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param text the text
      */
-    private void searchPicturesByTag(final String text) {
+    private void searchPicturesByTag(final String text, final Integer requestId) {
         if(Strings.isNullOrEmpty(text)) {
             return;
         }
-        Integer requestId = application.addRequest(this);
         if(requestId != null) {
-            pendingRequestId = requestId;
             ArrayList<String> arrayListStr = new ArrayList<String>(Arrays.asList(text.split(TAG_SEPARATOR)));
             ArrayList<Tag> arrayListTag = new ArrayList<Tag>();
             for(String name : arrayListStr)
@@ -300,13 +297,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param text the text
      */
-    private void searchPicturesByUser(final String text) {
+    private void searchPicturesByUser(final String text, final Integer requestId) {
         if(Strings.isNullOrEmpty(text)) {
             return;
         }
-        Integer requestId = application.addRequest(this);
         if(requestId != null) {
-            pendingRequestId = requestId;
             //TODO Add a new method with a string parameter to look for all pictures using username/login, etc.
             //application.getIHMtoDATA().getPictures(Arrays.asList(text.split(USER_SEPARATOR));
         }
