@@ -91,7 +91,6 @@ public class GroupsController implements Initializable {
     /** The obs members list. */
     private final ObservableList obsMembersList= observableArrayList();
 
-
     List<Group> listGroups = null;
     IHMtoDATA stub = new IHMtoDATAstub();
 

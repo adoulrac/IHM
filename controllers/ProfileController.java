@@ -393,4 +393,8 @@ public class ProfileController implements Initializable {
 			((Stage) profile.getScene().getWindow()).close();
 		}
 	}
+
+    public void exportProfile() {
+        //TODO
+    }
 }

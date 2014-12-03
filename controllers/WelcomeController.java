@@ -150,7 +150,10 @@ public class WelcomeController implements Initializable {
                 logout();
             }
         });
+    }
 
+    public void SaveChanges(){
+        //TODO
     }
 
     /**
