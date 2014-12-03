@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class SimpleStringValidator {
 
     /** The Constant MESSAGE. */
-    public static final String MESSAGE = "The input cannot be empty.";
+    public static final String MESSAGE = "Les champs doivent être remplis.";
 
     /** The pattern. */
     private Pattern pattern;

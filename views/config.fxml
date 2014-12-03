@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
+
 <TitledPane fx:id="profile" prefHeight="501.0" prefWidth="735.0" text="Profil" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.ProfileController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="419.0" prefWidth="600.0" styleClass="settings-pane">
@@ -64,7 +69,7 @@
             <TextField fx:id="birthdate" layoutX="205.0" layoutY="325.0" promptText="Date de naissance" />
             <TextField fx:id="avatarPath" layoutX="205.0" layoutY="130.0" prefHeight="25.0" prefWidth="152.0" promptText="Avatar Path" />
             <Button fx:id="changeAvatar" layoutX="205.0" layoutY="159.0" mnemonicParsing="false" onAction="#avatarPicker" text="Parcourir" />
-            <Button layoutX="267.0" layoutY="379.0" mnemonicParsing="false" text="Exporter profil" onAction="#exportProfile" />
+            <Button layoutX="263.0" layoutY="379.0" mnemonicParsing="false" onAction="#exportProfile" text="Exporter profil" />
          </children></AnchorPane>
   </content>
    <font>

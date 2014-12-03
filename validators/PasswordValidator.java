@@ -20,7 +20,7 @@ public class PasswordValidator extends SimpleStringValidator {
     private Matcher matcher;
 
     /** The Constant MESSAGE. */
-    public static final String MESSAGE = "Invalid Password: 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter.";
+    public static final String MESSAGE = "Mot de passe incorrect: 6 et 20 caractères avec ua moins 1 chiffre, 1 majuscule, 1 minuscule et 1 caractère spécial.";
 
 
     /** The Constant PASSWORD_PATTERN. */

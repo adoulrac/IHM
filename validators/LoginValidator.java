@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
- * 3 to 15 characters with any lower case character, digit or special symbol “_-�? only
+ * 3 to 15 characters with any lower case character, digit or special symbol “_-�? only
  */
 /**
  * The Class LoginValidator.
@@ -21,7 +21,7 @@ public class LoginValidator extends SimpleStringValidator {
     private Matcher matcher;
 
     /** The Constant MESSAGE. */
-    public static final String MESSAGE = "Invalid Login: 3 to 15 characters with any lower case character, digit or special symbol only.";
+    public static final String MESSAGE = "Login incorrect: 3 et 15 caractères avec des minuscules, chiffres ou symboles.";
 
     /** The Constant USERNAME_PATTERN. */
     private static final String USERNAME_PATTERN = "^[a-z0-9_-]{3,15}$";
