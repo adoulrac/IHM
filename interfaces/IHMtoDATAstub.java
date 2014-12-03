@@ -188,7 +188,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @return the user by id
      */
     @Override
-    public void getUserById(UUID idUser, String idRequest)  { }
+    public void getUserById(UUID idUser, int idRequest)  { }
 
     /**
      * Get all the users in the specified group.
@@ -280,6 +280,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public void getPictures(User user, int idRequest)  { }
 
+    @Override
+    public void getPictures( List<Tag> listtag, int idRequest )
+    {
+
+    }
+
     /**
      * Gets the pictures.
      *
@@ -288,8 +294,8 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @return the pictures
      * @Brief Request a picture from a list of tags
      */
-    @Override
-    public void getPictures(List<String> listtag, int idRequest)  { }
+    //@Override
+    //public void getPictures(List<String> listtag, int idRequest)  { }
 
     /**
      * Gets the pictures.
