@@ -6,7 +6,6 @@ import DATA.model.User;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
 /**
  * Interface DATA uses to call IHM with asynchronous results.
  * queryId the id of the query if the result was previously requested by IHM, -1 if not.

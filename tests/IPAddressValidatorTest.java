@@ -9,7 +9,6 @@ import org.junit.runners.JUnit4;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class IPAddressValidatorTest.
  */
