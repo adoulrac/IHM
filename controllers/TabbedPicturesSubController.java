@@ -21,10 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.io.File;
@@ -271,8 +268,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
         tP2.setVgap(VGAP_PICTURES);
         tP2.setHgap(HGAP_PICTURES);
-        SplitPane sP2 = (SplitPane) tab.getContent();
-        sP2.getItems().add(tP2);
+        VBox sP2 = (VBox) tab.getContent();
+        sP2.getChildren().add(tP2);
         tab.setClosable(false);
     }
 
@@ -333,9 +330,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param tab the tab
      */
     public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
-        SplitPane split = (SplitPane) tab.getContent();
-        for (int i = 0; i < split.getItems().size(); ++i) { // thread-safe
-            if(split.getItems().get(i) instanceof TilePane) {
+        VBox grid = (VBox) tab.getContent();
+        for (int i = 0; i < grid.getChildren().size(); ++i) { // thread-safe
+            if(grid.getChildren().get(i) instanceof TilePane) {
                 for (Picture p : pictures) {
                     PicturePane picturePane = new PicturePane(p);
                     if(tab.getText().equals("Mes images")) {
@@ -344,9 +341,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                     else {
                         allImgList.add(picturePane);
                     }
-                    ((TilePane) split.getItems().get(i)).getChildren().add(picturePane);
+                    ((TilePane) grid.getChildren().get(i)).getChildren().add(picturePane);
                 }
-                tab.setContent(split);
+                tab.setContent(grid);
             }
         }
     }
@@ -357,8 +354,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param tab the tab
      */
     private void clearTabContent(Tab tab){
-        SplitPane split = (SplitPane) tab.getContent();
-        for (Node n : split.getItems()) {
+        VBox grid = (VBox) tab.getContent();
+        for (Node n : grid.getChildren()) {
             if(n instanceof TilePane) {
                 TilePane tile = (TilePane) n;
                 tile.getChildren().clear();
@@ -425,8 +422,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Refresh the display of My Images tab.
      */
     private void displayMyImg() {
-        SplitPane split = (SplitPane) myImgTab.getContent();
-        for (Node n : split.getItems()) {
+        VBox grid = (VBox) myImgTab.getContent();
+        for (Node n : grid.getChildren()) {
             if(n instanceof TilePane) {
                 TilePane tile = (TilePane) n;
                 tile.getChildren().clear();
