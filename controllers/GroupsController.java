@@ -1,26 +1,28 @@
 package IHM.controllers;
 
+import DATA.interfaces.IHMtoDATA;
 import DATA.model.Group;
 import DATA.model.User;
-import javafx.event.EventHandler;
-import javafx.fxml.Initializable;
-
-import java.net.URL;
-import java.util.*;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
+import IHM.interfaces.IHMtoDATAstub;
+import IHM.utils.Dialogs;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
+import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import static IHM.utils.Dialogs.showErrorDialog;
+import static IHM.utils.Dialogs.showWarningDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
 /**
@@ -29,6 +31,9 @@ import static javafx.collections.FXCollections.observableArrayList;
 public class GroupsController implements Initializable {
     
     /** The groups. */
+    @FXML
+    private TitledPane gestionGroupes;
+
     @FXML
     private ListView groups;
     
@@ -60,6 +65,11 @@ public class GroupsController implements Initializable {
     @FXML
     private Button deleteGroupBtn;
 
+    @FXML
+    private Button deleteMemberBtn;
+
+    @FXML
+    private Button finishBtn;
 
     /** The application. */
     private MainController application;
@@ -70,39 +80,9 @@ public class GroupsController implements Initializable {
     /** The obs members list. */
     private final ObservableList obsMembersList= observableArrayList();
 
-    //List<Group> listGroups = null;
-    /** The list groups. */
-    List<Group> listGroups = new ArrayList<Group>();
-    
-    /** The list users. */
-    List<User> listUsers = new ArrayList<User>();
-    
-    /** The list users2. */
-    List<User> listUsers2 = new ArrayList<User>();
-    
-    /** The amis. */
-    Group amis = new Group("Amis");
-    
-    /** The famille. */
-    Group famille = new Group("Famille");
-    
-    /** The travail. */
-    Group travail = new Group("Travail");
-    
-    /** The arthur. */
-    User arthur = new User("avanceul", "password", "Arthur", "Van Ceulen", "arthur.jpg", "16/08/1991");
-    
-    /** The rachid. */
-    User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
-    
-    /** The selim. */
-    User selim = new User("szenagui", "password", "Selim", "Zenagui", "selim.jpg", "08/06/1992");
-    
-    /** The arthurt. */
-    User arthurt = new User("tranarth", "password", "Arthur", "Tran", "arthurt.jpg", "08/06/1992");
 
-
-
+    List<Group> listGroups = null;
+    IHMtoDATA stub = new IHMtoDATAstub();
 
     /**
      * Sets the app.
@@ -119,8 +99,8 @@ public class GroupsController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
 
-        newGroupName.setPromptText("Ajouter groupe...");
-        addUserName.setPromptText("Ajouter membre...");
+        newGroupName.setPromptText("Add group...");
+        addUserName.setPromptText("Add member...");
         /*
         groups.setCellFactory(new Callback<ListView<String>, ListCell>() {
             @Override
@@ -137,23 +117,11 @@ public class GroupsController implements Initializable {
     public void loadGroups() {
 
         disableFields(true);
+        deleteMemberBtn.setDisable(true);
 
         try {
-            //listGroups = this.application.currentUser().getListGroups();
-            listUsers.add(arthur);
-            listUsers.add(rachid);
-            listUsers2.add(selim);
-            listUsers2.add(arthurt);
-            amis.setUsers(listUsers);
-            famille.setUsers(listUsers2);
-            travail.setUsers(listUsers);
-            listGroups.add(amis);
-            listGroups.add(famille);
-            listGroups.add(travail);
-            arthur.setListGroups(listGroups);
-            rachid.setListGroups(listGroups);
-            selim.setListGroups(listGroups);
-            arthurt.setListGroups(listGroups);
+            //listGroups = application.getIHMtoDATA().getGroups();
+            listGroups = stub.getGroups();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -162,18 +130,33 @@ public class GroupsController implements Initializable {
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    if (!groups.getSelectionModel().getSelectedItem().equals(null)) {
-                        disableFields(false);
-                        if (!listGroups.isEmpty()) {
-                            displayUsers(groups.getSelectionModel().getSelectedItem().toString());
-                            groupSelected.setText(groups.getSelectionModel().getSelectedItem().toString());
-                        }
+            try {
+                if (!groups.getSelectionModel().getSelectedItem().equals(null)) {
+                    disableFields(false);
+                    deleteMemberBtn.setDisable(true);
+                    if (!listGroups.isEmpty()) {
+                        displayUsers(groups.getSelectionModel().getSelectedItem().toString());
+                        groupSelected.setText(groups.getSelectionModel().getSelectedItem().toString());
                     }
                 }
-                catch (Exception e) {
-                    System.out.println(e.getMessage());
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            }
+        });
+
+        members.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+            try {
+                if (!members.getSelectionModel().getSelectedItem().equals(null)) {
+                    deleteMemberBtn.setDisable(false);
                 }
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             }
         });
 
@@ -192,7 +175,7 @@ public class GroupsController implements Initializable {
      * @param event the event
      */
     @FXML
-    private void changeGroupName(ActionEvent event) {
+    public void changeGroupName(ActionEvent event) {
         //application.getIHMtoDATA().addGroup(new Group(groupSelected.getText()));
         obsGroupsList.set(groups.getSelectionModel().getSelectedIndex(),groupSelected.getText());
     }
@@ -204,20 +187,48 @@ public class GroupsController implements Initializable {
      * @param event the event
      */
     @FXML
-    private void deleteGroup(ActionEvent event) {
-        loop :
-        for (Group g : listGroups) {
-            if(g.getNom().equals(groups.getSelectionModel().getSelectedItem())) {
-                //application.getIHMtoDATA().deleteGroup(g);
-                listGroups.remove(g);
-                obsGroupsList.remove(groups.getSelectionModel().getSelectedIndex());
-                groupSelected.clear();
-                disableFields(true);
-                break loop;
+    public void deleteGroup(ActionEvent event){
+        boolean response = Dialogs.showConfirmationDialog("Are you sure you want to delete this group ?");
+        if(response) {
+            String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
+            loop:
+            for (Group g : listGroups) {
+                if (g.getNom().equals(selectedGrp)) {
+                    //application.getIHMtoDATA().deleteGroup(g);
+                    stub.deleteGroup(g);
+                    obsGroupsList.remove(groups.getSelectionModel().getSelectedIndex());
+                    groupSelected.clear();
+                    disableFields(true);
+                    deleteMemberBtn.setDisable(true);
+                    break loop;
+                }
+            }
+            obsMembersList.clear();
+            members.setItems(obsMembersList);
+        }
+    }
+
+    @FXML
+    public void deleteMemberFromGroup(ActionEvent event){
+        boolean response = Dialogs.showConfirmationDialog("Are you sure you want to delete this member ?");
+        if(response) {
+            String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
+            String selectedMmb = members.getSelectionModel().getSelectedItem().toString();
+            loop:
+            for (Group g : listGroups) {
+                if (g.getNom().equals(selectedGrp)) {
+                    for (User u : g.getUsers()) {
+                        if((u.getFirstname()+" "+u.getLastname()).equals(selectedMmb)) {
+                            //application.getIHMtoDATA().deleteUserFromGroup(u,g);
+                            stub.deleteUserFromGroup(u,g);
+                            obsMembersList.remove(members.getSelectionModel().getSelectedIndex());
+                            deleteMemberBtn.setDisable(true);
+                            break loop;
+                        }
+                    }
+                }
             }
         }
-        obsMembersList.clear();
-        members.setItems(obsMembersList);
     }
 
     /**
@@ -227,9 +238,26 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void addNewGroup(ActionEvent event){
-        //application.getIHMtoDATA().addGroup(new Group(newGroupName.getText()));
-        obsGroupsList.add(newGroupName.getText());
-        newGroupName.clear();
+        if(newGroupName.getText().equals("")) {
+            showWarningDialog("Please enter a group name.");
+        }
+        else {
+            Boolean exists = false;
+            loop:
+            for (Group g : listGroups) {
+                if (g.getNom().equals(newGroupName.getText())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                //application.getIHMtoDATA().addGroup(new Group(newGroupName.getText()));
+                stub.addGroup(new Group(newGroupName.getText()));
+                obsGroupsList.add(newGroupName.getText());
+                newGroupName.clear();
+            } else {
+                showErrorDialog("Group name already in use !");
+            }
+        }
     }
 
     /**
@@ -265,5 +293,10 @@ public class GroupsController implements Initializable {
         addUserName.setDisable(b);
         addUserBtn.setDisable(b);
         members.setDisable(b);
+    }
+
+    @FXML
+    public void finish() {
+        ((Stage) gestionGroupes.getScene().getWindow()).close();
     }
 }

@@ -66,7 +66,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
             // do nothing (we don't know for what these pictures are for)
         }
         else {
-            if (controller instanceof TabbedPicturesSubController) {
+            if (controller instanceof TabbedPicturesSubController && ((TabbedPicturesSubController) controller).isPendingRequest(queryId)) {
                 ((TabbedPicturesSubController) controller).addPicture(picture);
                 app.removeRequest(queryId);
             } else

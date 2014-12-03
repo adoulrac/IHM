@@ -14,7 +14,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
     
     /** The list users. */
     List<User> listUsers = new ArrayList<User>();
-    
+    List<User> listUsers2 = new ArrayList<User>();
+    List<User> listUsers3 = new ArrayList<User>();
+
     /** The list groups. */
     List<Group> listGroups = new ArrayList<Group>();
     
@@ -23,12 +25,18 @@ public class IHMtoDATAstub implements IHMtoDATA {
     
     /** The amis. */
     Group amis = new Group("Amis");
+    Group famille = new Group("Famille");
+    Group travail = new Group("Travail");
+
     
     /** The arthur. */
     User arthur = new User("avanceul", "password", "Arthur", "Van Ceulen", "arthur.jpg", "16/08/1991");
     
     /** The rachid. */
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
+    
+    User arthurt = new User("tranarth", "password", "Arthur", "Tran", "arthurt.jpg", "03/07/1991");
+
     
     /** The selim. */
     User selim = new User("selim", "selim", "Sélim", "Zénagui", "selim.jpg", "08/06/1992");
@@ -51,12 +59,20 @@ public class IHMtoDATAstub implements IHMtoDATA {
     public IHMtoDATAstub() {
         listUsers.add(arthur);
         listUsers.add(rachid);
-        listUsers.add( selim );
+        listUsers2.add(selim);
+        listUsers2.add(arthurt);
+        listUsers3.add(arthur);
+        listUsers3.add(arthurt);
         amis.setUsers(listUsers);
+        famille.setUsers(listUsers2);
+        travail.setUsers(listUsers3);
         listGroups.add(amis);
+        listGroups.add(famille);
+        listGroups.add(travail);
         arthur.setListGroups(listGroups);
         rachid.setListGroups(listGroups);
-        selim.setListGroups( listGroups );
+        selim.setListGroups(listGroups);
+        arthurt.setListGroups(listGroups);
 
         pictures.add(picA);
         pictures.add(picB);
@@ -89,7 +105,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param group The new group
      */
     @Override
-    public void addGroup(Group group)  { }
+    public void addGroup(Group group)  {
+        listGroups.add(group);
+    }
 
     /**
      * Add a picture for the current user.
@@ -106,7 +124,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param group The group
      */
     @Override
-    public void addUserInGroup(User user, Group group)  { }
+    public void addUserInGroup(User user, Group group)  {
+        group.getUsers().add(user);
+    }
 
     /* (non-Javadoc)
      * @see DATA.interfaces.IHMtoDATA#acceptUserInGroup(DATA.model.User, DATA.model.Group)
@@ -130,7 +150,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param group The gorup to delete
      */
     @Override
-    public void deleteGroup(Group group)  { }
+    public void deleteGroup(Group group)  {
+        listGroups.remove(group);
+    }
 
     /**
      * Delete a picture and all its comments, notes and tags.
@@ -147,7 +169,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param group : The group
      */
     @Override
-    public void deleteUserFromGroup(User user, Group group)  { }
+    public void deleteUserFromGroup(User user, Group group)  {
+        group.getUsers().remove(user);
+    }
 
     /**
      * Save the current user in a JSON file.
@@ -163,7 +187,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @return the user by id
      */
     @Override
-    public void getUserById(UUID idUser, String idRequest)  { }
+    public void getUserById(UUID idUser, int idRequest)  { }
 
     /**
      * Get all the users in the specified group.
@@ -216,9 +240,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      */
     @Override
     public List<Group> getGroups()  {
-        List<Group> lg = new ArrayList<Group>();
-        lg.add(amis);
-        return lg;
+        /*List<Group> lg = new ArrayList<Group>();
+        lg.add(amis);*/
+        return listGroups;
     }
 
     /**
@@ -255,6 +279,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public void getPictures(User user, int idRequest)  { }
 
+    @Override
+    public void getPictures( List<Tag> listtag, int idRequest )
+    {
+
+    }
+
     /**
      * Gets the pictures.
      *
@@ -263,8 +293,8 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @return the pictures
      * @Brief Request a picture from a list of tags
      */
-    @Override
-    public void getPictures(List<String> listtag, int idRequest)  { }
+    //@Override
+    //public void getPictures(List<String> listtag, int idRequest)  { }
 
     /**
      * Gets the pictures.

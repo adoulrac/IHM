@@ -6,7 +6,6 @@ import DATA.model.User;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
 import IHM.interfaces.DATAtoIHMimpl;
-import IHM.interfaces.IHMtoDATAstub;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
@@ -47,10 +47,10 @@ public class MainController {
     private int currentId;
 
     /** The DATA interface. */
-    private IHMtoDATA DATAInterface;
+    private IHMtoDATA dataInterface;
 
     /** The DATA interface receiver. */
-    private DATAtoIHM DATAInterfaceReceiver;
+    private DATAtoIHM dataInterfaceReceiver;
 
     /** The current controller. */
     private Initializable currentController;
@@ -73,12 +73,14 @@ public class MainController {
         newStages = Lists.newArrayList();
         requests = Maps.newHashMap();
 
-        // receiver must be instanciated BEFORE DATA own interface, because its construction will statically use the receiver from Main
-        DATAInterfaceReceiver = new DATAtoIHMimpl(this);
-        DATAInterface = new IHMtoDATAImpl();
-
+        stage.getIcons().add(new Image("IHM/resources/logo.jpeg"));
         goToLogin();
         primaryStage.show();
+    }
+
+    public void instanciateInterfaces() {
+        dataInterfaceReceiver = new DATAtoIHMimpl(this);
+        dataInterface = new IHMtoDATAImpl();
     }
 
     /**
@@ -117,6 +119,7 @@ public class MainController {
         try {
             GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml", true);
             groups.setApp(this);
+            groups.loadGroups();
             removeAllRequests(currentController);
             currentController = groups;
         } catch (Exception ex) {
@@ -336,7 +339,7 @@ public class MainController {
      * @return the IH mto data
      */
     public IHMtoDATA getIHMtoDATA() {
-        return this.DATAInterface;
+        return this.dataInterface;
     }
 
     /**
@@ -354,6 +357,7 @@ public class MainController {
      * @return the DATA interface receiver
      */
     public DATAtoIHM getDATAInterfaceReceiver() {
-        return DATAInterfaceReceiver;
+        return dataInterfaceReceiver;
     }
+
 }

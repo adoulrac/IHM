@@ -10,6 +10,9 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+    /** The main. */
+    private static MainController main;
+
 	/**
 	 * The main method.
 	 *
@@ -27,10 +30,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         main = new MainController(primaryStage);
+        if(main != null) {
+            main.instanciateInterfaces();
+        }
     }
-
-    /** The main. */
-    private static MainController main;
 
     /**
      * Gets the DAT ato ih mimpl.
