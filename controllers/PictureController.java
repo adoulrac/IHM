@@ -1,6 +1,5 @@
 package IHM.controllers;
 
-import DATA.exceptions.BadInformationException;
 import DATA.model.*;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
@@ -309,7 +308,7 @@ public class PictureController extends Tab implements Initializable
                         Comment c = new Comment(msg, new Date(), currentUser, picture.getUid(), picture.getUser().getUid());
                         app.getIHMtoDATA().addComment(c);
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
-                    }catch(BadInformationException e) {
+                    } catch (Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
                     }
                     writeArea.setText("");
@@ -336,7 +335,7 @@ public class PictureController extends Tab implements Initializable
                         picture.getListNotes().add(note);
                         buildVotes();
                         app.getIHMtoDATA().addNote(note);
-                    }catch(BadInformationException e) {
+                    }catch(Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
                     }
                 } else {
@@ -413,16 +412,19 @@ public class PictureController extends Tab implements Initializable
             addContent();
             addCssClasses();
 
-            editionMode(false);
+            switchEditionMode(false);
         }
 
-        private void editionMode(boolean edition) {
+
+        private void switchEditionMode(boolean edition) {
             final CommentPane current = this;
 
             if (edition) {
-                commentField.setText(commentTxt.getText());
-                vb.getChildren().remove(commentTxt);
-                vb.getChildren().add(commentField);
+                if (!vb.getChildren().contains(commentField)) {
+                    commentField.setText(commentTxt.getText());
+                    vb.getChildren().remove(commentTxt);
+                    vb.getChildren().add(commentField);
+                }
 
                 editBtn.setText("Valider");
                 editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -432,8 +434,8 @@ public class PictureController extends Tab implements Initializable
                             comment.setValue(commentField.getText());
                             app.getIHMtoDATA().addComment(comment);
                             commentTxt.setText(commentField.getText());
-                            editionMode(false);
-                        } catch (BadInformationException e) {
+                            switchEditionMode(false);
+                        } catch (Exception e) {
                             Dialogs.showWarningDialog("Informations du commentaire invalides.");
                         }
                     }
@@ -443,19 +445,21 @@ public class PictureController extends Tab implements Initializable
                 delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        editionMode(false);
+                        switchEditionMode(false);
                     }
                 });
             }
             else {
-                vb.getChildren().remove(commentField);
-                vb.getChildren().add(commentTxt);
+                if (!vb.getChildren().contains(commentTxt)) {
+                    vb.getChildren().remove(commentField);
+                    vb.getChildren().add(commentTxt);
+                }
 
                 editBtn.setText("Editer");
                 editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        editionMode(true);
+                        switchEditionMode(true);
                     }
                 });
 
@@ -475,7 +479,15 @@ public class PictureController extends Tab implements Initializable
         private void addContent(){
             HBox hb = new HBox(8);
 
-            hb.getChildren().addAll(userTxt, editBtn, delBtn);
+            hb.getChildren().add(userTxt);
+            if (comment.getCommentUser().getUid()==app.currentUser().getUid()) {
+                hb.getChildren().addAll(editBtn, delBtn);
+            }
+            else if (picture.getUser().getUid()==app.currentUser().getUid()) {
+                hb.getChildren().add(delBtn);
+            }
+
+
             vb.getChildren().addAll(hb, commentTxt);
 
             getChildren().addAll(avatarImg, vb);
