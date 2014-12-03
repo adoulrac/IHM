@@ -19,11 +19,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-
 /**
  * The Class PictureController.
  */
@@ -108,6 +108,7 @@ public class PictureController extends Tab implements Initializable
      */
     public PictureController(Picture picture, MainController app) {
         super(picture.getFilename().substring(picture.getFilename().lastIndexOf("/") + 1));
+        System.out.println(picture.getFilename());
 
         this.app = app;
         this.picture = picture;
@@ -127,7 +128,7 @@ public class PictureController extends Tab implements Initializable
         String filename = Files.getNameWithoutExtension(picture.getFilename());
 
         //Set Owner name
-        partageTxt.setText("L'image " + filename + " a été partagée par " + picture.getUser().getLogin() + "Unknown.");
+        partageTxt.setText("L'image " + filename + " a été partagée par " + picture.getUser().getLogin() + ".");
 
         //Refresh button
         final PictureController current = this;
@@ -137,6 +138,9 @@ public class PictureController extends Tab implements Initializable
                 app.getIHMtoDATA().getPictureById(picture.getUid(), app.addRequest(current));
             }
         });
+
+        //TODO miniature/full image tests and displays
+        setImage(pictureImg, new Image(picture.getFilename()), 300, 300);
 
         buildVotes();
         buildTags();
@@ -377,15 +381,15 @@ public class PictureController extends Tab implements Initializable
          * Builds the.
          */
         public void build(){
-            /*if (comment.getUser().getAvatar()==null) {
+            if (comment.getCommentUser().getAvatar()==null) {
                 setImage(avatar_img, new Image("IHM/resources/avatar_icon.png"), 75, 75);
             } else {
-                setImage(avatar_img, new Image("file:"+comment.getUser().getAvatar()), 75, 75);
+                setImage(avatar_img, new Image("file:"+comment.getCommentUser().getAvatar()), 75, 75);
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("'Le' dd/MM/yyyy 'à' HH'h'mm");
-            user_txt.setText(sdf.format(comment.getDateTime())+", "+comment.getUser().getLogin()+ " a commenté : ");
-            */
+            user_txt.setText(sdf.format(comment.getDateTime())+", "+comment.getCommentUser().getLogin()+ " a commenté : ");
+
             comment_txt.setWrappingWidth(400);
             comment_txt.setText(comment.getValue());
 
