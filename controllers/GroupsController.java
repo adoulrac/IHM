@@ -5,6 +5,16 @@ import DATA.model.Group;
 import DATA.model.User;
 import IHM.interfaces.IHMtoDATAstub;
 import IHM.utils.Dialogs;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
+
+import java.net.URL;
+import java.util.*;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static IHM.utils.Dialogs.showErrorDialog;
+import static IHM.utils.Dialogs.showInformationDialog;
 import static IHM.utils.Dialogs.showWarningDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -191,7 +202,6 @@ public class GroupsController implements Initializable {
         boolean response = Dialogs.showConfirmationDialog("Are you sure you want to delete this group ?");
         if(response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
-            loop:
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
                     //application.getIHMtoDATA().deleteGroup(g);
@@ -200,7 +210,7 @@ public class GroupsController implements Initializable {
                     groupSelected.clear();
                     disableFields(true);
                     deleteMemberBtn.setDisable(true);
-                    break loop;
+                    return;
                 }
             }
             obsMembersList.clear();
@@ -214,7 +224,6 @@ public class GroupsController implements Initializable {
         if(response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             String selectedMmb = members.getSelectionModel().getSelectedItem().toString();
-            loop:
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
                     for (User u : g.getUsers()) {
@@ -223,7 +232,7 @@ public class GroupsController implements Initializable {
                             stub.deleteUserFromGroup(u,g);
                             obsMembersList.remove(members.getSelectionModel().getSelectedIndex());
                             deleteMemberBtn.setDisable(true);
-                            break loop;
+                            return;
                         }
                     }
                 }
@@ -243,9 +252,8 @@ public class GroupsController implements Initializable {
         }
         else {
             Boolean exists = false;
-            loop:
             for (Group g : listGroups) {
-                if (g.getNom().equals(newGroupName.getText())) {
+                if (g.getNom().toLowerCase().equals(newGroupName.getText().toLowerCase())) {
                     exists = true;
                 }
             }
@@ -260,12 +268,53 @@ public class GroupsController implements Initializable {
         }
     }
 
+    @FXML
+    public void addMemberInGroup(ActionEvent event) {
+        if(addUserName.getText().equals("")) {
+            showWarningDialog("Please the user's login.");
+        }
+        else {
+            String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
+            for (Group g : listGroups) {
+                if (g.getNom().equals(selectedGrp)) {
+                    Boolean inGroup = false;
+                    for (User u : g.getUsers()) {
+                        if (addUserName.getText().toLowerCase().equals(u.getLogin().toLowerCase())) {
+                            showWarningDialog("This user is already in the group !");
+                            inGroup = true;
+                            return;
+                        }
+                    }
+
+                    if(!inGroup) {
+                        for (User u : g.getUsers()) {
+                            User user = checkIfFriend(addUserName.getText().toLowerCase());
+                            if(user != null){
+                                //application.getIHMtoDATA().addUserInGroup(user,g);
+                                stub.addUserInGroup(user,g);
+                                obsMembersList.add(user.getFirstname()+ " " + user.getLastname());
+                                addUserName.clear();
+                                showInformationDialog(user.getFirstname()+ " " + user.getLastname() + " added to the group successfully.");
+                                addUserName.clear();
+                                return;
+                            }
+                            else {
+                                showWarningDialog("This user is not in your friends list.");
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Display users.
      *
      * @param groupName the group name
      */
-    public void displayUsers(String groupName) {
+    private void displayUsers(String groupName) {
         if(groupName.equals(null)) {
             obsMembersList.clear();
         }
@@ -287,7 +336,7 @@ public class GroupsController implements Initializable {
      *
      * @param b the b
      */
-    public void disableFields (Boolean b) {
+    private void disableFields (Boolean b) {
         groupSelected.setDisable(b);
         deleteGroupBtn.setDisable(b);
         addUserName.setDisable(b);
@@ -296,7 +345,20 @@ public class GroupsController implements Initializable {
     }
 
     @FXML
-    public void finish() {
+    private void finish() {
         ((Stage) gestionGroupes.getScene().getWindow()).close();
+    }
+
+    private User checkIfFriend(String login) {
+        User user = null;
+        for(Group g : listGroups) {
+            for(User u : g.getUsers()) {
+                if(u.getLogin().toLowerCase().equals(addUserName.getText().toLowerCase())) {
+                    user = u;
+                    return user;
+                }
+            }
+        }
+        return user;
     }
 }

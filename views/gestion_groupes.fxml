@@ -20,7 +20,7 @@
                   <Label layoutX="14.0" layoutY="14.0" text="Nom" textFill="WHITE" />
                   <TextField id="groupSelected" fx:id="groupSelected" layoutX="51.0" layoutY="10.0" onAction="#changeGroupName" prefHeight="25.0" prefWidth="139.0" />
                   <TextField id="addMember" fx:id="addUserName" layoutX="14.0" layoutY="272.0" prefHeight="37.0" prefWidth="115.0" />
-                  <Button id="addMemberBtn" fx:id="addUserBtn" layoutX="132.0" layoutY="272.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="37.0" styleClass="add-friend-btn" text="+" />
+                  <Button id="addMemberBtn" fx:id="addUserBtn" layoutX="132.0" layoutY="272.0" mnemonicParsing="false" onAction="#addMemberInGroup" prefHeight="36.0" prefWidth="37.0" styleClass="add-friend-btn" text="+" />
                   <Label layoutX="13.0" layoutY="46.0" text="Membres :" textFill="WHITE" />
                   <ListView fx:id="members" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="252.0" />
                   <Button fx:id="deleteMemberBtn" layoutX="202.0" layoutY="276.0" mnemonicParsing="false" onAction="#deleteMemberFromGroup" text="Delete" />

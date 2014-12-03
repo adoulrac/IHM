@@ -35,7 +35,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
     
     /** The rachid. */
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
-    
+
     User arthurt = new User("tranarth", "password", "Arthur", "Tran", "arthurt.jpg", "03/07/1991");
 
     
