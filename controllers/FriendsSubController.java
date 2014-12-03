@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class FriendsSubController.
  */
@@ -251,7 +250,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         String friend = friendName.getText();
         UserHBoxCell userToAdd = lookForUser(friend);
         application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
-        Dialogs.showInformationDialog("A friend request has been sent to " + friend);
+        Dialogs.showInformationDialog("Une demande d'amis a été envoyé à " + friend);
         friendName.clear();
     }
 
@@ -298,10 +297,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void receiveFriendResponse(User sender, boolean response) {
         if (response) {
-            Dialogs.showInformationDialog("The user " + sender.getLogin() + " has accepted your friend request.");
+            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'amis.");
             updateUser(sender, Group.FRIENDS_GROUP_NAME);
         } else {
-            Dialogs.showInformationDialog("The user " + sender.getLogin() + " has refused your friend request.");
+            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'amis.");
         }
     }
 
@@ -311,7 +310,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param sender the sender
      */
     public void receiveFriendRequest(User sender) {
-        boolean response = Dialogs.showConfirmationDialog(sender.getLogin() + " wants to be your friend ! Do you accept it ? ");
+        boolean response = Dialogs.showConfirmationDialog(sender.getLogin() + " veux être votre amis ! Acceptez-vous sa demande ? ");
         if (response) {
             updateUser(sender, Group.FRIENDS_GROUP_NAME);
             application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));

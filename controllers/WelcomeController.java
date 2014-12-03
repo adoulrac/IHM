@@ -110,16 +110,19 @@ public class WelcomeController implements Initializable {
      * Builds the.
      */
     public void build() {
-        if(application.currentUser() != null && application.currentUser().getAvatar() != null)
-        {
-            File f = new File(application.currentUser().getAvatar());
-            if(f.isFile()) {
-                avatarUser.setImage( new Image(f.toURI().toString()) );
-                avatarUser.setFitWidth(AVATAR_DIM);
-                avatarUser.setFitHeight(AVATAR_DIM);
-                avatarUser.setPreserveRatio(true);
-                avatarUser.setSmooth(true);
-                avatarUser.setCache(true);
+        if(application.currentUser() != null) {
+            if( application.currentUser().getAvatar() != null)
+            {
+                File f = new File(application.currentUser().getAvatar());
+                if(f.isFile()) {
+                    avatarUser.setImage( new Image(f.toURI().toString()) );
+                    avatarUser.setFitWidth(AVATAR_DIM);
+                    avatarUser.setFitHeight(AVATAR_DIM);
+                    avatarUser.setPreserveRatio(true);
+                    avatarUser.setSmooth(true);
+                    avatarUser.setCache(true);
+                }
+
             }
             lblUserName.setText( " Connecté (" + application.currentUser().getLogin() + ")" );
         }
@@ -150,7 +153,10 @@ public class WelcomeController implements Initializable {
                 logout();
             }
         });
+    }
 
+    public void SaveChanges(){
+        //TODO
     }
 
     /**

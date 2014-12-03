@@ -6,22 +6,30 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-
-<Pane fx:id="welcome" prefHeight="702.0" prefWidth="834.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.WelcomeController">
-      <Canvas height="127.0" layoutX="30.0" layoutY="14.0" width="158.0" />
-      <ImageView fitHeight="113.0" fitWidth="113.0" layoutX="35.0" layoutY="12.0">
-            <Image url="@../resources/logo.jpeg" />
-      </ImageView>
-      <Separator layoutY="141.0" prefHeight="11.0" prefWidth="834.0" />
-      <Button layoutX="702.0" layoutY="14.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="105.0" text="Déconnexion" onAction="#logout" />
-      <HBox layoutY="146.0" prefHeight="556.0" prefWidth="629.0">
-            <fx:include fx:id="tabbedPicturesSub" source="pictures_tab.fxml"></fx:include>
-      </HBox>
-      <HBox layoutX="530.0" layoutY="19.0">
-        <ImageView fx:id="avatarUser"></ImageView>
-        <Label fx:id="lblUserName" text="" />
-      </HBox>
-      <fx:include fx:id="friendsSub" source="friends_welcome.fxml"></fx:include>
-      <Button layoutX="658.0" layoutY="149.0" mnemonicParsing="false" styleClass="groups-btn"  text="Gestion des groupes" onAction="#launchGroups" />
-      <Button layoutX="688.0" layoutY="101.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" styleClass="settings-btn" text="Préférences" onAction="#launchPreferences" />
+<Pane fx:id="welcome" prefHeight="702.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.WelcomeController">
+   <children>
+         <Canvas height="127.0" layoutX="30.0" layoutY="14.0" width="158.0" />
+         <ImageView fitHeight="113.0" fitWidth="113.0" layoutX="35.0" layoutY="12.0">
+            <image>
+                  <Image url="@../resources/logo.jpeg" />
+            </image>
+         </ImageView>
+         <Separator layoutY="141.0" prefHeight="11.0" prefWidth="834.0" />
+         <Button layoutX="702.0" layoutY="14.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="105.0" text="Déconnexion" />
+         <HBox layoutY="146.0" prefHeight="556.0" prefWidth="629.0">
+            <children>
+                  <fx:include fx:id="tabbedPicturesSub" source="pictures_tab.fxml" />
+            </children>
+         </HBox>
+         <HBox layoutX="550.0" layoutY="19.0">
+            <children>
+              <ImageView fx:id="avatarUser" />
+              <Label fx:id="lblUserName" text="" />
+            </children>
+         </HBox>
+         <fx:include fx:id="friendsSub" source="friends_welcome.fxml" />
+         <Button layoutX="658.0" layoutY="149.0" mnemonicParsing="false" onAction="#launchGroups" styleClass="groups-btn" text="Gestion des groupes" />
+         <Button layoutX="688.0" layoutY="101.0" mnemonicParsing="false" onAction="#launchPreferences" prefHeight="27.0" prefWidth="119.0" styleClass="settings-btn" text="Préférences" />
+      <Button layoutX="702.0" layoutY="44.0" mnemonicParsing="false" onAction="#SaveChanges" prefHeight="26.0" prefWidth="105.0" text="Sauvegarder" />
+   </children>
 </Pane>

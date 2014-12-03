@@ -6,14 +6,13 @@ import com.google.common.base.Strings;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class SimpleStringValidator.
  */
 public class SimpleStringValidator {
 
     /** The Constant MESSAGE. */
-    public static final String MESSAGE = "The input cannot be empty.";
+    public static final String MESSAGE = "Les champs doivent être remplis.";
 
     /** The pattern. */
     private Pattern pattern;

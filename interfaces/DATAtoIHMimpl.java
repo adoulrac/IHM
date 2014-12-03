@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Auto-generated Javadoc
 /**
  * Created by greyna on 19/11/2014.
  */
@@ -91,7 +90,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPictures(pictures);
-                app.removeRequest(queryId);
+                //app.removeRequest(queryId); TODO : find where to remove a request
             }
         }
     }

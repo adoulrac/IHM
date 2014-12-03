@@ -91,9 +91,7 @@ public class GroupsController implements Initializable {
     /** The obs members list. */
     private final ObservableList obsMembersList= observableArrayList();
 
-
     List<Group> listGroups = null;
-    IHMtoDATA stub = new IHMtoDATAstub();
 
     /**
      * Sets the app.
@@ -109,17 +107,8 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-
         newGroupName.setPromptText("Add group...");
         addUserName.setPromptText("Add member...");
-        /*
-        groups.setCellFactory(new Callback<ListView<String>, ListCell>() {
-            @Override
-            public ListCell call(ListView<String> listView) {
-                return new ButtonListCell();
-            }
-        });*/
-
     }
 
     /**
@@ -131,10 +120,8 @@ public class GroupsController implements Initializable {
         deleteMemberBtn.setDisable(true);
 
         try {
-            //listGroups = application.getIHMtoDATA().getGroups();
-            listGroups = stub.getGroups();
-        }
-        catch (Exception e) {
+            listGroups = application.getIHMtoDATA().getGroups();
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
@@ -187,7 +174,7 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void changeGroupName(ActionEvent event) {
-        //application.getIHMtoDATA().addGroup(new Group(groupSelected.getText()));
+        application.getIHMtoDATA().addGroup(new Group(groupSelected.getText()));
         obsGroupsList.set(groups.getSelectionModel().getSelectedIndex(),groupSelected.getText());
     }
 
@@ -204,8 +191,7 @@ public class GroupsController implements Initializable {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
-                    //application.getIHMtoDATA().deleteGroup(g);
-                    stub.deleteGroup(g);
+                    application.getIHMtoDATA().deleteGroup(g);
                     obsGroupsList.remove(groups.getSelectionModel().getSelectedIndex());
                     groupSelected.clear();
                     disableFields(true);
@@ -228,8 +214,7 @@ public class GroupsController implements Initializable {
                 if (g.getNom().equals(selectedGrp)) {
                     for (User u : g.getUsers()) {
                         if((u.getFirstname()+" "+u.getLastname()).equals(selectedMmb)) {
-                            //application.getIHMtoDATA().deleteUserFromGroup(u,g);
-                            stub.deleteUserFromGroup(u,g);
+                            application.getIHMtoDATA().deleteUserFromGroup(u,g);
                             obsMembersList.remove(members.getSelectionModel().getSelectedIndex());
                             deleteMemberBtn.setDisable(true);
                             return;
@@ -258,8 +243,7 @@ public class GroupsController implements Initializable {
                 }
             }
             if (!exists) {
-                //application.getIHMtoDATA().addGroup(new Group(newGroupName.getText()));
-                stub.addGroup(new Group(newGroupName.getText()));
+                application.getIHMtoDATA().addGroup(new Group(newGroupName.getText()));
                 obsGroupsList.add(newGroupName.getText());
                 newGroupName.clear();
             } else {
@@ -290,8 +274,7 @@ public class GroupsController implements Initializable {
                         for (User u : g.getUsers()) {
                             User user = checkIfFriend(addUserName.getText().toLowerCase());
                             if(user != null){
-                                //application.getIHMtoDATA().addUserInGroup(user,g);
-                                stub.addUserInGroup(user,g);
+                                application.getIHMtoDATA().addUserInGroup(user,g);
                                 obsMembersList.add(user.getFirstname()+ " " + user.getLastname());
                                 addUserName.clear();
                                 showInformationDialog(user.getFirstname()+ " " + user.getLastname() + " added to the group successfully.");

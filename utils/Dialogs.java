@@ -2,7 +2,6 @@ package IHM.utils;
 
 import Dialogs.DialogFX;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Dialogs.
  */
