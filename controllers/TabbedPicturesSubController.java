@@ -7,6 +7,7 @@ import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
 import com.google.common.base.Strings;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -133,7 +134,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          * Builds the Picture box.
          */
         private void build() {
-            final ImageView imgView = new ImageView(new Image(picture.getFilename()));
+            final ImageView imgView = new ImageView();
+            if(picture.getImageIcon() != null) {
+               // imgView.setImage( picture.getIconAsImageObject() ); TODO : wait for DATA new method to get the Icon
+            }
+            else {
+                imgView.setImage( new Image( "IHM/resources/avatar_icon.png" ) );
+            }
+            // system get separator pour mac et linux à check (surtout picture controller)
             NoteHelper.adaptImage(imgView, PICTURE_DIM, PICTURE_DIM);
             imgView.setOnMouseClicked(new EventHandler<MouseEvent>()
             {
@@ -238,7 +246,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         addPicturesInTab(myPictures, myImgTab);
 
         // Set All pictures asynchronously
-        requestAllPictures();
+        //requestAllPictures();
 
         // Add enter key press handler on search text field
         final TabbedPicturesSubController current = this;
@@ -329,14 +337,23 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         for (int i = 0; i < grid.getChildren().size(); ++i) { // thread-safe
             if(grid.getChildren().get(i) instanceof TilePane) {
                 for (Picture p : pictures) {
-                    PicturePane picturePane = new PicturePane(p);
+                    final PicturePane picturePane = new PicturePane(p);
                     if(tab.getText().equals("Mes images")) {
                         myImgList.add(picturePane);
                     }
-                    else {
+                    else
+                    {
                         allImgList.add(picturePane);
                     }
-                    ((TilePane) grid.getChildren().get(i)).getChildren().add(picturePane);
+                    final TilePane current = ((TilePane) grid.getChildren().get(i));
+                    Platform.runLater( new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            current.getChildren().add( picturePane );
+                        }
+                    } );
                 }
                 tab.setContent(grid);
             }
