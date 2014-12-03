@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -17,7 +18,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class WelcomeController.
  */
@@ -150,6 +150,7 @@ public class WelcomeController implements Initializable {
                 logout();
             }
         });
+
     }
 
     /**

@@ -36,7 +36,6 @@ import static IHM.utils.Dialogs.showInformationDialog;
 import static IHM.utils.Dialogs.showWarningDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GroupsController.
  */
