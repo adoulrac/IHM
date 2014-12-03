@@ -5,7 +5,6 @@ import com.google.common.base.Strings;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: Auto-generated Javadoc
 /*
  * 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter
  */

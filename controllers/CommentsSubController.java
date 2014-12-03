@@ -1,6 +1,5 @@
 package IHM.controllers;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class CommentsSubController.
  */

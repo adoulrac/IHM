@@ -6,7 +6,6 @@ import com.google.common.base.Strings;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: Auto-generated Javadoc
 /*
  * 3 to 15 characters with any lower case character, digit or special symbol â€œ_-â€? only
  */

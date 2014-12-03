@@ -6,7 +6,6 @@ import org.junit.runner.notification.Failure;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// TODO: Auto-generated Javadoc
 /**
  * Entry point for running tests.
  */
