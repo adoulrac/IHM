@@ -47,14 +47,16 @@ public class LoginController extends Pane implements Initializable {
      * Build: adds listener to Enter key.
      */
     public void build() {
-        password.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
+        EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                    login();
                 }
             }
-        });
+    	};
+        login.setOnKeyPressed(eventHandler);
+        password.setOnKeyPressed(eventHandler);
     }
     /**
      * Login.
