@@ -6,6 +6,7 @@ import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
 import IHM.validators.VoteValidator;
 import com.google.common.io.Files;
+import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -140,6 +142,10 @@ public class PictureController extends Tab implements Initializable
 
         //TODO miniature/full image tests and displays
         setImage(pictureImg, new Image(picture.getFilename()), 300, 300);
+        FadeTransition ft = new FadeTransition(Duration.millis(3000), pictureImg);
+        ft.setFromValue(0.);
+        ft.setToValue(1.);
+        ft.play();
 
         buildVotes();
         buildTags();
