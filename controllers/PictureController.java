@@ -1,6 +1,5 @@
 package IHM.controllers;
 
-import DATA.exceptions.BadInformationException;
 import DATA.model.*;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
@@ -233,7 +232,6 @@ public class PictureController extends Tab implements Initializable
 
         // Finish
         ihm.setFitToWidth(true);
-        //content.setOrientation(Orientation.VERTICAL);
         ihm.setContent(content);
         setContent(ihm);
     }
@@ -310,7 +308,7 @@ public class PictureController extends Tab implements Initializable
                         Comment c = new Comment(msg, new Date(), currentUser, picture.getUid(), picture.getUser().getUid());
                         app.getIHMtoDATA().addComment(c);
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
-                    }catch(BadInformationException e) {
+                    } catch (Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
                     }
                     writeArea.setText("");
@@ -337,7 +335,7 @@ public class PictureController extends Tab implements Initializable
                         picture.getListNotes().add(note);
                         buildVotes();
                         app.getIHMtoDATA().addNote(note);
-                    }catch(BadInformationException e) {
+                    }catch(Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
                     }
                 } else {
@@ -348,23 +346,41 @@ public class PictureController extends Tab implements Initializable
     }
 
 
+    private void deleteComment(CommentPane cp) {
+        //TODO try catch on delete comment
+        //app.getIHMtoDATA() delete comment todo
+        content.getChildren().remove(cp);
+        comments.remove(cp);
+    }
+
     /**
      * The Class CommentPane.
      */
     private class CommentPane extends HBox {
-        //TODO admin mode
+        //TODO test to activate admin mode
+
+        // VBox that contains userTxt/buttons on first line and commentTxt on second line
+        VBox vb = new VBox(5);
 
         /** The comment. */
         public Comment comment;
 
-        /** The avatar_img. */
-        public ImageView avatar_img = new ImageView();
+        /** The avatarImg. */
+        public ImageView avatarImg = new ImageView();
         
-        /** The user_txt. */
-        public Text user_txt = new Text();
-        
-        /** The comment_txt. */
-        public Text comment_txt = new Text();
+        /** The userTxt. */
+        public Text userTxt = new Text();
+
+        // Click to switch to edit. In edition, becomes validate button
+        public Button editBtn = new Button("Editer");
+
+        // Click to delete comment. In edition, becomes cancel button
+        public Button delBtn = new Button("Supprimer");
+
+        /** The commentTxt. */
+        public Text commentTxt = new Text();
+
+        private TextField commentField = new TextField();
 
         /**
          * Instantiates a new comment pane.
@@ -382,36 +398,106 @@ public class PictureController extends Tab implements Initializable
          */
         public void build(){
             if (comment.getCommentUser().getAvatar()==null) {
-                setImage(avatar_img, new Image("IHM/resources/avatar_icon.png"), 75, 75);
+                setImage(avatarImg, new Image("IHM/resources/avatar_icon.png"), 75, 75);
             } else {
-                setImage(avatar_img, new Image("file:"+comment.getCommentUser().getAvatar()), 75, 75);
+                setImage(avatarImg, new Image("file:"+comment.getCommentUser().getAvatar()), 75, 75);
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("'Le' dd/MM/yyyy 'à' HH'h'mm");
-            user_txt.setText(sdf.format(comment.getDateTime())+", "+comment.getCommentUser().getLogin()+ " a commenté : ");
+            userTxt.setText(sdf.format(comment.getDateTime()) + ", " + comment.getCommentUser().getLogin() + " a commenté : ");
 
-            comment_txt.setWrappingWidth(400);
-            comment_txt.setText(comment.getValue());
+            commentTxt.setWrappingWidth(400);
+            commentTxt.setText(comment.getValue());
 
             addContent();
             addCssClasses();
+
+            switchEditionMode(false);
+        }
+
+
+        private void switchEditionMode(boolean edition) {
+            final CommentPane current = this;
+
+            if (edition) {
+                if (!vb.getChildren().contains(commentField)) {
+                    commentField.setText(commentTxt.getText());
+                    vb.getChildren().remove(commentTxt);
+                    vb.getChildren().add(commentField);
+                }
+
+                editBtn.setText("Valider");
+                editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        try {
+                            comment.setValue(commentField.getText());
+                            app.getIHMtoDATA().addComment(comment);
+                            commentTxt.setText(commentField.getText());
+                            switchEditionMode(false);
+                        } catch (Exception e) {
+                            Dialogs.showWarningDialog("Informations du commentaire invalides.");
+                        }
+                    }
+                });
+
+                delBtn.setText("Annuler");
+                delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        switchEditionMode(false);
+                    }
+                });
+            }
+            else {
+                if (!vb.getChildren().contains(commentTxt)) {
+                    vb.getChildren().remove(commentField);
+                    vb.getChildren().add(commentTxt);
+                }
+
+                editBtn.setText("Editer");
+                editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        switchEditionMode(true);
+                    }
+                });
+
+                delBtn.setText("Supprimer");
+                delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        deleteComment(current);
+                    }
+                });
+            }
         }
 
         /**
          * Adds the content.
          */
         private void addContent(){
-            VBox sp = new VBox(5);
-            sp.getChildren().addAll(user_txt, comment_txt);
+            HBox hb = new HBox(8);
 
-            getChildren().addAll(avatar_img, sp);
+            hb.getChildren().add(userTxt);
+            if (comment.getCommentUser().getUid()==app.currentUser().getUid()) {
+                hb.getChildren().addAll(editBtn, delBtn);
+            }
+            else if (picture.getUser().getUid()==app.currentUser().getUid()) {
+                hb.getChildren().add(delBtn);
+            }
+
+
+            vb.getChildren().addAll(hb, commentTxt);
+
+            getChildren().addAll(avatarImg, vb);
         }
 
         /**
          * Adds the css classes.
          */
         private void addCssClasses(){
-            user_txt.getStyleClass().add("pic-title");
+            userTxt.getStyleClass().add("pic-title");
         }
     }
 
