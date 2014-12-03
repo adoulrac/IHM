@@ -25,7 +25,6 @@ import static IHM.utils.Dialogs.showErrorDialog;
 import static IHM.utils.Dialogs.showWarningDialog;
 import static javafx.collections.FXCollections.observableArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GroupsController.
  */

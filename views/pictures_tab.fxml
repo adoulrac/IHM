@@ -5,18 +5,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
-<TabPane fx:id="tabbedPicturesSub" prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="IHM.controllers.TabbedPicturesSubController">
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<TabPane fx:id="tabbedPicturesSub" prefHeight="556.0" prefWidth="632.0" style="-fx-background-color: #6D6E71;" styleClass="header-tabs" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.TabbedPicturesSubController">
   <tabs>
     <Tab fx:id="allImgTab" text="Toutes les images">
       <content>
-        <SplitPane minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
-           <items>
-               <StackPane alignment="TOP_CENTER" maxHeight="62.0">
+        <VBox minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
+               <StackPane alignment="TOP_CENTER" maxHeight="62.0" SplitPane.resizableWithParent="false">
                   <children>
                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
                       <HBox alignment="CENTER_RIGHT" spacing="10.0">
                          <children>
-                              <Button mnemonicParsing="false" text="Reload" onAction="#loadAllPictures"/>
+                              <Button mnemonicParsing="false" onAction="#loadAllPictures" text="Reload" />
                          <CheckBox fx:id="tagSearch" layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" />
                          <CheckBox fx:id="userSearch" layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" />
                          <TextField fx:id="searchField" layoutX="464.0" layoutY="21.0" text="Rechercher..." />
@@ -25,15 +26,13 @@
                       </HBox>
                   </children>
                </StackPane>
-           </items>
-        </SplitPane>
+        </VBox>
       </content>
     </Tab>
     <Tab fx:id="myImgTab" text="Mes images">
       <content>
-        <SplitPane minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
-           <items>
-               <StackPane alignment="TOP_CENTER" maxHeight="62.0">
+        <VBox minHeight="0.0" minWidth="0.0" prefHeight="527.0" prefWidth="612.0" style="-fx-background-color: #EFEFEF;" styleClass="images-area">
+               <StackPane alignment="TOP_CENTER" maxHeight="62.0" minHeight="62.0" SplitPane.resizableWithParent="false">
                   <children>
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="61.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="629.0" />
                     <HBox alignment="CENTER_RIGHT" spacing="10.0">
@@ -49,8 +48,7 @@
                     </HBox>
                   </children>
                </StackPane>
-           </items>
-        </SplitPane>
+        </VBox>
       </content>
     </Tab>
   </tabs>
