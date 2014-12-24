@@ -25,8 +25,6 @@ import java.util.logging.Logger;
 
 /**
  * The Class ProfileController.
- *
- * @author Sylvain_
  */
 public class ProfileController implements Initializable {
 
@@ -107,13 +105,13 @@ public class ProfileController implements Initializable {
 	private User user;
 
 	/** The editable. */
-	private boolean editable=false;
+	private boolean editable = false;
 	
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
+	public void initialize(final URL url, final ResourceBundle resourceBundle) {
 		// NOP
 	}
 
@@ -122,7 +120,7 @@ public class ProfileController implements Initializable {
 	 *
 	 * @param userToDisplay the user to display
 	 */
-	public void build(User userToDisplay) {
+	public void build(final User userToDisplay) {
 		this.user = userToDisplay;
 		if (userToDisplay.getUid().equals(application.currentUser().getUid())) {
 			editable = true;
@@ -138,8 +136,8 @@ public class ProfileController implements Initializable {
 		listView.getSelectionModel().selectedItemProperty()
 				.addListener(new ChangeListener<String>() {
 					@Override
-					public void changed(ObservableValue<? extends String> arg0,
-							String arg1, String arg2) {
+					public void changed(final ObservableValue<? extends String> arg0,
+							final String arg1, final String arg2) {
 						removeButton.setDisable(false);
 					}
 				});
@@ -148,7 +146,6 @@ public class ProfileController implements Initializable {
 	/**
 	 * Gets the user infos.
 	 *
-	 * @return the user infos
 	 */
 	public void getUserInfos() {
 		try {
@@ -207,10 +204,10 @@ public class ProfileController implements Initializable {
 	/**
 	 * Sets the app.
 	 *
-	 * @param application the new app
+	 * @param vApplication the new app
 	 */
-	public void setApp(MainController application) {
-		this.application = application;
+	public void setApp(final MainController vApplication) {
+		this.application = vApplication;
 	}
 
 	/**
@@ -218,7 +215,7 @@ public class ProfileController implements Initializable {
 	 *
 	 * @return true, if is editable
 	 */
-	public boolean isEditable() {
+	private boolean isEditable() {
 		return editable;
 	}
 	
@@ -244,7 +241,7 @@ public class ProfileController implements Initializable {
 	/**
 	 * Display user info.
 	 */
-	public void displayUserInfo() {
+	private void displayUserInfo() {
 		displayUserAvatar();
 		this.nickname.setText(this.userNickName);
 		this.lastname.setText(this.userLastName);
@@ -257,7 +254,7 @@ public class ProfileController implements Initializable {
 	/**
 	 * Display the user's avatar.
 	 */
-	public void displayUserAvatar() {
+	private void displayUserAvatar() {
 		try {
 			String userAvatarPath = userAvatar;
 			File file = new File(userAvatarPath);
@@ -267,13 +264,14 @@ public class ProfileController implements Initializable {
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
 					Level.SEVERE, "Unknown User avatar");
+            //TODO: if new user without avatar, shouldn't display an error message
 		}
 	}
 
 	/**
 	 * Display ip addresses list.
 	 */
-	public void displayIPAddressesList() {
+	private void displayIPAddressesList() {
 		ObservableList<String> addressesObservable = FXCollections
 				.observableArrayList();
 		for (String s : userIP) {
@@ -283,7 +281,7 @@ public class ProfileController implements Initializable {
 	}
 
 	/**
-	 * Adds an ip address and persists changes
+	 * Adds an ip address and persists changes.
 	 */
 	public void addIPAddress() {
 		if (!ValidatorHelper.validateIPs(newIP.getText())) {
@@ -310,8 +308,8 @@ public class ProfileController implements Initializable {
 	public void removeIPAddress() {
 		int selectedId = listView.getSelectionModel().getSelectedIndex();
 		if (selectedId != -1) {
-			int newSelectedId = (selectedId == listView.getItems().size() - 1) ? selectedId - 1
-					: selectedId;
+			int newSelectedId = (selectedId == listView.getItems().size() - 1)
+                    ? selectedId - 1 : selectedId;
 			listView.getItems().remove(selectedId);
 			listView.getSelectionModel().select(newSelectedId);
 			userIP.remove(listView.getItems().get(selectedId));
@@ -324,7 +322,7 @@ public class ProfileController implements Initializable {
 	 *
 	 * @return true, if info has changed, else return false
 	 */
-	public boolean hasInfoChanged() {
+	private boolean hasInfoChanged() {
 		if (!userFirstName.equals(this.firstname.getText())) {
 			return true;
 		}
@@ -340,8 +338,10 @@ public class ProfileController implements Initializable {
 	/**
 	 * Persist user info changes.
 	 */
-	public void persistUserInfoChanges() {
-		if (!isEditable()) { return; }
+	private void persistUserInfoChanges() {
+		if (!isEditable()) {
+            return;
+        }
 		try {
 			application.currentUser().setBirthDate(birthdate.getText());
 			application.currentUser().setFirstname(firstname.getText());
@@ -355,7 +355,7 @@ public class ProfileController implements Initializable {
 	/**
 	 * Replace null values by empty string to avoid issues.
 	 */
-	public void removeNullValues() {
+	private void removeNullValues() {
 		if (userFirstName == null) {
 			userFirstName = "";
 		}
@@ -380,7 +380,7 @@ public class ProfileController implements Initializable {
 	/**
 	 * On ok: persists changes if needed, then return to main window.
 	 */
-	public void onOK() {
+    public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {
 			boolean response = Dialogs

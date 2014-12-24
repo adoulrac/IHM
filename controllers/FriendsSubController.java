@@ -68,52 +68,54 @@ public class FriendsSubController extends SplitPane implements Initializable {
         /** The icon. */
         private ImageView icon;
 
-        /** The Constant onPath. */
-        private static final String onPath = "IHM/resources/online_icon.png";
+        /** The Constant ON_PATH. */
+        private static final String ON_PATH = "IHM/resources/online_icon.png";
         
-        /** The Constant offPath. */
-        private static final String offPath = "IHM/resources/offline_icon.png";
+        /** The Constant OFF_PATH. */
+        private static final String OFF_PATH = "IHM/resources/offline_icon.png";
 
         /**
          * Instantiates a new user h box cell.
          *
-         * @param user the user
+         * @param vUser the user
          * @param status the status
          */
-        public UserHBoxCell(final User user, boolean status) {
-            this.user = user;
+        public UserHBoxCell(final User vUser, final boolean status) {
+            this.user = vUser;
 
             label = new Label();
             label.setText(user.getLogin());
             HBox.setHgrow(label, Priority.ALWAYS);
 
             icon = new ImageView();
-            icon.setImage(new Image(status ? onPath : offPath));
-            icon.setFitHeight(11.0);
-            icon.setFitWidth(13.0);
+            icon.setImage(new Image(status ? ON_PATH : OFF_PATH));
+            final float iconHeight = 11.0f;
+            final float iconWidth = 13.0f;
+            icon.setFitHeight(iconHeight);
+            icon.setFitWidth(iconWidth);
 
             this.getChildren().addAll(icon, label);
 
             this.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent mouseEvent) {
+                public void handle(final MouseEvent mouseEvent) {
                     application.goToProfile(user);
                 }
             });
         }
 
         /**
-         * Switch on.
+         * Switch on. Sets the connected user icon.
          */
         public void switchOn() {
-            icon.setImage(new Image(onPath));
+            icon.setImage(new Image(ON_PATH));
         }
 
         /**
-         * Switch off.
+         * Switch off. Sets the disconnected user icon.
          */
         public void switchOff() {
-            icon.setImage(new Image(offPath));
+            icon.setImage(new Image(OFF_PATH));
         }
 
         /**
@@ -139,7 +141,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
         groups = Maps.newHashMap();
-        boxAddFriend.setPadding(new Insets(15, 12, 15, 12));
+        final Insets insets = new Insets(15, 12, 15, 12);
+        boxAddFriend.setPadding(insets);
     }
 
     /**
@@ -191,7 +194,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addUserInGroup(final User user, final String groupName) {
         final List<UserHBoxCell> userGroup = groups.get(groupName);
-        if(userGroup != null) {
+        if (userGroup != null) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -208,7 +211,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param groupName the group name
      */
     public void addUsersInGroup(final List<User> users, final String groupName) {
-        if(users == null) {
+        if (users == null) {
             return;
         }
         for (User user : users) {
@@ -217,15 +220,17 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     /**
-     * Creates the new group.
+     * Creates a new group.
      *
      * @param groupName the group name
      * @return the titled pane
      */
     private TitledPane createNewGroup(final String groupName) {
         TitledPane tp = new TitledPane();
-        tp.setPrefWidth(200.0);
-        tp.setPrefHeight(180.0);
+        final float width = 200.0f;
+        final float height = 180.0f;
+        tp.setPrefWidth(width);
+        tp.setPrefHeight(height);
         tp.setAnimated(false);
         tp.setTextFill(Paint.valueOf("WHITE"));
         tp.setText(groupName);
@@ -244,7 +249,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     /**
-     * Adds the friend.
+     * Adds a friend.
      */
     public void addFriend() {
         String friend = friendName.getText();
@@ -268,9 +273,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
      *
      * @param user the user
      */
-    public void connectUser(User user) {
+    public void connectUser(final User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
-        if(existingUser != null) {
+        if (existingUser != null) {
             updateUser(user);
         } else {
             addUserInGroup(user, Group.DEFAULT_GROUP_NAME);
@@ -282,9 +287,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
      *
      * @param user the user
      */
-    public void disconnectUser(User user) {
+    public void disconnectUser(final User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
-        if(existingUser != null) {
+        if (existingUser != null) {
             updateUser(user);
         }
     }
@@ -295,7 +300,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param sender the sender
      * @param response the response
      */
-    public void receiveFriendResponse(User sender, boolean response) {
+    public void receiveFriendResponse(final User sender, final boolean response) {
         if (response) {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'amis.");
             updateUser(sender, Group.FRIENDS_GROUP_NAME);
@@ -309,12 +314,13 @@ public class FriendsSubController extends SplitPane implements Initializable {
      *
      * @param sender the sender
      */
-    public void receiveFriendRequest(User sender) {
-        boolean response = Dialogs.showConfirmationDialog(sender.getLogin() + " veux être votre amis ! Acceptez-vous sa demande ? ");
+    public void receiveFriendRequest(final User sender) {
+        boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
+                + " veux être votre amis ! Acceptez-vous sa demande ? ");
         if (response) {
             updateUser(sender, Group.FRIENDS_GROUP_NAME);
             application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
-        }else {
+        } else {
             application.getIHMtoDATA().refuseUser(sender);
         }
     }
@@ -325,11 +331,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param userId the user id
      * @return the user h box cell
      */
-    private UserHBoxCell lookForUser(UUID userId) {
-        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+    private UserHBoxCell lookForUser(final UUID userId) {
+        for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
-            for(UserHBoxCell u : users) {
-                if(u.getUser().getUid().equals(userId)) {
+            for (UserHBoxCell u : users) {
+                if (u.getUser().getUid().equals(userId)) {
                     return u;
                 }
             }
@@ -343,11 +349,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param login the login
      * @return the user h box cell
      */
-    private UserHBoxCell lookForUser(String login) {
-        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+    private UserHBoxCell lookForUser(final String login) {
+        for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
-            for(UserHBoxCell u : users) {
-                if(u.getUser().getLogin().equals(login)) {
+            for (UserHBoxCell u : users) {
+                if (u.getUser().getLogin().equals(login)) {
                     return u;
                 }
             }
@@ -361,16 +367,16 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      * @return the string
      */
-    private String removeUserInGroup(User user) {
+    private String removeUserInGroup(final User user) {
         UserHBoxCell userToRemove = null;
-        for(Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
+        for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
-                if(u.getUser().getUid().equals(user.getUid())) {
+                if (u.getUser().getUid().equals(user.getUid())) {
                     userToRemove = u;
                 }
             }
-            if(userToRemove != null){
+            if (userToRemove != null) {
                 users.remove(userToRemove);
                 return entry.getKey();
             }
@@ -388,8 +394,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                String CurrGroupName = removeUserInGroup(user);
-                addUserInGroup(user, groupName == null ? CurrGroupName : groupName);
+                String currGroupName = removeUserInGroup(user);
+                addUserInGroup(user, groupName == null ? currGroupName : groupName);
             }
         });
     }
