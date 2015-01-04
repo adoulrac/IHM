@@ -1,6 +1,5 @@
 package IHM.controllers;
 
-import DATA.model.Note;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import IHM.helpers.NoteHelper;
@@ -36,14 +35,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * The Class TabbedPicturesSubController.
+ * Handles the pictures in tabs (and the tabs themselves).
  */
 public class TabbedPicturesSubController extends TabPane implements Initializable {
 
     /** The Constant TAG_SEPARATOR. */
     private static final String TAG_SEPARATOR = ",";
 
+    /** The Constant USER_SEPARATOR. */
     private static final String USER_SEPARATOR = ",";
 
+    /** The Constant LEFT_PADDING. */
     private static final int LEFT_PADDING = 20;
 
     /** The Constant HGAP_PICTURES. */
@@ -61,15 +63,15 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /** The application. */
     private MainController application;
 
-    /** The search field. */
+    /** The search text field. */
     @FXML
     private TextField searchField;
 
-    /** The tag search. */
+    /** The tag search checkbox. */
     @FXML
     private CheckBox tagSearch;
 
-    /** The user search. */
+    /** The user search checkbox. */
     @FXML
     private CheckBox userSearch;
 
@@ -77,28 +79,29 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     @FXML
     private TabPane tabbedPicturesSub;
 
-    /** The my img tab. */
+    /** The my images tab. */
     @FXML
     private Tab myImgTab;
 
-    /** The all img tab. */
+    /** The all images tab. */
     @FXML
     private Tab allImgTab;
 
-    /** The delete btn. */
+    /** The delete button. */
     @FXML
     private Button deleteBtn;
 
+    /** The pending request Id for asynchronous requests. */
     private int pendingRequestId;
 
-    /** The my img list. */
+    /** The my images list. */
     private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
     
-    /** The all img list. */
+    /** The all images list. */
     private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
 
     /**
-     * The Class PicturePane.
+     * The inner Class PicturePane.
      */
     private class PicturePane extends BorderPane {
 
@@ -135,11 +138,10 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          */
         private void build() {
             final ImageView imgView = new ImageView();
-            if(picture.getImageIcon() != null) {
+            if (picture.getImageIcon() != null) {
                // imgView.setImage( picture.getIconAsImageObject() ); TODO : wait for DATA new method to get the Icon
-            }
-            else {
-                imgView.setImage( new Image( "IHM/resources/avatar_icon.png" ) );
+            } else {
+                imgView.setImage(new Image("IHM/resources/avatar_icon.png"));
             }
             // system get separator pour mac et linux à check (surtout picture controller)
             NoteHelper.adaptImage(imgView, PICTURE_DIM, PICTURE_DIM);
@@ -147,20 +149,18 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             {
                 @Override
                 public void handle(final MouseEvent mouseEvent) {
-                    if(mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                        if(mouseEvent.getClickCount() == 2) {
+                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                        if (mouseEvent.getClickCount() == 2) {
                             imgView.setEffect(null);
                             isSelected = false;
                             PictureController pC = new PictureController(picture, application);
                             addTab(pC);
-                        }
-                        else if(mouseEvent.getClickCount() == 1) {
-                            if(isSelected == true) {
+                        } else if (mouseEvent.getClickCount() == 1) {
+                            if (isSelected) {
                                 isSelected = false;
                                 imgView.setEffect(null);
                                 deleteBtnDisplay();
-                            }
-                            else {
+                            } else {
                                 isSelected = true;
                                 createGlow(imgView);
                                 deleteBtnDisplay();
@@ -180,11 +180,11 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         }
 
         /**
-         * Creates the glow.
+         * Creates the glow effect (when a picture is selected).
          *
-         * @param img the img
+         * @param img the image
          */
-        private void createGlow(ImageView img) {
+        private void createGlow(final ImageView img) {
             DropShadow borderGlow = new DropShadow();
             borderGlow.setOffsetY(0.0f);
             borderGlow.setOffsetX(0.0f);
@@ -236,8 +236,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Builds the Tabbed Pictures.
      */
     public void build() {
-        deleteBtn.setDisable( true );
-        tabbedPicturesSub.setTabClosingPolicy( TabClosingPolicy.SELECTED_TAB );
+        deleteBtn.setDisable(true);
+        tabbedPicturesSub.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
         buildStaticTab(myImgTab);
         buildStaticTab(allImgTab);
 
@@ -250,29 +250,32 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
         // Add enter key press handler on search text field
         final TabbedPicturesSubController current = this;
-        searchField.setOnKeyPressed( new EventHandler<KeyEvent>()
+        searchField.setOnKeyPressed(new EventHandler<KeyEvent>()
         {
             @Override
-            public void handle( KeyEvent keyEvent )
-            {
-                if( keyEvent.getCode().equals( KeyCode.ENTER ) && (tagSearch.isSelected() || userSearch.isSelected())){
+            public void handle(final KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER) && (tagSearch.isSelected() || userSearch.isSelected())) {
                     Integer requestId = application.addRequest(current);
                     pendingRequestId = requestId;
-                    if( tagSearch.isSelected() ){
+                    if (tagSearch.isSelected()) {
                         searchPicturesByTag(searchField.getText(), requestId);
-                    } else if ( userSearch.isSelected() ) {
+                    } else if (userSearch.isSelected()) {
                         searchPicturesByUser(searchField.getText(), requestId);
                     }
                     // We clear the tab because it will be fill in asynchronously
-                    clearTabContent( allImgTab );
+                    clearTabContent(allImgTab);
                 }
             }
-        } );
+        });
     }
 
+    /**
+     * Builds a static tab.
+     * @param tab the tab
+     */
     private void buildStaticTab(Tab tab) {
         TilePane tP2 = new TilePane();
-        tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0 ));
+        tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0));
         tP2.setVgap(VGAP_PICTURES);
         tP2.setHgap(HGAP_PICTURES);
         VBox sP2 = (VBox) tab.getContent();
@@ -284,16 +287,16 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Search pictures by tag.
      *
      * @param text the text
+     * @param requestId the request Id
      */
     private void searchPicturesByTag(final String text, final Integer requestId) {
-        if(Strings.isNullOrEmpty(text)) {
+        if (Strings.isNullOrEmpty(text)) {
             return;
         }
-        if(requestId != null) {
+        if (requestId != null) {
             ArrayList<String> arrayListStr = new ArrayList<String>(Arrays.asList(text.split(TAG_SEPARATOR)));
             ArrayList<Tag> arrayListTag = new ArrayList<Tag>();
-            for(String name : arrayListStr)
-            {
+            for (String name : arrayListStr) {
                 arrayListTag.add(new Tag(name));
             }
             application.getIHMtoDATA().getPictures(arrayListTag, requestId);
@@ -304,12 +307,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Search pictures by user.
      *
      * @param text the text
+     * @param requestId the request Id
      */
     private void searchPicturesByUser(final String text, final Integer requestId) {
-        if(Strings.isNullOrEmpty(text)) {
+        if (Strings.isNullOrEmpty(text)) {
             return;
         }
-        if(requestId != null) {
+        if (requestId != null) {
             //TODO Add a new method with a string parameter to look for all pictures using username/login, etc.
             //application.getIHMtoDATA().getPictures(Arrays.asList(text.split(USER_SEPARATOR));
         }
@@ -335,25 +339,22 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
         VBox grid = (VBox) tab.getContent();
         for (int i = 0; i < grid.getChildren().size(); ++i) { // thread-safe
-            if(grid.getChildren().get(i) instanceof TilePane) {
+            if (grid.getChildren().get(i) instanceof TilePane) {
                 for (Picture p : pictures) {
                     final PicturePane picturePane = new PicturePane(p);
-                    if(tab.getText().equals("Mes images")) {
+                    if (tab.getText().equals("Mes images")) {
                         myImgList.add(picturePane);
-                    }
-                    else
-                    {
+                    } else {
                         allImgList.add(picturePane);
                     }
                     final TilePane current = ((TilePane) grid.getChildren().get(i));
-                    Platform.runLater( new Runnable()
+                    Platform.runLater(new Runnable()
                     {
                         @Override
-                        public void run()
-                        {
-                            current.getChildren().add( picturePane );
+                        public void run() {
+                            current.getChildren().add(picturePane);
                         }
-                    } );
+                    });
                 }
                 tab.setContent(grid);
             }
@@ -365,10 +366,10 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param tab the tab
      */
-    private void clearTabContent(Tab tab){
+    private void clearTabContent(Tab tab) {
         VBox grid = (VBox) tab.getContent();
         for (Node n : grid.getChildren()) {
-            if(n instanceof TilePane) {
+            if (n instanceof TilePane) {
                 TilePane tile = (TilePane) n;
                 tile.getChildren().clear();
             }
@@ -392,7 +393,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param picture the picture
      */
     public void addPicture(Picture picture) {
-       if(picture != null){
+       if (picture != null) {
            addPicturesInTab(Arrays.asList(picture), allImgTab);
        }
     }
@@ -402,7 +403,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     public void addLocalPicture() {
         File f = FileUtil.chooseFile();
-        if(f != null) {
+        if (f != null) {
             Picture p = new Picture(f.toURI().toString(), "", application.currentUser());
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
@@ -419,9 +420,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * Delete selected picture(s).
      */
     public void deleteSelectedPicture() {
-        if(Dialogs.showConfirmationDialog(CONFIRM_SUPPRESSION)) {
-            for(PicturePane picturePane : myImgList) {
-                if(picturePane.isSelected()) {
+        if (Dialogs.showConfirmationDialog(CONFIRM_SUPPRESSION)) {
+            for (PicturePane picturePane : myImgList) {
+                if (picturePane.isSelected()) {
                     myImgList.remove(picturePane);
                     application.getIHMtoDATA().deletePicture(picturePane.getPicture());
                 }
@@ -436,7 +437,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     private void displayMyImg() {
         VBox grid = (VBox) myImgTab.getContent();
         for (Node n : grid.getChildren()) {
-            if(n instanceof TilePane) {
+            if (n instanceof TilePane) {
                 TilePane tile = (TilePane) n;
                 tile.getChildren().clear();
                 for (PicturePane picturePane : myImgList) {
@@ -453,7 +454,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     private void deleteBtnDisplay() {
         for (PicturePane picturePane : myImgList) {
-            if(picturePane.isSelected()) {
+            if (picturePane.isSelected()) {
                 deleteBtn.setDisable(false);
                 return;
             }
@@ -463,13 +464,16 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     private void requestAllPictures() {
         Integer requestId = application.addRequest(this);
-        if(requestId != null) {
+        if (requestId != null) {
             pendingRequestId = requestId;
             application.getIHMtoDATA().getPictures(requestId);
         }
     }
 
-    public void loadAllPictures(){
+    /**
+     * Loads all the pictures.
+     */
+    public void loadAllPictures() {
         clearTabContent(allImgTab);
         requestAllPictures();
     }
@@ -483,6 +487,12 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         this.application = app;
     }
 
+    /**
+     * Check if a request is the pending request.
+     *
+     * @param requestId the request Id
+     * @return true if the request id is the one pending
+     */
     public boolean isPendingRequest(int requestId) {
         return pendingRequestId == requestId;
     }
