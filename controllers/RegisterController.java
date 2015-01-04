@@ -49,14 +49,14 @@ public class RegisterController implements Initializable {
     }
 
     /**
-     * Login.
+     * The user logs in.
      */
     public void login() {
         application.goToLogin();
     }
 
     /**
-     * Subscribe.
+     * Handles the subscription.
      */
     public void subscribe() {
         String loginText = login.getText();

@@ -30,6 +30,6 @@
          <fx:include fx:id="friendsSub" source="friends_welcome.fxml" />
          <Button layoutX="658.0" layoutY="149.0" mnemonicParsing="false" onAction="#launchGroups" styleClass="groups-btn" text="Gestion des groupes" />
          <Button layoutX="688.0" layoutY="101.0" mnemonicParsing="false" onAction="#launchPreferences" prefHeight="27.0" prefWidth="119.0" styleClass="settings-btn" text="Préférences" />
-      <Button layoutX="702.0" layoutY="44.0" mnemonicParsing="false" onAction="#SaveChanges" prefHeight="26.0" prefWidth="105.0" text="Sauvegarder" />
+      <Button layoutX="702.0" layoutY="44.0" mnemonicParsing="false" onAction="#saveChanges" prefHeight="26.0" prefWidth="105.0" text="Sauvegarder" />
    </children>
 </Pane>

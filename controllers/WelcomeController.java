@@ -20,16 +20,17 @@ import java.util.logging.Logger;
 
 /**
  * The Class WelcomeController.
+ * Handles the welcome view.
  */
 public class WelcomeController implements Initializable {
 
     /** The application. */
     private MainController application;
 
-    /** The Constant AVATAR_DIM. */
+    /** The Constant AVATAR_DIM. Dimensions of the avatar image. */
     private static final double AVATAR_DIM = 30.0;
 
-    /** The welcome. */
+    /** The welcome pane. */
     @FXML
     private Pane welcome;
 
@@ -41,11 +42,11 @@ public class WelcomeController implements Initializable {
     @FXML
     private FriendsSubController friendsSubController;
 
-    /** The lbl user name. */
+    /** The user name (label). */
     @FXML
     private Label lblUserName;
 
-    /** The avatar user. */
+    /** The avatar of the user. */
     @FXML
     private ImageView avatarUser;
 
@@ -74,48 +75,46 @@ public class WelcomeController implements Initializable {
     }
 
     /**
-     * Launch preferences.
+     * Launch preferences view.
      */
     public void launchPreferences() {
-        if(application != null) {
+        if (application != null) {
             application.goToProfile(application.currentUser());
         }
     }
 
     /**
-     * Launch groups.
+     * Launch groups view.
      */
     public void launchGroups() {
-       if(application != null) {
+       if (application != null) {
            application.goToGroups();
        }
     }
 
     /**
-     * Logout.
+     * Handles the user logout.
      */
     public void logout() {
-        try
-        {
-            if( application.currentUser() != null )
+        try {
+            if (application.currentUser() != null) {
                 application.getIHMtoDATA().logout();
-        } catch (IOException e)
-        {
-            Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Error in disconnecting the user." );
+            }
+        } catch (IOException e) {
+            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Error in disconnecting the user.");
         }
         application.userLogout();
     }
 
     /**
-     * Builds the.
+     * Builds the main components of the welcome view.
      */
     public void build() {
-        if(application.currentUser() != null) {
-            if( application.currentUser().getAvatar() != null)
-            {
+        if (application.currentUser() != null) {
+            if (application.currentUser().getAvatar() != null) {
                 File f = new File(application.currentUser().getAvatar());
-                if(f.isFile()) {
-                    avatarUser.setImage( new Image(f.toURI().toString()) );
+                if (f.isFile()) {
+                    avatarUser.setImage(new Image(f.toURI().toString()));
                     avatarUser.setFitWidth(AVATAR_DIM);
                     avatarUser.setFitHeight(AVATAR_DIM);
                     avatarUser.setPreserveRatio(true);
@@ -124,38 +123,37 @@ public class WelcomeController implements Initializable {
                 }
 
             }
-            lblUserName.setText( " Connecté (" + application.currentUser().getLogin() + ")" );
+            lblUserName.setText(" Connecté (" + application.currentUser().getLogin() + ")");
         }
 
         // Build Pictures interface
-        if(tabbedPicturesSubController != null) {
+        if (tabbedPicturesSubController != null) {
             tabbedPicturesSubController.setApp(application);
             tabbedPicturesSubController.build();
-        }
-        else
-        {
-            Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Pictures controller is null." );
+        } else {
+            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Pictures controller is null.");
         }
 
         // Build Friends interface
-        if(friendsSubController != null) {
+        if (friendsSubController != null) {
             friendsSubController.setApp(application);
             friendsSubController.build();
-        }
-        else
-        {
-            Logger.getLogger( WelcomeController.class.getName() ).log( Level.SEVERE, "Friends sub controller is null." );
+        } else {
+            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
         }
 
         ((Stage) welcome.getScene().getWindow()).setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
-            public void handle(WindowEvent windowEvent) {
+            public void handle(final WindowEvent windowEvent) {
                 logout();
             }
         });
     }
 
-    public void SaveChanges(){
+    /**
+     * Saves the modifications.
+     */
+    public void saveChanges() {
         //TODO
     }
 
