@@ -154,7 +154,8 @@ public class PictureController extends Tab implements Initializable
         });
 
         //TODO miniature/full image tests and displays
-        setImage(pictureImg, new Image(picture.getFilename()), 300, 300);
+        Image img = picture.getImageObject();
+        setImage(pictureImg, img, 300, 300);
         FadeTransition ft = new FadeTransition(Duration.millis(3000), pictureImg);
         ft.setFromValue(0.);
         ft.setToValue(1.);

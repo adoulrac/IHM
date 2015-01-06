@@ -17,6 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -27,6 +29,7 @@ import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -138,8 +141,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          */
         private void build() {
             final ImageView imgView = new ImageView();
-            if (picture.getImageIcon() != null) {
-               // imgView.setImage( picture.getIconAsImageObject() ); TODO : wait for DATA new method to get the Icon
+            Image img = picture.getImageObject();
+            if (img != null) {
+                imgView.setImage( img ); //TODO : wait for DATA new method to get the Icon
             } else {
                 imgView.setImage(new Image("IHM/resources/avatar_icon.png"));
             }
@@ -404,15 +408,15 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addLocalPicture() {
         File f = FileUtil.chooseFile();
         if (f != null) {
-            Picture p = new Picture(f.toURI().toString(), "", application.currentUser());
-            PicturePane pP = new PicturePane(p);
-            myImgList.add(pP);
-            displayMyImg();
+            Picture p = new Picture(f.toPath().toString(), "", application.currentUser());
             try {
                 application.getIHMtoDATA().addPicture(p);
             } catch (IOException e) {
                 Dialogs.showWarningDialog(e.getMessage());
             }
+            PicturePane pP = new PicturePane(p);
+            myImgList.add(pP);
+            displayMyImg();
         }
     }
 
