@@ -250,7 +250,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         addPicturesInTab(myPictures, myImgTab);
 
         // Set All pictures asynchronously
-        //requestAllPictures();
+        requestAllPictures();
 
         // Add enter key press handler on search text field
         final TabbedPicturesSubController current = this;
