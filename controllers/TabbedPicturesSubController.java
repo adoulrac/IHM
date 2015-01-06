@@ -141,8 +141,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          */
         private void build() {
             final ImageView imgView = new ImageView();
-            if (picture.getImageObject() != null) {
-                imgView.setImage( picture.getImageObject() ); //TODO : wait for DATA new method to get the Icon
+            Image img = picture.getImageObject();
+            if (img != null) {
+                imgView.setImage( img ); //TODO : wait for DATA new method to get the Icon
             } else {
                 imgView.setImage(new Image("IHM/resources/avatar_icon.png"));
             }
@@ -407,15 +408,15 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     public void addLocalPicture() {
         File f = FileUtil.chooseFile();
         if (f != null) {
-            Picture p = new Picture(f.toURI().toString(), "", application.currentUser());
-            PicturePane pP = new PicturePane(p);
-            myImgList.add(pP);
-            displayMyImg();
+            Picture p = new Picture(f.toPath().toString(), "", application.currentUser());
             try {
                 application.getIHMtoDATA().addPicture(p);
             } catch (IOException e) {
                 Dialogs.showWarningDialog(e.getMessage());
             }
+            PicturePane pP = new PicturePane(p);
+            myImgList.add(pP);
+            displayMyImg();
         }
     }
 

@@ -39,10 +39,11 @@ public class ValidatorHelper {
             return true;
         }
         String[] lines = ipsText.split(System.getProperty("line.separator"));
+        // TODO : split not working
         boolean valid = true;
 
         for(String line : lines) {
-            return new IPAddressValidator().validate(line);
+            valid = new IPAddressValidator().validate(line);
         }
 
         return valid;
