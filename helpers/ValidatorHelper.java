@@ -38,7 +38,7 @@ public class ValidatorHelper {
         if(Strings.isNullOrEmpty(ipsText)) {
             return true;
         }
-        String[] lines = ipsText.split(System.getProperty("line.separator"));
+        String[] lines = ipsText.split("\\r?\\n");
         // TODO : split not working
         boolean valid = true;
 
