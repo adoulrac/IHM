@@ -17,6 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -27,6 +29,7 @@ import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -138,8 +141,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          */
         private void build() {
             final ImageView imgView = new ImageView();
-            if (picture.getImageIcon() != null) {
-               // imgView.setImage( picture.getIconAsImageObject() ); TODO : wait for DATA new method to get the Icon
+            if (picture.getImageObject() != null) {
+                imgView.setImage( picture.getImageObject() ); //TODO : wait for DATA new method to get the Icon
             } else {
                 imgView.setImage(new Image("IHM/resources/avatar_icon.png"));
             }
