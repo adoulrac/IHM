@@ -117,7 +117,6 @@ public class PictureController extends Tab implements Initializable
      */
     public PictureController(Picture picture, MainController app) {
         super(picture.getFilename().substring(picture.getFilename().lastIndexOf("/") + 1));
-        System.out.println(picture.getFilename());
 
         this.app = app;
         this.picture = picture;
