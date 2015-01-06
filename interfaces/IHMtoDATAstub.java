@@ -285,6 +285,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
 
     }
 
+    @Override
+    public void getPicturesByUsers( List<String> listUser, int idRequest )
+    {
+
+    }
+
     /**
      * Gets the pictures.
      *

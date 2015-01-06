@@ -2,6 +2,7 @@ package IHM.controllers;
 
 import DATA.model.Picture;
 import DATA.model.Tag;
+import DATA.model.User;
 import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
@@ -318,8 +319,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             return;
         }
         if (requestId != null) {
-            //TODO Add a new method with a string parameter to look for all pictures using username/login, etc.
-            //application.getIHMtoDATA().getPictures(Arrays.asList(text.split(USER_SEPARATOR));
+            application.getIHMtoDATA().getPicturesByUsers(Arrays.asList(text.split(USER_SEPARATOR)), requestId);
         }
     }
 
