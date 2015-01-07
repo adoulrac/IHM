@@ -91,6 +91,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public void addComment(Comment comment) { }
 
+    @Override
+    public void deleteComment(Comment comment) {}
+
     /* (non-Javadoc)
      * @see DATA.interfaces.IHMtoDATA#addNote(DATA.model.Note)
      */
@@ -226,7 +229,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Request the Group with the name in param
      */
     @Override
-    public Group getGroup(String group)  {
+    public Group getGroupByName(String group)  {
         if (group.equals("Amis")) {
             return amis;
         } else return null;

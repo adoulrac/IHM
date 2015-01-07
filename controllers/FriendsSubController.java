@@ -3,6 +3,8 @@ package IHM.controllers;
 import DATA.model.Group;
 import DATA.model.User;
 import IHM.utils.Dialogs;
+import IHM.utils.StringUtil;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.application.Platform;
@@ -285,6 +287,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void connectUser(final User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
+        System.out.println(existingUser + " " + existingUser.getUser().getLogin());
         if (existingUser != null) {
             updateUser(user);
         } else {
@@ -376,10 +379,14 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @return the user h box cell
      */
     private UserHBoxCell lookForUser(final String login) {
+        if(Strings.isNullOrEmpty(login)) {
+            return null;
+        }
+
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
-                if (u.getUser().getLogin().equals(login)) {
+                if (u.getUser().getLogin().equalsIgnoreCase(login)) {
                     return u;
                 }
             }
