@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class FriendsSubController.
@@ -336,10 +338,12 @@ public class FriendsSubController extends SplitPane implements Initializable {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
                 if (u.getUser().getUid().equals(userId)) {
+                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" found in group " + entry.getKey());
                     return u;
                 }
             }
         }
+        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" not found");
         return null;
     }
 
