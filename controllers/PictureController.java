@@ -37,9 +37,6 @@ import static IHM.utils.Dialogs.showInformationDialog;
  */
 public class PictureController extends Tab implements Initializable
 {
-    //TODO Edition mode
-    //TODO Change underscore case to camel case
-
     private static final int AVATAR_SIZE = 50;
 
     private static final int PICTURE_SIZE = 300;
@@ -140,7 +137,7 @@ public class PictureController extends Tab implements Initializable
     }
 
     /**
-     * Builds the.
+     * Builds the picture.
      */
     public void build(){
         //Set Avatar
@@ -166,7 +163,6 @@ public class PictureController extends Tab implements Initializable
             }
         });
 
-        //TODO miniature/full image tests and displays
         Image img = picture.getImageObject();
         setImage(pictureImg, img, 300, 300);
         FadeTransition ft = new FadeTransition(Duration.millis(3000), pictureImg);

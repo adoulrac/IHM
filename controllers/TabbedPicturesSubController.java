@@ -144,7 +144,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             final ImageView imgView = new ImageView();
             Image img = picture.getImageObject();
             if (img != null) {
-                imgView.setImage( img ); //TODO : wait for DATA new method to get the Icon
+                imgView.setImage( img );
             } else {
                 imgView.setImage(new Image("IHM/resources/avatar_icon.png"));
             }

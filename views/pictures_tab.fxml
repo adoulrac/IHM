@@ -17,7 +17,7 @@
                               <Button mnemonicParsing="false" onAction="#loadAllPictures" text="Reload" />
                          <CheckBox fx:id="tagSearch" layoutX="304.0" layoutY="26.0" mnemonicParsing="false" text="Tags" />
                          <CheckBox fx:id="userSearch" layoutX="371.0" layoutY="26.0" mnemonicParsing="false" text="Utilisateurs" />
-                         <TextField fx:id="searchField" layoutX="464.0" layoutY="21.0" text="Rechercher..." />
+                         <TextField fx:id="searchField" layoutX="464.0" layoutY="21.0" promptText="Rechercher..." />
                          <Rectangle width="10.0" />
                          </children>
                       </HBox>
