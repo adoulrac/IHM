@@ -294,7 +294,7 @@ public class PictureController extends Tab implements Initializable
         pictureAndDesc.getChildren().addAll(pictureImg, vbox);
         content.getChildren().addAll(pictureAndDesc);
 
-        content.getChildren().add(comTitle);
+        //content.getChildren().add(comTitle);
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
@@ -347,7 +347,6 @@ public class PictureController extends Tab implements Initializable
         ihm = new ScrollPane();
         content = new VBox(8);
         content.setSpacing(30);
-        content.setPadding(new Insets(15, 12, 15, 12));
 
         avatarImg = new ImageView();
         partageTxt = new Text();
