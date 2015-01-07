@@ -313,12 +313,16 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param response the response
      */
     public void receiveFriendResponse(final User sender, final boolean response) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
         if (response) {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'amis.");
             moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
         } else {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'amis.");
         }
+        }});
     }
 
     /**
@@ -428,9 +432,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
             public void run() {
                 if(user != null) {
                     String currGroupName = removeUserFromGroup(user);
-                    if(groupName != null) {
-                        addUserInGroup(user, groupName == null ? currGroupName : groupName);
-                    }
+                    addUserInGroup(user, groupName == null ? currGroupName : groupName);
                 }
             }
         });
