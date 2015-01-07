@@ -32,10 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.Buffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -161,7 +158,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         if (mouseEvent.getClickCount() == 2) {
                             imgView.setEffect(null);
                             isSelected = false;
+                            // Remove file path and extension to create tab title for pictures without titles
                             PictureController pC = new PictureController(picture, application);
+                            int index = picture.getFilename().lastIndexOf(File.separatorChar);
+                            String filename = picture.getFilename().substring(index+1);
+                            if (filename.indexOf(".") > 0)
+                                filename = filename.substring(0, filename.lastIndexOf("."));
+                            pC.setText(picture.getTitle() == null ? filename : picture.getTitle());
                             addTab(pC);
                         } else if (mouseEvent.getClickCount() == 1) {
                             if (isSelected) {

@@ -687,7 +687,7 @@ public class PictureController extends Tab implements Initializable
          * Adds the css classes.
          */
         private void addCssClasses(){
-            userTxt.getStyleClass().add("pic-title");
+            userTxt.getStyleClass().add("pic-titles");
         }
     }
 
