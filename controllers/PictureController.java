@@ -7,6 +7,8 @@ import IHM.utils.Dialogs;
 import IHM.validators.VoteValidator;
 import com.google.common.io.Files;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -22,7 +24,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,8 +60,11 @@ public class PictureController extends Tab implements Initializable
     /** The partageTxt. */
     private Text partageTxt = new Text();
 
+    /** The name of the file */
+    private TextArea filename = new TextArea();
+
     /** The name of the picture */
-    private Text filename = new  Text();
+    private Text pictureName = new Text();
     
     /** The refreshBtn. */
     private Button refreshBtn = new Button("Refresh");
@@ -144,9 +148,28 @@ public class PictureController extends Tab implements Initializable
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
         //Set picture name
-        filename.setFont(new Font(20));
-        filename.setWrappingWidth(200);
+        Tooltip tooltip = new Tooltip("Press enter to save");
+        Tooltip.install(filename,tooltip);
         filename.setText(Files.getNameWithoutExtension(picture.getFilename()));
+        filename.setPrefSize(400, 70);
+        filename.setEditable(true);
+        filename.setWrapText(true);
+        filename.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                try {
+                    // force correct length by resetting to old value if longer than maxLength
+                    if (newValue.length() > 65) {
+                        filename.setText(oldValue);
+                    }
+                    // TODO
+                    // TODO Une fois que data a rajoute le titre de l'image, il faut le mettre à jour ici
+                } catch (Exception e) {
+                    filename.setText(oldValue);
+                }
+            }
+        });
 
         //Set partage text
         partageTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
@@ -268,6 +291,11 @@ public class PictureController extends Tab implements Initializable
         HBox hbox = new HBox(2);
         hbox.setSpacing(50);
         hbox.getChildren().addAll(hbDesc, filename, refreshBtn);
+
+
+        // EDITABLE TITLE
+
+
         content.getChildren().addAll(hbox);
         content.getChildren().addAll(pictureImg);
 
@@ -290,7 +318,6 @@ public class PictureController extends Tab implements Initializable
         pictureAndDesc.getChildren().addAll(pictureImg, vbox);
         content.getChildren().addAll(pictureAndDesc);
 
-        //content.getChildren().add(comTitle);
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
@@ -334,6 +361,13 @@ public class PictureController extends Tab implements Initializable
         tagsTitle.getStyleClass().add("pic-title");
         descTitle.getStyleClass().add("pic-title");
         comTitle.getStyleClass().add("pic-title");
+        filename.setStyle("-fx-background-insets: 0px ;");
+        filename.setStyle("-fx-text-fill: black;"+
+                "-fx-background-color: transparent;"+
+                "-fx-font: Courier New;"+
+                "-fx-font-family: Courier New;"+
+                "-fx-font-weight: bold;"+
+                "-fx-font-size: 20;");
     }
 
     /**
