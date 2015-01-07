@@ -321,7 +321,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
             @Override
             public void run() {
                 boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
-                + " veux être votre amis ! Acceptez-vous sa demande ? ");
+                + " veut être votre ami ! Acceptez-vous sa demande ? ");
                 if (response) {
                     updateUser(sender, Group.FRIENDS_GROUP_NAME);
                     application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));

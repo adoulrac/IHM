@@ -12,7 +12,7 @@
             </panes>
         </Accordion>
         <HBox spacing="15" fx:id="boxAddFriend" >
-            <TextField fx:id="friendName" text="Ajouter..." />
+            <TextField fx:id="friendName" promptText="Ajouter..." />
             <Button fx:id="btnAddFriend" mnemonicParsing="false" onAction="#addFriend" prefHeight="25.0" prefWidth="28.0" styleClass="add-friend-btn" />
         </HBox>
     </children>
