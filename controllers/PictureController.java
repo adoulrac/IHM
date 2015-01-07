@@ -61,11 +61,8 @@ public class PictureController extends Tab implements Initializable
     private Text partageTxt = new Text();
 
     /** The name of the file */
-    private TextArea filename = new TextArea();
+    private TextArea pictureName = new TextArea();
 
-    /** The name of the picture */
-    private Text pictureName = new Text();
-    
     /** The refreshBtn. */
     private Button refreshBtn = new Button("Refresh");
 
@@ -149,24 +146,24 @@ public class PictureController extends Tab implements Initializable
 
         //Set picture name
         Tooltip tooltip = new Tooltip("Press enter to save");
-        Tooltip.install(filename,tooltip);
-        filename.setText(Files.getNameWithoutExtension(picture.getFilename()));
-        filename.setPrefSize(280, 70);
-        filename.setEditable(true);
-        filename.setWrapText(true);
-        filename.textProperty().addListener(new ChangeListener<String>() {
+        Tooltip.install(pictureName,tooltip);
+        pictureName.setText(picture.getTitle()==null? "(sans titre)" : picture.getTitle());
+        pictureName.setPrefSize(280, 70);
+        pictureName.setEditable(true);
+        pictureName.setWrapText(true);
+        pictureName.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable,
                                 String oldValue, String newValue) {
                 try {
                     // force correct length by resetting to old value if longer than maxLength
                     if (newValue.length() > 65) {
-                        filename.setText(oldValue);
+                        pictureName.setText(oldValue);
                     }
                     // TODO
                     // TODO Une fois que data a rajoute le titre de l'image, il faut le mettre à jour ici (sauvegarder)
                 } catch (Exception e) {
-                    filename.setText(oldValue);
+                    pictureName.setText(oldValue);
                 }
             }
         });
@@ -290,7 +287,7 @@ public class PictureController extends Tab implements Initializable
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox(2);
         hbox.setSpacing(50);
-        hbox.getChildren().addAll(hbDesc, filename, refreshBtn);
+        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn);
 
 
         // EDITABLE TITLE
@@ -361,8 +358,8 @@ public class PictureController extends Tab implements Initializable
         tagsTitle.getStyleClass().add("pic-title");
         descTitle.getStyleClass().add("pic-title");
         comTitle.getStyleClass().add("pic-title");
-        filename.setStyle("-fx-background-insets: 0px ;");
-        filename.setStyle("-fx-text-fill: black;"+
+        pictureName.setStyle("-fx-background-insets: 0px ;");
+        pictureName.setStyle("-fx-text-fill: black;"+
                 "-fx-background-color: transparent;"+
                 "-fx-font: Courier New;"+
                 "-fx-font-family: Courier New;"+
