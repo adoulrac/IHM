@@ -107,8 +107,8 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        newGroupName.setPromptText("Add group...");
-        addUserName.setPromptText("Add member...");
+        newGroupName.setPromptText("Ajouter groupe...");
+        addUserName.setPromptText("Ajouter membre...");
     }
 
     /**
@@ -186,7 +186,7 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void deleteGroup(ActionEvent event){
-        boolean response = Dialogs.showConfirmationDialog("Are you sure you want to delete this group ?");
+        boolean response = Dialogs.showConfirmationDialog("Confirmez-vous la suppression du groupe ?");
         if(response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             for (Group g : listGroups) {
@@ -206,14 +206,14 @@ public class GroupsController implements Initializable {
 
     @FXML
     public void deleteMemberFromGroup(ActionEvent event){
-        boolean response = Dialogs.showConfirmationDialog("Are you sure you want to delete this member ?");
+        boolean response = Dialogs.showConfirmationDialog("Confirmez-vous la suppression du membre ?");
         if(response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             String selectedMmb = members.getSelectionModel().getSelectedItem().toString();
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
                     for (User u : g.getUsers()) {
-                        if((u.getFirstname()+" "+u.getLastname()).equals(selectedMmb)) {
+                        if((u.getLogin()).equals(selectedMmb)) {
                             application.getIHMtoDATA().deleteUserFromGroup(u,g);
                             obsMembersList.remove(members.getSelectionModel().getSelectedIndex());
                             deleteMemberBtn.setDisable(true);
@@ -233,7 +233,7 @@ public class GroupsController implements Initializable {
     @FXML
     public void addNewGroup(ActionEvent event){
         if(newGroupName.getText().equals("")) {
-            showWarningDialog("Please enter a group name.");
+            showWarningDialog("Veuillez entrer un nom de groupe.");
         }
         else {
             Boolean exists = false;
@@ -247,7 +247,7 @@ public class GroupsController implements Initializable {
                 obsGroupsList.add(newGroupName.getText());
                 newGroupName.clear();
             } else {
-                showErrorDialog("Group name already in use !");
+                showErrorDialog("Le groupe existe déjà !");
             }
         }
     }
@@ -255,7 +255,7 @@ public class GroupsController implements Initializable {
     @FXML
     public void addMemberInGroup(ActionEvent event) {
         if(addUserName.getText().equals("")) {
-            showWarningDialog("Please the user's login.");
+            showWarningDialog("Veuillez entrer le login de l'utilisateur.");
         }
         else {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
@@ -264,7 +264,7 @@ public class GroupsController implements Initializable {
                     Boolean inGroup = false;
                     for (User u : g.getUsers()) {
                         if (addUserName.getText().toLowerCase().equals(u.getLogin().toLowerCase())) {
-                            showWarningDialog("This user is already in the group !");
+                            showWarningDialog("L'utilisateur existe déjà dans le groupe !");
                             inGroup = true;
                             return;
                         }
@@ -277,12 +277,12 @@ public class GroupsController implements Initializable {
                                 application.getIHMtoDATA().addUserInGroup(user,g);
                                 obsMembersList.add(user.getFirstname()+ " " + user.getLastname());
                                 addUserName.clear();
-                                showInformationDialog(user.getFirstname()+ " " + user.getLastname() + " added to the group successfully.");
+                                showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
                                 addUserName.clear();
                                 return;
                             }
                             else {
-                                showWarningDialog("This user is not in your friends list.");
+                                showWarningDialog("L'utilisateur n'est pas votre amis.");
                                 return;
                             }
                         }
@@ -298,7 +298,7 @@ public class GroupsController implements Initializable {
      * @param groupName the group name
      */
     private void displayUsers(String groupName) {
-        if(groupName.equals(null)) {
+        if(groupName == null) {
             obsMembersList.clear();
         }
         else {
@@ -306,7 +306,7 @@ public class GroupsController implements Initializable {
             for (Group g : listGroups) {
                 if (g.getNom().equals(groupName)) {
                     for (User u : g.getUsers()) {
-                        obsMembersList.add(u.getFirstname() + " " + u.getLastname());
+                        obsMembersList.add(u.getLogin());
                     }
                 }
             }

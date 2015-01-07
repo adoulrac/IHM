@@ -256,8 +256,16 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void addFriend() {
         String friend = friendName.getText();
         UserHBoxCell userToAdd = lookForUser(friend);
-        application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
-        Dialogs.showInformationDialog("Une demande d'amis a été envoyé à " + friend);
+        if(userToAdd != null) {
+            if(isMyFriend(userToAdd.getUser())) {
+                application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
+                Dialogs.showInformationDialog("Une demande d'amis a été envoyé à " + friend);
+            } else {
+                Dialogs.showInformationDialog("Ajout impossible: l'utilisateur est déjà votre amis.");
+            }
+        } else {
+            Dialogs.showInformationDialog("Utilisateur inconnu.");
+        }
         friendName.clear();
     }
 
@@ -324,7 +332,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
                 + " veut être votre ami ! Acceptez-vous sa demande ? ");
                 if (response) {
                     updateUser(sender, Group.FRIENDS_GROUP_NAME);
-                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
+                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroupByName(GROUP.FRIENDS_GROUP_NAME));
                 } else {
                     application.getIHMtoDATA().refuseUser(sender);
                 }
@@ -350,6 +358,15 @@ public class FriendsSubController extends SplitPane implements Initializable {
         }
         Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" not found");
         return null;
+    }
+
+    private boolean isMyFriend(User user) {
+        Group friendGroup = application.getIHMtoDATA().getGroupByName(GROUP.FRIENDS_GROUP_NAME);
+        List<User> users = friendGroup.getUsers();
+        for(User u : users) {
+            return u.getUid().equals(application.currentUser().getUid());
+        }
+        return false;
     }
 
     /**
