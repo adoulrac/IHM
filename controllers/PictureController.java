@@ -383,7 +383,7 @@ public class PictureController extends Tab implements Initializable
     }
 
     /**
-     * Comment.
+     * Add a comment to the picture.
      *
      * @param mouseEvent the mouse event
      */
@@ -410,7 +410,7 @@ public class PictureController extends Tab implements Initializable
     }
 
     /**
-     * Vote.
+     * Add a vote to the image.
      *
      * @param mouseEvent the mouse event
      */
@@ -418,6 +418,7 @@ public class PictureController extends Tab implements Initializable
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
+                    //TODO verify the user has not voted yet, if so, modify the note ?
                     int vote = Integer.parseInt(voteField.getText());
                     try {
                         Note note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
@@ -480,7 +481,7 @@ public class PictureController extends Tab implements Initializable
 
     private void deleteComment(CommentPane cp) {
         //TODO try catch on delete comment
-        //app.getIHMtoDATA() delete comment todo
+        //TODO app.getIHMtoDATA() delete comment
         content.getChildren().remove(cp);
         comments.remove(cp);
     }
@@ -489,8 +490,6 @@ public class PictureController extends Tab implements Initializable
      * The Class CommentPane.
      */
     private class CommentPane extends HBox {
-        //TODO test to activate admin mode
-
         /** VBox that contains userTxt/buttons on first line and commentTxt on second line */
         VBox vb = new VBox(5);
 
