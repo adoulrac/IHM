@@ -39,7 +39,6 @@ public class ValidatorHelper {
             return true;
         }
         String[] lines = ipsText.split("\\r?\\n");
-        // TODO : split not working
         boolean valid = true;
 
         for(String line : lines) {

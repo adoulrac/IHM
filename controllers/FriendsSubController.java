@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class FriendsSubController.
@@ -315,14 +317,19 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param sender the sender
      */
     public void receiveFriendRequest(final User sender) {
-        boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
                 + " veux être votre amis ! Acceptez-vous sa demande ? ");
-        if (response) {
-            updateUser(sender, Group.FRIENDS_GROUP_NAME);
-            application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
-        } else {
-            application.getIHMtoDATA().refuseUser(sender);
-        }
+                if (response) {
+                    updateUser(sender, Group.FRIENDS_GROUP_NAME);
+                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
+                } else {
+                    application.getIHMtoDATA().refuseUser(sender);
+                }
+            }
+        });
     }
 
     /**
@@ -336,10 +343,12 @@ public class FriendsSubController extends SplitPane implements Initializable {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
                 if (u.getUser().getUid().equals(userId)) {
+                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" found in group " + entry.getKey());
                     return u;
                 }
             }
         }
+        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" not found");
         return null;
     }
 
