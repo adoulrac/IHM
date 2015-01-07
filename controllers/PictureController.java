@@ -151,7 +151,7 @@ public class PictureController extends Tab implements Initializable
         Tooltip tooltip = new Tooltip("Press enter to save");
         Tooltip.install(filename,tooltip);
         filename.setText(Files.getNameWithoutExtension(picture.getFilename()));
-        filename.setPrefSize(400, 70);
+        filename.setPrefSize(280, 70);
         filename.setEditable(true);
         filename.setWrapText(true);
         filename.textProperty().addListener(new ChangeListener<String>() {
@@ -164,7 +164,7 @@ public class PictureController extends Tab implements Initializable
                         filename.setText(oldValue);
                     }
                     // TODO
-                    // TODO Une fois que data a rajoute le titre de l'image, il faut le mettre à jour ici
+                    // TODO Une fois que data a rajoute le titre de l'image, il faut le mettre à jour ici (sauvegarder)
                 } catch (Exception e) {
                     filename.setText(oldValue);
                 }
