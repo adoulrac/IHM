@@ -259,7 +259,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
         String friend = friendName.getText();
         UserHBoxCell userToAdd = lookForUser(friend);
         if(userToAdd != null) {
-            if(isMyFriend(userToAdd.getUser())) {
+            if(!isMyFriend(userToAdd.getUser())) {
                 application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
                 Dialogs.showInformationDialog("Une demande d'amis a été envoyé à " + friend);
             } else {
