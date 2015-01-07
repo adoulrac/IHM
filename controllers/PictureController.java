@@ -496,27 +496,28 @@ public class PictureController extends Tab implements Initializable
     private class CommentPane extends HBox {
         //TODO test to activate admin mode
 
-        // VBox that contains userTxt/buttons on first line and commentTxt on second line
+        /** VBox that contains userTxt/buttons on first line and commentTxt on second line */
         VBox vb = new VBox(5);
 
         /** The comment. */
         public Comment comment;
 
-        /** The avatarImg. */
+        /** The avatarImg of the comment author. */
         public ImageView avatarImg = new ImageView();
         
-        /** The userTxt. */
+        /** The userTxt contains the name of the user and some metadata (date, etc.). */
         public Text userTxt = new Text();
 
-        // Click to switch to edit. In edition, becomes validate button
+        /** Click to switch to edition mode. In edition mode, this button becomes the validate button. */
         public Button editBtn = new Button("Editer");
 
-        // Click to delete comment. In edition, becomes cancel button
+        /** Click to delete comment. In edition, becomes cancel button. */
         public Button delBtn = new Button("Supprimer");
 
-        /** The commentTxt. */
+        /** The commentTxt contains the text of the comment. */
         public Text commentTxt = new Text();
 
+        /** The commentField replace the commentTxt when editing. */
         private TextField commentField = new TextField();
 
         /**
@@ -531,7 +532,7 @@ public class PictureController extends Tab implements Initializable
         }
 
         /**
-         * Builds the.
+         * Builds the UI for a comment.
          */
         public void build(){
             if (comment.getCommentUser().getAvatar()==null) {
@@ -549,15 +550,22 @@ public class PictureController extends Tab implements Initializable
             addContent();
             addCssClasses();
 
+            // adds the buttons for editing
             switchEditionMode(false);
         }
 
-
+        /**
+         * If called with true, switch the UI to edition mode.
+         * If called with false, switch back to the displaying of the comment.
+         * TODO => It also tests the rights of the current user for editing and displays what buttons are enable.
+         * The method sets the correct behavior of the button callbacks, which calls the method itself to activate and deactivate edition mode.
+         */
         private void switchEditionMode(boolean edition) {
             final CommentPane current = this;
 
-            if (edition) {
+            if (edition) { // switch to edition mode
                 if (!vb.getChildren().contains(commentField)) {
+                    // if we are not already in edition mode, hide text and display field
                     commentField.setText(commentTxt.getText());
                     vb.getChildren().remove(commentTxt);
                     vb.getChildren().add(commentField);
@@ -568,6 +576,7 @@ public class PictureController extends Tab implements Initializable
                     @Override
                     public void handle(MouseEvent mouseEvent) {
                         try {
+                            // Behavior when validating a comment modification (saving then switch back to display mode)
                             comment.setValue(commentField.getText());
                             app.getIHMtoDATA().addComment(comment);
                             commentTxt.setText(commentField.getText());
@@ -582,12 +591,14 @@ public class PictureController extends Tab implements Initializable
                 delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                        // Behavior when canceling a comment modification (switch back to display mode)
                         switchEditionMode(false);
                     }
                 });
             }
-            else {
+            else { // switch back to display
                 if (!vb.getChildren().contains(commentTxt)) {
+                    // if we are not already in display mode, hide field and display text
                     vb.getChildren().remove(commentField);
                     vb.getChildren().add(commentTxt);
                 }
@@ -596,6 +607,7 @@ public class PictureController extends Tab implements Initializable
                 editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                        // Behavior when editing (switch edition mode)
                         switchEditionMode(true);
                     }
                 });
@@ -604,6 +616,7 @@ public class PictureController extends Tab implements Initializable
                 delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
+                        // Behavior when deleting (delete comment from PictureController)
                         deleteComment(current);
                     }
                 });
@@ -611,7 +624,7 @@ public class PictureController extends Tab implements Initializable
         }
 
         /**
-         * Adds the content.
+         * Adds the UI correctly layed out.
          */
         private void addContent(){
             HBox hb = new HBox(8);
