@@ -317,14 +317,19 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param sender the sender
      */
     public void receiveFriendRequest(final User sender) {
-        boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
                 + " veux être votre amis ! Acceptez-vous sa demande ? ");
-        if (response) {
-            updateUser(sender, Group.FRIENDS_GROUP_NAME);
-            application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
-        } else {
-            application.getIHMtoDATA().refuseUser(sender);
-        }
+                if (response) {
+                    updateUser(sender, Group.FRIENDS_GROUP_NAME);
+                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
+                } else {
+                    application.getIHMtoDATA().refuseUser(sender);
+                }
+            }
+        });
     }
 
     /**
