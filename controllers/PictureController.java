@@ -10,7 +10,6 @@ import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +29,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static IHM.utils.Dialogs.showInformationDialog;
+
 /**
  * The Class PictureController.
  */
@@ -108,6 +110,18 @@ public class PictureController extends Tab implements Initializable
     /** The sendBtn. */
     private Button sendBtn = new Button("Envoyer");
 
+    private Button descEditBtn = new Button("Modifier");
+
+    private Button descDeleteBtn = new Button("Supprimer");
+
+    private Button validateDescBtn = new Button ("Terminer");
+
+    private TextArea editDescTxt = new TextArea();
+
+    private Button tagsEditBtn = new Button ("Terminer");
+
+    private TextField tagsEditTxt = new TextField();
+
 
     /**
      * Instantiates a new picture controller.
@@ -165,7 +179,14 @@ public class PictureController extends Tab implements Initializable
 
         //Set Description
         descTxt.setWrappingWidth(480);
+        picture.setDescription("Lorem ipsum."); //TODO delete this
         descTxt.setText(picture.getDescription());
+        descEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                editDescription(mouseEvent);
+            }
+        });
 
         if (picture.getComments() != null) {
             for (Comment c : picture.getComments()) {
@@ -211,7 +232,7 @@ public class PictureController extends Tab implements Initializable
      * Builds the tags.
      */
     private void buildTags() {
-        StringBuilder sb_tags = new StringBuilder();
+        final StringBuilder sb_tags = new StringBuilder();
         for (Tag tag : picture.getListTags()) {
             sb_tags.append(tag.getValue());
             sb_tags.append(", ");
@@ -220,6 +241,16 @@ public class PictureController extends Tab implements Initializable
             sb_tags.setLength(sb_tags.length() - 2);
         }
         tagsTxt.setText(sb_tags.toString());
+
+        if(picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
+            tagsEditTxt.setText(sb_tags.toString());
+            tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    editTags(mouseEvent);
+                }
+            });
+        }
     }
 
     /**
@@ -266,6 +297,20 @@ public class PictureController extends Tab implements Initializable
         content.getChildren().add(comTitle);
         hbox = new HBox(5);
 
+        if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
+            hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsEditBtn);
+        }
+        else {
+            hbox.getChildren().addAll(tagsTitle, tagsTxt);
+        }
+
+        //Check if owner
+        if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
+            content.getChildren().addAll(hbox, descTitle, descTxt, descEditBtn, comTitle);
+        }
+        else {
+            content.getChildren().addAll(hbox, descTitle, descTxt, comTitle);
+        }
 
         for (CommentPane c : comments) {
             content.getChildren().add(c);
@@ -302,6 +347,7 @@ public class PictureController extends Tab implements Initializable
         ihm = new ScrollPane();
         content = new VBox(8);
         content.setSpacing(30);
+        content.setPadding(new Insets(15, 12, 15, 12));
 
         avatarImg = new ImageView();
         partageTxt = new Text();
@@ -393,6 +439,49 @@ public class PictureController extends Tab implements Initializable
         }
     }
 
+    /***
+     * Edit Tags
+     *
+     *  @param mouseEvent
+     */
+    private void  editTags(MouseEvent mouseEvent) {
+        String str = tagsEditTxt.getText();
+        String[] array = str.split("(?<!\\\\),");
+        List<Tag> tags = picture.getListTags();
+        tags.removeAll(tags);
+        for (int i = 0; i < array.length; i++) {
+            tags.add(new Tag(array[i]));
+        }
+        //Appel IHMtoDATA setListTags(tags);
+        picture.setListTags(tags);
+        showInformationDialog("Liste de tags modifiée avec succès !");
+    }
+
+    /**
+     * Edit description.
+     *
+     * @param mouseEvent the mouse event
+     */
+    private void editDescription(MouseEvent mouseEvent) {
+        editDescTxt.setText(picture.getDescription());
+        content.getChildren().add(content.getChildren().size() - 4, editDescTxt);
+        content.getChildren().remove(descEditBtn);
+        content.getChildren().add(content.getChildren().size() - 3, validateDescBtn);
+        descTxt.setText("");
+        validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //appel IHMtoDATA setDescription(editDescTxt.getText());
+                picture.setDescription(editDescTxt.getText());
+                descTxt.setText(editDescTxt.getText());
+                content.getChildren().remove(editDescTxt);
+                content.getChildren().remove(validateDescBtn);
+                content.getChildren().add(content.getChildren().size() - 2, descEditBtn);
+                showInformationDialog("Description modifiée avec succès !");
+            }
+        });
+
+    }
 
     private void deleteComment(CommentPane cp) {
         //TODO try catch on delete comment
