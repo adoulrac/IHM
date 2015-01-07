@@ -62,19 +62,19 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * The Class UserHBoxCell.
      */
     private class UserHBoxCell extends HBox {
-        
+
         /** The user. */
         private User user;
-        
+
         /** The label. */
         private Label label;
-        
+
         /** The icon. */
         private ImageView icon;
 
         /** The Constant ON_PATH. */
         private static final String ON_PATH = "IHM/resources/online_icon.png";
-        
+
         /** The Constant OFF_PATH. */
         private static final String OFF_PATH = "IHM/resources/offline_icon.png";
 
@@ -287,9 +287,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void connectUser(final User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
-        System.out.println(existingUser + " " + existingUser.getUser().getLogin());
         if (existingUser != null) {
-            updateUser(user);
+            reloadUser(existingUser.getUser());
         } else {
             addUserInGroup(user, Group.DEFAULT_GROUP_NAME);
         }
@@ -303,7 +302,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void disconnectUser(final User user) {
         UserHBoxCell existingUser = lookForUser(user.getUid());
         if (existingUser != null) {
-            updateUser(user);
+            reloadUser(existingUser.getUser());
         }
     }
 
@@ -316,7 +315,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void receiveFriendResponse(final User sender, final boolean response) {
         if (response) {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'amis.");
-            updateUser(sender, Group.FRIENDS_GROUP_NAME);
+            moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
         } else {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'amis.");
         }
@@ -332,9 +331,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
             @Override
             public void run() {
                 boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
-                + " veut être votre ami ! Acceptez-vous sa demande ? ");
+                        + " veut être votre ami ! Acceptez-vous sa demande ? ");
                 if (response) {
-                    updateUser(sender, Group.FRIENDS_GROUP_NAME);
+                    moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
                     application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroupByName(Group.FRIENDS_GROUP_NAME));
                 } else {
                     application.getIHMtoDATA().refuseUser(sender);
@@ -400,7 +399,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      * @return the string
      */
-    private String removeUserInGroup(final User user) {
+    private String removeUserFromGroup(final User user) {
         UserHBoxCell userToRemove = null;
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
@@ -418,27 +417,27 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     /**
-     * Update user.
+     * Move user.
      *
      * @param user the user
      * @param groupName the group name
      */
-    private void updateUser(final User user, final String groupName) {
+    private void moveUserToGroup(final User user, final String groupName) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                String currGroupName = removeUserInGroup(user);
-                addUserInGroup(user, groupName == null ? currGroupName : groupName);
+                if(user != null) {
+                    String currGroupName = removeUserFromGroup(user);
+                    if(groupName != null) {
+                        addUserInGroup(user, groupName == null ? currGroupName : groupName);
+                    }
+                }
             }
         });
     }
 
-    /**
-     * Update user.
-     *
-     * @param user the user
-     */
-    private void updateUser(final User user) {
-        updateUser(user, null);
+    private void reloadUser(final User user) {
+        moveUserToGroup(user, null);
     }
+
 }
