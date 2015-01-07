@@ -6,6 +6,7 @@ import DATA.model.User;
 import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
+import IHM.utils.Tooltips;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -104,6 +105,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /** The all images list. */
     private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
 
+    /** The tooltip for displaying picture names */
+    private Tooltip tooltip;
     /**
      * The inner Class PicturePane.
      */
@@ -446,6 +449,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 tile.getChildren().clear();
                 for (PicturePane picturePane : myImgList) {
                     tile.getChildren().add(picturePane);
+                    // Add tooltip with picture title
+                    Tooltip.install(picturePane, Tooltips.getTooltip(picturePane.getPicture().getTitle() == null? "(sans titre)" : picturePane.getPicture().getTitle()));
                 }
                 deleteBtnDisplay();
                 return;

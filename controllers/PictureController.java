@@ -4,17 +4,17 @@ import DATA.model.*;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
+import IHM.utils.Tooltips;
 import IHM.validators.VoteValidator;
-import com.google.common.io.Files;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -22,7 +22,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,9 +58,9 @@ public class PictureController extends Tab implements Initializable
     /** The partageTxt. */
     private Text partageTxt = new Text();
 
-    /** The name of the picture */
-    private Text filename = new  Text();
-    
+    /** The name of the file */
+    private TextArea pictureName = new TextArea();
+
     /** The refreshBtn. */
     private Button refreshBtn = new Button("Refresh");
 
@@ -144,9 +143,18 @@ public class PictureController extends Tab implements Initializable
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
         //Set picture name
-        filename.setFont(new Font(20));
-        filename.setWrappingWidth(200);
-        filename.setText(Files.getNameWithoutExtension(picture.getFilename()));
+
+        Tooltip.install(pictureName, Tooltips.getTooltip("Press enter to save"));
+        if (picture.getTitle() == null) {
+            pictureName.setPromptText("(sans titre)");
+        }
+        else {
+            pictureName.setText(picture.getTitle());
+        }
+        pictureName.setPrefSize(280, 70);
+        pictureName.setEditable(true);
+        pictureName.setWrapText(true);
+
 
         //Set partage text
         partageTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
@@ -255,7 +263,7 @@ public class PictureController extends Tab implements Initializable
     private void addContent(){
 
         // Left side
-        HBox hbDesc = new HBox(3);
+        final HBox hbDesc = new HBox(3);
 
         VBox textPartage = new VBox(2);
         textPartage.setSpacing(0);
@@ -267,7 +275,37 @@ public class PictureController extends Tab implements Initializable
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox(2);
         hbox.setSpacing(50);
-        hbox.getChildren().addAll(hbDesc, filename, refreshBtn);
+        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn);
+        // Limit the number of characters within the  textarea
+        pictureName.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                try {
+                    // force correct length by resetting to old value if longer than maxLength
+                    if (newValue.length() > 65) {
+                        pictureName.setText(oldValue);
+                    }
+                } catch (Exception e) {
+                    pictureName.setText(oldValue);
+                }
+            }
+        });
+        // VALIDATE ON ENTER
+        pictureName.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            final KeyCombination combo = new KeyCodeCombination(KeyCode.ENTER);
+            public void handle(KeyEvent t) {
+                if (combo.match(t)) {
+                    // Prevents linebreaks
+                    pictureName.setText(pictureName.getText().replace("\n",""));
+                    picture.setTitle(pictureName.getText());
+                }
+            }
+        });
+
+        // EDITABLE TITLE
+
+
         content.getChildren().addAll(hbox);
         content.getChildren().addAll(pictureImg);
 
@@ -290,7 +328,6 @@ public class PictureController extends Tab implements Initializable
         pictureAndDesc.getChildren().addAll(pictureImg, vbox);
         content.getChildren().addAll(pictureAndDesc);
 
-        //content.getChildren().add(comTitle);
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
@@ -329,11 +366,20 @@ public class PictureController extends Tab implements Initializable
         ihm.getStyleClass().add("pic-ihm");
         ihm.setStyle("-fx-padding: 20;");
         content.getStyleClass().add("pic-content");
-        partageTxt.getStyleClass().add("pic-title");
-        noteTitle.getStyleClass().add("pic-title");
-        tagsTitle.getStyleClass().add("pic-title");
-        descTitle.getStyleClass().add("pic-title");
-        comTitle.getStyleClass().add("pic-title");
+        partageTxt.getStyleClass().add("pic-titles");
+        noteTitle.getStyleClass().add("pic-titles");
+        tagsTitle.getStyleClass().add("pic-titles");
+        descTitle.getStyleClass().add("pic-titles");
+        comTitle.getStyleClass().add("pic-titles");
+        // Picture Title textarea style
+        pictureName.getStyleClass().add("pic-title");
+        pictureName.setStyle("-fx-background-insets: 0px ;");
+        pictureName.setStyle("-fx-text-fill: black;"+
+                "-fx-background-color: transparent;"+
+                "-fx-font: Courier New;"+
+                "-fx-font-family: Courier New;"+
+                "-fx-font-weight: bold;"+
+                "-fx-font-size: 20;");
     }
 
     /**
