@@ -332,7 +332,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
                 + " veut être votre ami ! Acceptez-vous sa demande ? ");
                 if (response) {
                     updateUser(sender, Group.FRIENDS_GROUP_NAME);
-                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroupByName(GROUP.FRIENDS_GROUP_NAME));
+                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroupByName(Group.FRIENDS_GROUP_NAME));
                 } else {
                     application.getIHMtoDATA().refuseUser(sender);
                 }
@@ -361,7 +361,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     private boolean isMyFriend(User user) {
-        Group friendGroup = application.getIHMtoDATA().getGroupByName(GROUP.FRIENDS_GROUP_NAME);
+        Group friendGroup = application.getIHMtoDATA().getGroupByName(Group.FRIENDS_GROUP_NAME);
         List<User> users = friendGroup.getUsers();
         for(User u : users) {
             return u.getUid().equals(application.currentUser().getUid());
