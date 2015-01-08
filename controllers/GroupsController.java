@@ -1,26 +1,17 @@
 package IHM.controllers;
 
-import DATA.interfaces.IHMtoDATA;
 import DATA.model.Group;
 import DATA.model.User;
-import IHM.interfaces.IHMtoDATAstub;
 import IHM.utils.Dialogs;
 import com.google.common.base.Strings;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
-import java.util.*;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -28,7 +19,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -44,7 +34,7 @@ public class GroupsController implements Initializable {
     
     /** The groups. */
     @FXML
-    private TitledPane gestionGroupes;
+    private TitledPane manageGroups;
 
     @FXML
     private ListView groups;
@@ -123,7 +113,7 @@ public class GroupsController implements Initializable {
         try {
             listGroups = application.getIHMtoDATA().getGroups();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -140,7 +130,7 @@ public class GroupsController implements Initializable {
                 }
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
             }
         });
@@ -272,19 +262,16 @@ public class GroupsController implements Initializable {
                     }
 
                     if(!inGroup) {
-                        for (User u : g.getUsers()) {
-                            User user = checkIfFriend(addUserName.getText().toLowerCase());
-                            if(user != null){
-                                application.getIHMtoDATA().addUserInGroup(user,g);
-                                obsMembersList.add(user.getLogin());
-                                showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
-                                addUserName.clear();
-                                return;
-                            }
-                            else {
-                                showWarningDialog("L'utilisateur n'est pas votre amis.");
-                                return;
-                            }
+                        User user = checkIfFriend(addUserName.getText());
+                        if(user != null){
+                            application.getIHMtoDATA().addUserInGroup(user, g);
+                            obsMembersList.add(user.getLogin());
+                            showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
+                            addUserName.clear();
+                            return;
+                        } else {
+                            showWarningDialog("L'utilisateur n'est pas votre amis.");
+                            return;
                         }
                     }
                 }
@@ -329,7 +316,7 @@ public class GroupsController implements Initializable {
 
     @FXML
     private void finish() {
-        ((Stage) gestionGroupes.getScene().getWindow()).close();
+        ((Stage) manageGroups.getScene().getWindow()).close();
     }
 
     private User checkIfFriend(String login) {
