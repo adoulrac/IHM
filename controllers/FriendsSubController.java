@@ -457,9 +457,14 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     public void reloadUserGroups() {
-        clearGroups();
-        List<Group> userGroups = application.getIHMtoDATA().getAllUsers();
-        addGroups(userGroups);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                clearGroups();
+                List<Group> userGroups = application.getIHMtoDATA().getAllUsers();
+                addGroups(userGroups);
+            }
+        });
     }
 
     private void clearGroups() {
