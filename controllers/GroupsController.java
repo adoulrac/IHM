@@ -239,7 +239,7 @@ public class GroupsController implements Initializable {
         else {
             Boolean exists = false;
             for (Group g : listGroups) {
-                if (g.getNom().toLowerCase().equals(newGroupName.getText().toLowerCase())) {
+                if (g.getNom().equalsIgnoreCase(newGroupName.getText())) {
                     exists = true;
                 }
             }
@@ -277,7 +277,6 @@ public class GroupsController implements Initializable {
                             if(user != null){
                                 application.getIHMtoDATA().addUserInGroup(user,g);
                                 obsMembersList.add(user.getLogin());
-                                addUserName.clear();
                                 showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
                                 addUserName.clear();
                                 return;
