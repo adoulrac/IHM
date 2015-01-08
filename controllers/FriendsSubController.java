@@ -3,7 +3,6 @@ package IHM.controllers;
 import DATA.model.Group;
 import DATA.model.User;
 import IHM.utils.Dialogs;
-import IHM.utils.StringUtil;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -399,7 +397,6 @@ public class FriendsSubController extends SplitPane implements Initializable {
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
-                System.out.println(u.getUser().getLogin() + ":" + login);
                 if (u.getUser().getLogin().equalsIgnoreCase(login)) {
                     return u.getUser();
                 }
