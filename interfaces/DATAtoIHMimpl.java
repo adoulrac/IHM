@@ -1,5 +1,6 @@
 package IHM.interfaces;
 
+import DATA.model.Group;
 import DATA.model.Picture;
 import DATA.model.User;
 import IHM.controllers.*;
@@ -74,6 +75,14 @@ public class DATAtoIHMimpl implements DATAtoIHM {
                 ((PictureController) controller).receiveFullImage(picture);
                 app.removeRequest(queryId);
             }
+        }
+    }
+
+    @Override
+    public void receiveReloadUserGroups() {
+        WelcomeController welcome = app.getWelcomeController();
+        if(welcome != null){
+            welcome.getFriendsSubController().reloadUserGroups();
         }
     }
 

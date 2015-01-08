@@ -6,11 +6,11 @@ import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
 import IHM.validators.VoteValidator;
+import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,12 +37,8 @@ import java.util.ResourceBundle;
  * The Class PictureController.
  */
 public class PictureController extends Tab implements Initializable
-
-    //TODO Attributes should be initialized in constructor
 {
     private static final int AVATAR_SIZE = 50;
-
-    private static final int PICTURE_SIZE = 300;
 
     /** The app. */
     private final MainController app;
@@ -51,78 +47,78 @@ public class PictureController extends Tab implements Initializable
     private Picture picture;
 
     /** The ihm. */
-    private ScrollPane ihm = new ScrollPane();
+    private ScrollPane ihm;
     
     /** The content. */
-    private VBox content = new VBox(8);
+    private VBox content;
 
     /** The avatarImg. */
-    private ImageView avatarImg = new ImageView();
+    private ImageView avatarImg;
     
     /** The partageTxt. */
-    private Text partageTxt = new Text();
+    private Text partageTxt;
 
     /** The name of the picture */
-    private Text filename = new  Text();
+    private Text filename;
     
     /** The refreshBtn. */
-    private Button refreshBtn = new Button("Refresh");
+    private Button refreshBtn;
 
     /** The pictureImg. */
-    private ImageView pictureImg = new ImageView();
+    private ImageView pictureImg;
 
     /** The noteTitle. */
-    private Text noteTitle = new Text("Note : ");
+    private Text noteTitle;
     
     /** The noteImg. */
-    private HBox noteImg = new HBox();
+    private HBox noteImg;
     
     /** The voteTxt. */
-    private Text voteTxt = new Text();
+    private Text voteTxt;
     
     /** The voteField. */
-    private TextField voteField = new TextField("3");
+    private TextField voteField;
     
     /** The voteBtn. */
-    private Button voteBtn = new Button("Voter");
+    private Button voteBtn;
 
-    private Button savePictureBtn = new Button("Sauvegarder");
+    private Button savePictureBtn;
 
     /** The tagsTitle. */
-    private Text tagsTitle = new Text("Tags : ");
+    private Text tagsTitle;
     
     /** The tagsTxt. */
-    private Text tagsTxt = new Text();
+    private Text tagsTxt;
 
     /** The descTitle. */
-    private Text descTitle = new Text("Description : ");
+    private Text descTitle;
     
     /** The descTxt. */
-    private Text descTxt = new Text();
+    private Text descTxt;
 
     /** The comTitle. */
-    private Text comTitle = new Text("Commentaires : ");
+    private Text comTitle;
     
     /** The comments. */
-    private List<CommentPane> comments = new ArrayList<CommentPane>();
+    private List<CommentPane> comments;
     
     /** The writeArea. */
-    private TextArea writeArea = new TextArea();
+    private TextArea writeArea;
     
     /** The sendBtn. */
-    private Button sendBtn = new Button("Envoyer");
+    private Button sendBtn;
 
-    private Button descEditBtn = new Button("Modifier");
+    private Button descEditBtn;
 
-    private Button descDeleteBtn = new Button("Supprimer");
+    private Button descDeleteBtn;
 
-    private Button validateDescBtn = new Button ("Terminer");
+    private Button validateDescBtn;
 
-    private TextArea editDescTxt = new TextArea();
+    private TextArea editDescTxt;
 
-    private Button tagsEditBtn = new Button ("Terminer");
+    private Button tagsEditBtn;
 
-    private TextField tagsEditTxt = new TextField();
+    private TextField tagsEditTxt;
 
     /**
      * Instantiates a new picture controller.
@@ -131,7 +127,7 @@ public class PictureController extends Tab implements Initializable
      * @param app the app
      */
     public PictureController(Picture picture, MainController app) {
-        super(picture.getFilename().substring(picture.getFilename().lastIndexOf("/") + 1));
+        super(FileUtil.getFilenameFromPath(picture.getFilename()));
 
         this.app = app;
         this.picture = picture;
@@ -213,7 +209,6 @@ public class PictureController extends Tab implements Initializable
 
         // Description
         descTxt.setWrappingWidth(480);
-        picture.setDescription("Lorem ipsum."); //TODO delete this
         descTxt.setText(picture.getDescription());
         descEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -243,17 +238,14 @@ public class PictureController extends Tab implements Initializable
     }
 
     private void savePictureLocally() {
-        DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setTitle("Save picture");
-        File selectedDirectory = chooser.showDialog(app.getPrimaryStage());
-
-        if(selectedDirectory == null) {
+        String targetPath = FileUtil.chooseDirectory();
+        if(Strings.isNullOrEmpty(targetPath)) {
             return;
         }
 
         try {
             byte[] pixels = picture.getPixels();
-            Files.write(pixels, new File(FileUtil.buildFullPath(selectedDirectory.getAbsolutePath(),
+            Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
                                          FileUtil.getFilenameFromPath(picture.getFilename()))));
         }catch(Exception e){
             e.printStackTrace();
@@ -508,7 +500,7 @@ public class PictureController extends Tab implements Initializable
 
     private void deleteComment(CommentPane cp) {
         //TODO try catch on delete comment
-        //app.getIHMtoDATA() delete comment todo
+        //app.getIHMtoDATA() delete comment
         content.getChildren().remove(cp);
         comments.remove(cp);
     }

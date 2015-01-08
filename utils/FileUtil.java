@@ -2,6 +2,7 @@ package IHM.utils;
 
 
 import com.google.common.io.Files;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -24,6 +25,14 @@ public class FileUtil {
             return f;
         }
         return null;
+    }
+
+    public static String chooseDirectory() {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Directory chooser");
+        File selectedDirectory = chooser.showDialog(new Stage());
+
+        return selectedDirectory.getAbsolutePath();
     }
 
     public static String buildFullPath(String path, String filename) {

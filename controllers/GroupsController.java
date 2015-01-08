@@ -336,7 +336,7 @@ public class GroupsController implements Initializable {
         User user = null;
         for(Group g : listGroups) {
             for(User u : g.getUsers()) {
-                if(u.getLogin().toLowerCase().equals(addUserName.getText().toLowerCase())) {
+                if(u.getLogin().equalsIgnoreCase(addUserName.getText())) {
                     user = u;
                     return user;
                 }

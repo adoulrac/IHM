@@ -412,6 +412,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @return the string
      */
     private String removeUserFromGroup(final User user) {
+        if(user == null) {
+            return null;
+        }
+
         UserHBoxCell userToRemove = null;
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
@@ -435,6 +439,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param groupName the group name
      */
     private void moveUserToGroup(final User user, final String groupName) {
+        if(user == null) {
+            return;
+        }
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -446,6 +454,17 @@ public class FriendsSubController extends SplitPane implements Initializable {
             }
             }
         });
+    }
+
+    public void reloadUserGroups() {
+        clearGroups();
+        List<Group> userGroups = application.getIHMtoDATA().getAllUsers();
+        addGroups(userGroups);
+    }
+
+    private void clearGroups() {
+        groupsAccordion.getPanes().clear();
+        groups.clear();
     }
 
     private void reloadUser(final User user) {
