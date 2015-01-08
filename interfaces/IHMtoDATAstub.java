@@ -397,14 +397,4 @@ public class IHMtoDATAstub implements IHMtoDATA {
     @Override
     public boolean logout() { return true; }
 
-    /**
-     * Edit the current profile.
-     *
-     * @param u : The new light user with the new information
-     * @return true : edit OK
-     * 			false : edit KO
-     */
-    @Override
-    public boolean editProfile(User u) { return true; }
-
 }

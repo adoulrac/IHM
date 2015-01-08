@@ -202,8 +202,6 @@ public class FriendsSubController extends SplitPane implements Initializable {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    System.out.println("User " + user.getLogin() + " ajouté au groupe " + groupName);
-                    System.out.println(user.isConnected());
                     userGroup.add(new UserHBoxCell(user, user.isConnected()));
                 }
             });
@@ -381,7 +379,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
     private boolean isMyFriend(User user) {
         List<User> users = getFriendGroup().getUsers();
         for(User u : users) {
-            return u.getUid().equals(application.currentUser().getUid());
+            if(u.getUid().equals(application.currentUser().getUid())){
+                return true;
+            }
         }
         return false;
     }
@@ -443,7 +443,6 @@ public class FriendsSubController extends SplitPane implements Initializable {
             public void run() {
             if(user != null) {
                 String currGroupName = removeUserFromGroup(user);
-                System.out.println("User " + user.getLogin() + " a été supprimé du groupe " + currGroupName);
                 if(currGroupName != null || groupName != null) {
                     addUserInGroup(user, groupName == null ? currGroupName : groupName);
                 }
