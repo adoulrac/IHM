@@ -286,7 +286,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      */
     public void connectUser(final User user) {
-        UserHBoxCell existingUser = lookForUser(user.getUid());
+        User existingUser = lookForUser(user);
         if (existingUser != null) {
             reloadUser(user);
         } else {
@@ -300,7 +300,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      */
     public void disconnectUser(final User user) {
-        UserHBoxCell existingUser = lookForUser(user.getUid());
+        User existingUser = lookForUser(user);
         if (existingUser != null) {
             reloadUser(user);
         }
@@ -359,20 +359,20 @@ public class FriendsSubController extends SplitPane implements Initializable {
     /**
      * Look for user.
      *
-     * @param userId the user id
+     * @param user the user
      * @return the user h box cell
      */
-    private UserHBoxCell lookForUser(final UUID userId) {
+    private User lookForUser(final User user) {
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
-                if (u.getUser().getUid().equals(userId)) {
-                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" found in group " + entry.getKey());
-                    return u;
+                if (u.getUser().getUid().equals(user.getUid())) {
+                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+user.getLogin()+" found in group " + entry.getKey());
+                    return u.getUser();
                 }
             }
         }
-        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" not found");
+        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+user.getLogin()+" not found");
         return null;
     }
 
