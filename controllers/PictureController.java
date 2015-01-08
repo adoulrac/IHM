@@ -26,15 +26,12 @@ import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static IHM.utils.Dialogs.showInformationDialog;
 
 /**
  * The Class PictureController.
@@ -127,7 +124,6 @@ public class PictureController extends Tab implements Initializable
 
     private TextField tagsEditTxt = new TextField();
 
-
     /**
      * Instantiates a new picture controller.
      *
@@ -148,21 +144,47 @@ public class PictureController extends Tab implements Initializable
      * Builds the picture.
      */
     public void build(){
-        //Set Avatar
+        ihm = new ScrollPane();
+        content = new VBox(8);
+        avatarImg = new ImageView();
+        partageTxt = new Text();
+        filename = new  Text();
+        refreshBtn = new Button("Refresh");
+        pictureImg = new ImageView();
+        noteTitle = new Text("Note : ");
+        noteImg = new HBox();
+        voteTxt = new Text();
+        voteField = new TextField("3");
+        voteBtn = new Button("Voter");
+        savePictureBtn = new Button("Sauvegarder");
+        tagsTitle = new Text("Tags : ");
+        tagsTxt = new Text();
+        descTitle = new Text("Description : ");
+        descTxt = new Text();
+        comTitle = new Text("Commentaires : ");
+        comments = new ArrayList<CommentPane>();
+        writeArea = new TextArea();
+        sendBtn = new Button("Envoyer");
+        descEditBtn = new Button("Modifier");
+        descDeleteBtn = new Button("Supprimer");
+        validateDescBtn = new Button ("Terminer");
+        editDescTxt = new TextArea();
+        tagsEditBtn = new Button ("Terminer");
+        tagsEditTxt = new TextField();
+
+        // Avatar
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
-        //Set picture name
+        // Picture name
         filename.setFont(new Font(20));
         filename.setWrappingWidth(200);
         filename.setText(Files.getNameWithoutExtension(picture.getFilename()));
 
-        //Set partage text
         partageTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
         partageTxt.setText("a partagé l'image");
         partageTxt.setTextAlignment(TextAlignment.JUSTIFY);
 
-
-        //Refresh button
+        // Refresh button
         final PictureController current = this;
         refreshBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -171,7 +193,7 @@ public class PictureController extends Tab implements Initializable
             }
         });
 
-        //Save button
+        // Save button
         savePictureBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -189,7 +211,7 @@ public class PictureController extends Tab implements Initializable
         buildVotes();
         buildTags();
 
-        //Set Description
+        // Description
         descTxt.setWrappingWidth(480);
         picture.setDescription("Lorem ipsum."); //TODO delete this
         descTxt.setText(picture.getDescription());
@@ -374,36 +396,7 @@ public class PictureController extends Tab implements Initializable
     /**
      * Clear and build.
      */
-    private void clearAndBuild() {
-        ihm = new ScrollPane();
-        content = new VBox(8);
-        content.setSpacing(30);
-
-        avatarImg = new ImageView();
-        partageTxt = new Text();
-        refreshBtn = new Button("Refresh");
-
-        pictureImg = new ImageView();
-
-        noteTitle = new Text("Note : ");
-        noteImg = new HBox();
-        voteTxt = new Text();
-        voteField = new TextField("3");
-        voteBtn = new Button("Voter");
-
-        tagsTitle = new Text("Tags : ");
-        tagsTxt = new Text();
-
-        descTitle = new Text("Description : ");
-        descTxt = new Text();
-        descTxt.setWrappingWidth(345);
-        descTxt.setTextAlignment(TextAlignment.JUSTIFY);
-
-        comTitle = new Text("Commentaires : ");
-        comments = new ArrayList<CommentPane>();
-        writeArea = new TextArea();
-        sendBtn = new Button("Envoyer");
-
+    private void resetAllComponents() {
         build();
     }
 
@@ -414,7 +407,7 @@ public class PictureController extends Tab implements Initializable
      */
     public void receiveFullImage(Picture picture) {
         this.picture = picture;
-        clearAndBuild();
+        resetAllComponents();
     }
 
     /**
@@ -484,7 +477,7 @@ public class PictureController extends Tab implements Initializable
         }
         //Appel IHMtoDATA setListTags(tags);
         picture.setListTags(tags);
-        showInformationDialog("Liste de tags modifiée avec succès !");
+        Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
     }
 
     /**
@@ -507,7 +500,7 @@ public class PictureController extends Tab implements Initializable
                 content.getChildren().remove(editDescTxt);
                 content.getChildren().remove(validateDescBtn);
                 content.getChildren().add(content.getChildren().size() - 2, descEditBtn);
-                showInformationDialog("Description modifiée avec succès !");
+                Dialogs.showInformationDialog("Description modifiée avec succès !");
             }
         });
 
