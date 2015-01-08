@@ -5,6 +5,7 @@ import DATA.model.Group;
 import DATA.model.User;
 import IHM.interfaces.IHMtoDATAstub;
 import IHM.utils.Dialogs;
+import com.google.common.base.Strings;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -254,7 +255,7 @@ public class GroupsController implements Initializable {
 
     @FXML
     public void addMemberInGroup(ActionEvent event) {
-        if(addUserName.getText().equals("")) {
+        if(Strings.isNullOrEmpty(addUserName.getText())) {
             showWarningDialog("Veuillez entrer le login de l'utilisateur.");
         }
         else {
@@ -263,7 +264,7 @@ public class GroupsController implements Initializable {
                 if (g.getNom().equals(selectedGrp)) {
                     Boolean inGroup = false;
                     for (User u : g.getUsers()) {
-                        if (addUserName.getText().toLowerCase().equals(u.getLogin().toLowerCase())) {
+                        if (addUserName.getText().equalsIgnoreCase(u.getLogin())) {
                             showWarningDialog("L'utilisateur existe déjà dans le groupe !");
                             inGroup = true;
                             return;
@@ -275,7 +276,7 @@ public class GroupsController implements Initializable {
                             User user = checkIfFriend(addUserName.getText().toLowerCase());
                             if(user != null){
                                 application.getIHMtoDATA().addUserInGroup(user,g);
-                                obsMembersList.add(user.getFirstname()+ " " + user.getLastname());
+                                obsMembersList.add(user.getLogin());
                                 addUserName.clear();
                                 showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
                                 addUserName.clear();
