@@ -379,7 +379,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     private boolean isMyFriend(User user) {
         List<User> users = getFriendGroup().getUsers();
         for(User u : users) {
-            if(u.getUid().equals(application.currentUser().getUid())){
+            if(u.getUid().equals(user.getUid())){
                 return true;
             }
         }

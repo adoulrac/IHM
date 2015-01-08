@@ -494,7 +494,7 @@ public class PictureController extends Tab implements Initializable
         validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //appel IHMtoDATA setDescription(editDescTxt.getText());
+                // IHMtoDATA setDescription(editDescTxt.getText());
                 picture.setDescription(editDescTxt.getText());
                 descTxt.setText(editDescTxt.getText());
                 content.getChildren().remove(editDescTxt);
