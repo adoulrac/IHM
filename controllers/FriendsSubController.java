@@ -257,10 +257,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addFriend() {
         String friend = friendName.getText();
-        UserHBoxCell userToAdd = lookForUser(friend);
+        User userToAdd = lookForUser(friend);
         if(userToAdd != null) {
-            if(!isMyFriend(userToAdd.getUser())) {
-                application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), getFriendGroup());
+            if(!isMyFriend(userToAdd)) {
+                application.getIHMtoDATA().addUserInGroup(userToAdd, getFriendGroup());
                 Dialogs.showInformationDialog("Une demande d'ami a été envoyé à " + friend);
             } else {
                 Dialogs.showInformationDialog("Ajout impossible: l'utilisateur est déjà dans vos amis.");
@@ -339,7 +339,6 @@ public class FriendsSubController extends SplitPane implements Initializable {
                         + " veut être votre ami ! Acceptez-vous sa demande ? ");
                 if (response) {
                     application.getIHMtoDATA().acceptUserInGroup(sender, getFriendGroup());
-                    application.getIHMtoDATA().deleteUserFromGroup(sender, getDefaultGroup());
                     moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
                 } else {
                     application.getIHMtoDATA().refuseUser(sender);
@@ -392,7 +391,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param login the login
      * @return the user h box cell
      */
-    private UserHBoxCell lookForUser(final String login) {
+    private User lookForUser(final String login) {
         if(Strings.isNullOrEmpty(login)) {
             return null;
         }
@@ -400,8 +399,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
+                System.out.println(u.getUser().getLogin() + ":" + login);
                 if (u.getUser().getLogin().equalsIgnoreCase(login)) {
-                    return u;
+                    return u.getUser();
                 }
             }
         }
