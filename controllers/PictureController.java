@@ -42,24 +42,29 @@ public class PictureController extends Tab implements Initializable
 
     /** The app. */
     private final MainController app;
-    
+
     /** The picture. */
     private Picture picture;
 
     /** The ihm. */
     private ScrollPane ihm = new ScrollPane();
-    
+
     /** The content. */
     private VBox content = new VBox(8);
 
     /** The avatarImg. */
     private ImageView avatarImg = new ImageView();
-    
+
     /** The partageTxt. */
     private Text partageTxt = new Text();
 
+
     /** The name of the file */
     private TextArea pictureName = new TextArea();
+
+    /** The name of the picture */
+    private Text filename = new  Text();
+
 
     /** The refreshBtn. */
     private Button refreshBtn = new Button("Refresh");
@@ -69,40 +74,40 @@ public class PictureController extends Tab implements Initializable
 
     /** The noteTitle. */
     private Text noteTitle = new Text("Note : ");
-    
+
     /** The noteImg. */
     private HBox noteImg = new HBox();
-    
+
     /** The voteTxt. */
     private Text voteTxt = new Text();
-    
+
     /** The voteField. */
     private TextField voteField = new TextField("3");
-    
+
     /** The voteBtn. */
     private Button voteBtn = new Button("Voter");
 
     /** The tagsTitle. */
     private Text tagsTitle = new Text("Tags : ");
-    
+
     /** The tagsTxt. */
     private Text tagsTxt = new Text();
 
     /** The descTitle. */
     private Text descTitle = new Text("Description : ");
-    
+
     /** The descTxt. */
     private Text descTxt = new Text();
 
     /** The comTitle. */
     private Text comTitle = new Text("Commentaires : ");
-    
+
     /** The comments. */
     private List<CommentPane> comments = new ArrayList<CommentPane>();
-    
+
     /** The writeArea. */
     private TextArea writeArea = new TextArea();
-    
+
     /** The sendBtn. */
     private Button sendBtn = new Button("Envoyer");
 
@@ -114,10 +119,11 @@ public class PictureController extends Tab implements Initializable
 
     private TextArea editDescTxt = new TextArea();
 
-    private Button tagsEditBtn = new Button ("Terminer");
+    private Button tagsEditBtn = new Button ("Modifier");
+
+    private Button tagsValidateBtn = new Button ("Terminer");
 
     private TextField tagsEditTxt = new TextField();
-
 
     /**
      * Instantiates a new picture controller.
@@ -331,7 +337,7 @@ public class PictureController extends Tab implements Initializable
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
-            hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsEditBtn);
+            hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
         }
         else {
             hbox.getChildren().addAll(tagsTitle, tagsTxt);
@@ -487,16 +493,32 @@ public class PictureController extends Tab implements Initializable
      *  @param mouseEvent
      */
     private void  editTags(MouseEvent mouseEvent) {
-        String str = tagsEditTxt.getText();
-        String[] array = str.split("(?<!\\\\),");
-        List<Tag> tags = picture.getListTags();
-        tags.removeAll(tags);
-        for (int i = 0; i < array.length; i++) {
-            tags.add(new Tag(array[i]));
-        }
-        //Appel IHMtoDATA setListTags(tags);
-        picture.setListTags(tags);
-        showInformationDialog("Liste de tags modifiée avec succès !");
+        final HBox hbox = new HBox(3);
+        hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsValidateBtn);
+        content.getChildren().remove(2);
+        content.getChildren().add(2,hbox);
+
+        tagsValidateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String str = tagsEditTxt.getText();
+                String[] array = str.split("(?<!\\\\),");
+                List<Tag> tags = picture.getListTags();
+                tags.removeAll(tags);
+                for (int i = 0; i < array.length; i++) {
+                    tags.add(new Tag(array[i]));
+                }
+                picture.setListTags(tags);
+                hbox.getChildren().removeAll(tagsTitle, tagsEditTxt, tagsValidateBtn);
+                hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
+                tagsTxt.setText(tagsEditTxt.getText());
+                content.getChildren().remove(2);
+                content.getChildren().add(2,hbox);
+
+                showInformationDialog("Liste de tags modifiée avec succès !");
+            }
+        });
+
     }
 
     /**
@@ -506,19 +528,22 @@ public class PictureController extends Tab implements Initializable
      */
     private void editDescription(MouseEvent mouseEvent) {
         editDescTxt.setText(picture.getDescription());
-        content.getChildren().add(content.getChildren().size() - 4, editDescTxt);
+        final VBox vbox = new VBox(2);
+        vbox.getChildren().addAll(editDescTxt, validateDescBtn);
+        /*content.getChildren().add(content.getChildren().size() - 4, editDescTxt);
         content.getChildren().remove(descEditBtn);
-        content.getChildren().add(content.getChildren().size() - 3, validateDescBtn);
+        content.getChildren().add(content.getChildren().size() - 3, validateDescBtn);*/
+        content.getChildren().add(content.getChildren().size() - 4, vbox);
+        content.getChildren().remove(descEditBtn);
+
         descTxt.setText("");
         validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //appel IHMtoDATA setDescription(editDescTxt.getText());
                 picture.setDescription(editDescTxt.getText());
                 descTxt.setText(editDescTxt.getText());
-                content.getChildren().remove(editDescTxt);
-                content.getChildren().remove(validateDescBtn);
-                content.getChildren().add(content.getChildren().size() - 2, descEditBtn);
+                content.getChildren().remove(vbox);
+                content.getChildren().add(5, descEditBtn);
                 showInformationDialog("Description modifiée avec succès !");
             }
         });
@@ -546,6 +571,8 @@ public class PictureController extends Tab implements Initializable
         public ImageView avatarImg = new ImageView();
         
         /** The userTxt contains the name of the user and some metadata (date, etc.). */
+
+        /** The userTxt. */
         public Text userTxt = new Text();
 
         /** Click to switch to edition mode. In edition mode, this button becomes the validate button. */
