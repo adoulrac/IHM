@@ -4,6 +4,7 @@ import DATA.model.*;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
+import IHM.utils.FileUtil;
 import IHM.validators.VoteValidator;
 import com.google.common.io.Files;
 import javafx.animation.FadeTransition;
@@ -21,8 +22,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +40,8 @@ import static IHM.utils.Dialogs.showInformationDialog;
  * The Class PictureController.
  */
 public class PictureController extends Tab implements Initializable
+
+    //TODO Attributes should be initialized in constructor
 {
     private static final int AVATAR_SIZE = 50;
 
@@ -82,6 +88,8 @@ public class PictureController extends Tab implements Initializable
     
     /** The voteBtn. */
     private Button voteBtn = new Button("Voter");
+
+    private Button savePictureBtn = new Button("Sauvegarder");
 
     /** The tagsTitle. */
     private Text tagsTitle = new Text("Tags : ");
@@ -163,6 +171,14 @@ public class PictureController extends Tab implements Initializable
             }
         });
 
+        //Save button
+        savePictureBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                savePictureLocally();
+            }
+        });
+
         Image img = picture.getImageObject();
         setImage(pictureImg, img, 300, 300);
         FadeTransition ft = new FadeTransition(Duration.millis(3000), pictureImg);
@@ -202,6 +218,25 @@ public class PictureController extends Tab implements Initializable
 
         addContent();
         addCssClasses();
+    }
+
+    private void savePictureLocally() {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Save picture");
+        File selectedDirectory = chooser.showDialog(app.getPrimaryStage());
+
+        if(selectedDirectory == null) {
+            return;
+        }
+
+        try {
+            byte[] pixels = picture.getPixels();
+            Files.write(pixels, new File(FileUtil.buildFullPath(selectedDirectory.getAbsolutePath(),
+                                         FileUtil.getFilenameFromPath(picture.getFilename()))));
+        }catch(Exception e){
+            e.printStackTrace();
+            Dialogs.showInformationDialog("Error in saving file.");
+        }
     }
 
     /**
@@ -266,8 +301,8 @@ public class PictureController extends Tab implements Initializable
 
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox(2);
-        hbox.setSpacing(50);
-        hbox.getChildren().addAll(hbDesc, filename, refreshBtn);
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(hbDesc, filename, refreshBtn, savePictureBtn);
         content.getChildren().addAll(hbox);
         content.getChildren().addAll(pictureImg);
 
