@@ -4,7 +4,6 @@ import DATA.model.Picture;
 import DATA.model.User;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Interface DATA uses to call IHM with asynchronous results.

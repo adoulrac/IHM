@@ -2,7 +2,6 @@ package IHM.controllers;
 
 import DATA.model.Picture;
 import DATA.model.Tag;
-import DATA.model.User;
 import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
@@ -19,20 +18,23 @@ import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritablePixelFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.Buffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**

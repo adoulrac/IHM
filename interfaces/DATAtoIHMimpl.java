@@ -1,15 +1,15 @@
 package IHM.interfaces;
 
-import DATA.model.Group;
 import DATA.model.Picture;
 import DATA.model.User;
-import IHM.controllers.*;
+import IHM.controllers.MainController;
+import IHM.controllers.PictureController;
+import IHM.controllers.TabbedPicturesSubController;
+import IHM.controllers.WelcomeController;
 import com.google.common.collect.Lists;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 

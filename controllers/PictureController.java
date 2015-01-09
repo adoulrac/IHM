@@ -5,10 +5,10 @@ import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
+import IHM.utils.Tooltips;
 import IHM.validators.VoteValidator;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
-import IHM.utils.Tooltips;
 import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +25,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -422,11 +423,11 @@ public class PictureController extends Tab implements Initializable
         // Picture Title textarea style
         pictureName.getStyleClass().add("pic-title");
         pictureName.setStyle("-fx-background-insets: 0px ;");
-        pictureName.setStyle("-fx-text-fill: black;"+
-                "-fx-background-color: transparent;"+
-                "-fx-font: Courier New;"+
-                "-fx-font-family: Courier New;"+
-                "-fx-font-weight: bold;"+
+        pictureName.setStyle("-fx-text-fill: black;" +
+                "-fx-background-color: transparent;" +
+                "-fx-font: Courier New;" +
+                "-fx-font-family: Courier New;" +
+                "-fx-font-weight: bold;" +
                 "-fx-font-size: 20;");
     }
 
