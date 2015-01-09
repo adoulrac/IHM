@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<TitledPane fx:id="gestionGroupes" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="600.0" text="Gestion des groupes" textFill="WHITE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.GroupsController">
+<TitledPane fx:id="manageGroups" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="600.0" text="Gestion des groupes" textFill="WHITE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.GroupsController">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="485.0" prefWidth="638.0">
          <children>
@@ -16,14 +16,14 @@
                   <Button id="addMemberBtn" fx:id="addUserBtn" layoutX="132.0" layoutY="272.0" mnemonicParsing="false" onAction="#addMemberInGroup" prefHeight="36.0" prefWidth="37.0" styleClass="add-friend-btn" text="+" />
                   <Label layoutX="13.0" layoutY="46.0" text="Membres :" textFill="WHITE" />
                   <ListView fx:id="members" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="252.0" />
-                  <Button fx:id="deleteMemberBtn" layoutX="202.0" layoutY="276.0" mnemonicParsing="false" onAction="#deleteMemberFromGroup" text="Delete" />
+                  <Button fx:id="deleteMemberBtn" layoutX="188.0" layoutY="276.0" mnemonicParsing="false" onAction="#deleteMemberFromGroup" text="Retirer" />
                </children>
             </Pane>
             <ListView id="groups" fx:id="groups" layoutX="27.0" layoutY="14.0" prefHeight="266.0" prefWidth="234.0" />
             <Button id="addGroupBtn" fx:id="addGroupBtn" layoutX="142.0" layoutY="287.0" mnemonicParsing="false" onAction="#addNewGroup" prefHeight="38.0" prefWidth="36.0" styleClass="add-group-btn" text="+" />
             <TextField id="newGroupName" fx:id="newGroupName" layoutX="27.0" layoutY="287.0" prefHeight="38.0" prefWidth="110.0" />
-            <Button fx:id="deleteGroupBtn" layoutX="197.0" layoutY="292.0" mnemonicParsing="false" onAction="#deleteGroup" text="Delete" />
-            <Button fx:id="finishBtn" layoutX="521.0" layoutY="354.0" mnemonicParsing="false" onAction="#finish" text="Finish" />
+            <Button fx:id="deleteGroupBtn" layoutX="197.0" layoutY="292.0" mnemonicParsing="false" onAction="#deleteGroup" text="Supprimer" />
+            <Button fx:id="finishBtn" layoutX="521.0" layoutY="354.0" mnemonicParsing="false" onAction="#finish" text="Ok" />
          </children></AnchorPane>
   </content>
    <font>

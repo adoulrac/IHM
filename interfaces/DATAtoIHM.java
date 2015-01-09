@@ -16,13 +16,13 @@ public interface DATAtoIHM
      * Receive a notification of connection.
      * @param user the user connected.
      */
-    void receiveConnectedUser(User user);
+    public void receiveConnectedUser(User user);
 
     /**
      * Receive a notification of unconnection.
      * @param user the user unconnected.
      */
-    void receiveUnconnectedUser(User user);
+    public void receiveUnconnectedUser(User user);
 
     /**
      * Send back the picture requested.
@@ -30,7 +30,7 @@ public interface DATAtoIHM
      * @param picture the picture requested.
      * @param queryId the query id
      */
-    void receivePicture(Picture picture, int queryId);
+    public void receivePicture(Picture picture, int queryId);
 
     /**
      * Send back the list of pictures requested.
@@ -38,14 +38,14 @@ public interface DATAtoIHM
      * @param pictures the list of pictures requested.
      * @param queryId the query id
      */
-    void receivePictures(List<Picture> pictures, int queryId);
+    public void receivePictures(List<Picture> pictures, int queryId);
 
     /**
      * Receive a friend request by another user.
      *
      * @param user the other user who sent the request.
      */
-    void receiveFriendRequest(User user);
+    public void receiveFriendRequest(User user);
 
     /**
      * Receive a friend response by another user.
@@ -53,5 +53,10 @@ public interface DATAtoIHM
      * @param user the other user who sent the request.
      * @param response the response
      */
-    void receiveFriendResponse(User user, boolean response);
+    public void receiveFriendResponse(User user, boolean response);
+
+    /**
+     * Receive reload all user groups
+     */
+    public void receiveReloadUserGroups();
 }

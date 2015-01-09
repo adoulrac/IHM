@@ -3,6 +3,7 @@ package IHM.controllers;
 import DATA.model.Group;
 import DATA.model.User;
 import IHM.utils.Dialogs;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import javafx.application.Platform;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,19 +60,19 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * The Class UserHBoxCell.
      */
     private class UserHBoxCell extends HBox {
-        
+
         /** The user. */
         private User user;
-        
+
         /** The label. */
         private Label label;
-        
+
         /** The icon. */
         private ImageView icon;
 
         /** The Constant ON_PATH. */
         private static final String ON_PATH = "IHM/resources/online_icon.png";
-        
+
         /** The Constant OFF_PATH. */
         private static final String OFF_PATH = "IHM/resources/offline_icon.png";
 
@@ -255,9 +255,17 @@ public class FriendsSubController extends SplitPane implements Initializable {
      */
     public void addFriend() {
         String friend = friendName.getText();
-        UserHBoxCell userToAdd = lookForUser(friend);
-        application.getIHMtoDATA().addUserInGroup(userToAdd.getUser(), application.getIHMtoDATA().getGroups().get(0));
-        Dialogs.showInformationDialog("Une demande d'amis a été envoyé à " + friend);
+        User userToAdd = lookForUser(friend);
+        if(userToAdd != null) {
+            if(!isMyFriend(userToAdd)) {
+                application.getIHMtoDATA().addUserInGroup(userToAdd, getFriendGroup());
+                Dialogs.showInformationDialog("Une demande d'ami a été envoyé à " + friend);
+            } else {
+                Dialogs.showInformationDialog("Ajout impossible: l'utilisateur est déjà dans vos amis.");
+            }
+        } else {
+            Dialogs.showInformationDialog("Utilisateur inconnu.");
+        }
         friendName.clear();
     }
 
@@ -276,9 +284,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      */
     public void connectUser(final User user) {
-        UserHBoxCell existingUser = lookForUser(user.getUid());
+        User existingUser = lookForUser(user);
         if (existingUser != null) {
-            updateUser(user);
+            reloadUser(user);
         } else {
             addUserInGroup(user, Group.DEFAULT_GROUP_NAME);
         }
@@ -290,9 +298,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      */
     public void disconnectUser(final User user) {
-        UserHBoxCell existingUser = lookForUser(user.getUid());
+        User existingUser = lookForUser(user);
         if (existingUser != null) {
-            updateUser(user);
+            reloadUser(user);
         }
     }
 
@@ -303,12 +311,17 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param response the response
      */
     public void receiveFriendResponse(final User sender, final boolean response) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
         if (response) {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'amis.");
-            updateUser(sender, Group.FRIENDS_GROUP_NAME);
+            application.getIHMtoDATA().addUserInGroup(sender, getFriendGroup());
+            moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
         } else {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'amis.");
         }
+        }});
     }
 
     /**
@@ -321,10 +334,10 @@ public class FriendsSubController extends SplitPane implements Initializable {
             @Override
             public void run() {
                 boolean response = Dialogs.showConfirmationDialog(sender.getLogin()
-                + " veut être votre ami ! Acceptez-vous sa demande ? ");
+                        + " veut être votre ami ! Acceptez-vous sa demande ? ");
                 if (response) {
-                    updateUser(sender, Group.FRIENDS_GROUP_NAME);
-                    application.getIHMtoDATA().acceptUserInGroup(sender, application.getIHMtoDATA().getGroups().get(0));
+                    application.getIHMtoDATA().acceptUserInGroup(sender, getFriendGroup());
+                    moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
                 } else {
                     application.getIHMtoDATA().refuseUser(sender);
                 }
@@ -332,24 +345,42 @@ public class FriendsSubController extends SplitPane implements Initializable {
         });
     }
 
+    private Group getFriendGroup() {
+        return application.getIHMtoDATA().getGroupByName(Group.FRIENDS_GROUP_NAME);
+    }
+
+    private Group getDefaultGroup() {
+        return application.getIHMtoDATA().getGroupByName(Group.DEFAULT_GROUP_NAME);
+    }
+
     /**
      * Look for user.
      *
-     * @param userId the user id
+     * @param user the user
      * @return the user h box cell
      */
-    private UserHBoxCell lookForUser(final UUID userId) {
+    private User lookForUser(final User user) {
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
-                if (u.getUser().getUid().equals(userId)) {
-                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" found in group " + entry.getKey());
-                    return u;
+                if (u.getUser().getUid().equals(user.getUid())) {
+                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+user.getLogin()+" found in group " + entry.getKey());
+                    return u.getUser();
                 }
             }
         }
-        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+userId.toString()+" not found");
+        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+user.getLogin()+" not found");
         return null;
+    }
+
+    private boolean isMyFriend(User user) {
+        List<User> users = getFriendGroup().getUsers();
+        for(User u : users) {
+            if(u.getUid().equals(user.getUid())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -358,12 +389,16 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param login the login
      * @return the user h box cell
      */
-    private UserHBoxCell lookForUser(final String login) {
+    private User lookForUser(final String login) {
+        if(Strings.isNullOrEmpty(login)) {
+            return null;
+        }
+
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
-                if (u.getUser().getLogin().equals(login)) {
-                    return u;
+                if (u.getUser().getLogin().equalsIgnoreCase(login)) {
+                    return u.getUser();
                 }
             }
         }
@@ -376,7 +411,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      * @return the string
      */
-    private String removeUserInGroup(final User user) {
+    private String removeUserFromGroup(final User user) {
+        if(user == null) {
+            return null;
+        }
+
         UserHBoxCell userToRemove = null;
         for (Entry<String, ObservableList<UserHBoxCell>> entry : groups.entrySet()) {
             List<UserHBoxCell> users = entry.getValue();
@@ -394,27 +433,47 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     /**
-     * Update user.
+     * Move user.
      *
      * @param user the user
      * @param groupName the group name
      */
-    private void updateUser(final User user, final String groupName) {
+    private void moveUserToGroup(final User user, final String groupName) {
+        if(user == null) {
+            return;
+        }
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                String currGroupName = removeUserInGroup(user);
-                addUserInGroup(user, groupName == null ? currGroupName : groupName);
+            if(user != null) {
+                String currGroupName = removeUserFromGroup(user);
+                if(currGroupName != null || groupName != null) {
+                    addUserInGroup(user, groupName == null ? currGroupName : groupName);
+                }
+            }
             }
         });
     }
 
-    /**
-     * Update user.
-     *
-     * @param user the user
-     */
-    private void updateUser(final User user) {
-        updateUser(user, null);
+    public void reloadUserGroups() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                clearGroups();
+                List<Group> userGroups = application.getIHMtoDATA().getAllUsers();
+                addGroups(userGroups);
+            }
+        });
     }
+
+    private void clearGroups() {
+        groupsAccordion.getPanes().clear();
+        groups.clear();
+    }
+
+    private void reloadUser(final User user) {
+        moveUserToGroup(user, null);
+    }
+
 }

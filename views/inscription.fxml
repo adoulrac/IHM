@@ -11,6 +11,15 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="279.0" layoutX="142.0" layoutY="149.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="381.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="267.0" layoutX="149.0" layoutY="155.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="369.0" />
       <Button layoutX="275.0" layoutY="388.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" styleClass="connexion-btn"  text="Valider" textFill="#6d6e71" onAction="#subscribe" />
+      <Hyperlink layoutX="487.0" layoutY="37.0" styleClass="connexion-link"  text="Se connecter" textFill="#6d6e71" onAction="#login">
+           <font>
+               <Font name="System Bold" size="12.0" />
+           </font></Hyperlink>
+      <ImageView fitHeight="85.0" fitWidth="82.0" layoutX="34.0" layoutY="30.0">
+           <image>
+               <Image url="@../resources/logo.jpeg" />
+           </image>
+      </ImageView>
       <TextField layoutX="275.0" layoutY="168.0" fx:id="login"/>
       <PasswordField layoutX="275.0" layoutY="210.0" fx:id="password"/>
       <Label layoutX="221.0" layoutY="171.0" text="Login" textFill="WHITE">
@@ -21,15 +30,6 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <Hyperlink layoutX="487.0" layoutY="37.0" styleClass="connexion-link"  text="Se connecter" textFill="#6d6e71" onAction="#login">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font></Hyperlink>
-      <ImageView fitHeight="85.0" fitWidth="82.0" layoutX="34.0" layoutY="30.0">
-         <image>
-            <Image url="@../resources/logo.jpeg" />
-         </image>
-      </ImageView>
       <PasswordField layoutX="275.0" layoutY="253.0" fx:id="confirmation"/>
       <Label layoutX="174.0" layoutY="260.0" text="Confirmation" textFill="WHITE">
          <font>
