@@ -255,7 +255,7 @@ public class GroupsController implements Initializable {
                     Boolean inGroup = false;
                     for (User u : g.getUsers()) {
                         if (addUserName.getText().equalsIgnoreCase(u.getLogin())) {
-                            showWarningDialog("L'utilisateur existe déjà dans le groupe !");
+                            showWarningDialog("Ajout impossible: L'utilisateur existe déjà dans le groupe !");
                             inGroup = true;
                             return;
                         }
@@ -270,7 +270,7 @@ public class GroupsController implements Initializable {
                             addUserName.clear();
                             return;
                         } else {
-                            showWarningDialog("L'utilisateur n'est pas votre amis.");
+                            showWarningDialog("Ajout impossible: L'utilisateur n'est pas votre amis ou n'existe pas.");
                             return;
                         }
                     }
