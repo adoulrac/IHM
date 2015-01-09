@@ -1,6 +1,5 @@
 package IHM.tests;
 
-import IHM.validators.LoginValidator;
 import IHM.validators.PasswordValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
