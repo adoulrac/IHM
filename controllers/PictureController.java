@@ -8,23 +8,23 @@ import IHM.utils.FileUtil;
 import IHM.validators.VoteValidator;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
+import IHM.utils.Tooltips;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
-
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -58,9 +58,9 @@ public class PictureController extends Tab implements Initializable
     /** The partageTxt. */
     private Text partageTxt;
 
-    /** The name of the picture */
-    private Text filename;
-    
+    /** The name of the file */
+    private TextArea pictureName;
+
     /** The refreshBtn. */
     private Button refreshBtn;
 
@@ -144,7 +144,7 @@ public class PictureController extends Tab implements Initializable
         content = new VBox(8);
         avatarImg = new ImageView();
         partageTxt = new Text();
-        filename = new  Text();
+        pictureName  = new TextArea();
         refreshBtn = new Button("Refresh");
         pictureImg = new ImageView();
         noteTitle = new Text("Note : ");
@@ -172,9 +172,16 @@ public class PictureController extends Tab implements Initializable
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
         // Picture name
-        filename.setFont(new Font(20));
-        filename.setWrappingWidth(200);
-        filename.setText(Files.getNameWithoutExtension(picture.getFilename()));
+        Tooltip.install(pictureName, Tooltips.getTooltip("Press enter to save"));
+        if (picture.getTitle() == null) {
+            pictureName.setPromptText("(sans titre)");
+        }
+        else {
+            pictureName.setText(picture.getTitle());
+        }
+        pictureName.setPrefSize(280, 70);
+        pictureName.setEditable(true);
+        pictureName.setWrapText(true);
 
         partageTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
         partageTxt.setText("a partagé l'image");
@@ -304,7 +311,7 @@ public class PictureController extends Tab implements Initializable
     private void addContent(){
 
         // Left side
-        HBox hbDesc = new HBox(3);
+        final HBox hbDesc = new HBox(3);
 
         VBox textPartage = new VBox(2);
         textPartage.setSpacing(0);
@@ -316,7 +323,37 @@ public class PictureController extends Tab implements Initializable
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox(2);
         hbox.setSpacing(10);
-        hbox.getChildren().addAll(hbDesc, filename, refreshBtn, savePictureBtn);
+        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, savePictureBtn);
+
+        // Limit the number of characters within the  textarea
+        pictureName.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+                try {
+                    // force correct length by resetting to old value if longer than maxLength
+                    if (newValue.length() > 65) {
+                        pictureName.setText(oldValue);
+                    }
+                } catch (Exception e) {
+                    pictureName.setText(oldValue);
+                }
+            }
+        });
+
+        // VALIDATE ON ENTER
+        pictureName.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            final KeyCombination combo = new KeyCodeCombination(KeyCode.ENTER);
+            public void handle(KeyEvent t) {
+                if (combo.match(t)) {
+                    // Prevents linebreaks
+                    pictureName.setText(pictureName.getText().replace("\n",""));
+                    picture.setTitle(pictureName.getText());
+                }
+            }
+        });
+
+        // EDITABLE TITLE
         content.getChildren().addAll(hbox);
         content.getChildren().addAll(pictureImg);
 
@@ -339,7 +376,6 @@ public class PictureController extends Tab implements Initializable
         pictureAndDesc.getChildren().addAll(pictureImg, vbox);
         content.getChildren().addAll(pictureAndDesc);
 
-        //content.getChildren().add(comTitle);
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
@@ -378,11 +414,20 @@ public class PictureController extends Tab implements Initializable
         ihm.getStyleClass().add("pic-ihm");
         ihm.setStyle("-fx-padding: 20;");
         content.getStyleClass().add("pic-content");
-        partageTxt.getStyleClass().add("pic-title");
-        noteTitle.getStyleClass().add("pic-title");
-        tagsTitle.getStyleClass().add("pic-title");
-        descTitle.getStyleClass().add("pic-title");
-        comTitle.getStyleClass().add("pic-title");
+        partageTxt.getStyleClass().add("pic-titles");
+        noteTitle.getStyleClass().add("pic-titles");
+        tagsTitle.getStyleClass().add("pic-titles");
+        descTitle.getStyleClass().add("pic-titles");
+        comTitle.getStyleClass().add("pic-titles");
+        // Picture Title textarea style
+        pictureName.getStyleClass().add("pic-title");
+        pictureName.setStyle("-fx-background-insets: 0px ;");
+        pictureName.setStyle("-fx-text-fill: black;"+
+                "-fx-background-color: transparent;"+
+                "-fx-font: Courier New;"+
+                "-fx-font-family: Courier New;"+
+                "-fx-font-weight: bold;"+
+                "-fx-font-size: 20;");
     }
 
     /**
@@ -403,7 +448,7 @@ public class PictureController extends Tab implements Initializable
     }
 
     /**
-     * Comment.
+     * Add a comment to the picture.
      *
      * @param mouseEvent the mouse event
      */
@@ -430,7 +475,7 @@ public class PictureController extends Tab implements Initializable
     }
 
     /**
-     * Vote.
+     * Add a vote to the image.
      *
      * @param mouseEvent the mouse event
      */
@@ -438,6 +483,7 @@ public class PictureController extends Tab implements Initializable
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
+                    //TODO verify the user has not voted yet, if so, modify the note ?
                     int vote = Integer.parseInt(voteField.getText());
                     try {
                         Note note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
@@ -499,8 +545,7 @@ public class PictureController extends Tab implements Initializable
     }
 
     private void deleteComment(CommentPane cp) {
-        //TODO try catch on delete comment
-        //app.getIHMtoDATA() delete comment
+        //TODO app.getIHMtoDATA() delete comment
         content.getChildren().remove(cp);
         comments.remove(cp);
     }
@@ -509,8 +554,6 @@ public class PictureController extends Tab implements Initializable
      * The Class CommentPane.
      */
     private class CommentPane extends HBox {
-        //TODO test to activate admin mode
-
         /** VBox that contains userTxt/buttons on first line and commentTxt on second line */
         VBox vb = new VBox(5);
 
@@ -662,7 +705,7 @@ public class PictureController extends Tab implements Initializable
          * Adds the css classes.
          */
         private void addCssClasses(){
-            userTxt.getStyleClass().add("pic-title");
+            userTxt.getStyleClass().add("pic-titles");
         }
     }
 

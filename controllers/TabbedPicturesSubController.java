@@ -6,6 +6,7 @@ import DATA.model.User;
 import IHM.helpers.NoteHelper;
 import IHM.utils.Dialogs;
 import IHM.utils.FileUtil;
+import IHM.utils.Tooltips;
 import com.google.common.base.Strings;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -31,10 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.Buffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -104,6 +102,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /** The all images list. */
     private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
 
+    /** The tooltip for displaying picture names */
+    private Tooltip tooltip;
     /**
      * The inner Class PicturePane.
      */
@@ -158,7 +158,13 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         if (mouseEvent.getClickCount() == 2) {
                             imgView.setEffect(null);
                             isSelected = false;
+                            // Remove file path and extension to create tab title for pictures without titles
                             PictureController pC = new PictureController(picture, application);
+                            int index = picture.getFilename().lastIndexOf(File.separatorChar);
+                            String filename = picture.getFilename().substring(index+1);
+                            if (filename.indexOf(".") > 0)
+                                filename = filename.substring(0, filename.lastIndexOf("."));
+                            pC.setText(picture.getTitle() == null ? filename : picture.getTitle());
                             addTab(pC);
                         } else if (mouseEvent.getClickCount() == 1) {
                             if (isSelected) {
@@ -446,6 +452,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                 tile.getChildren().clear();
                 for (PicturePane picturePane : myImgList) {
                     tile.getChildren().add(picturePane);
+                    // Add tooltip with picture title
+                    Tooltip.install(picturePane, Tooltips.getTooltip(picturePane.getPicture().getTitle() == null? "(sans titre)" : picturePane.getPicture().getTitle()));
                 }
                 deleteBtnDisplay();
                 return;

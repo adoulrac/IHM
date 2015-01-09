@@ -121,6 +121,24 @@
 	-fx-background-size: 40%;
 	-fx-background-color: #EFEFEF;
 }
-.pic-title {
+.pic-texts {
  	-fx-font-weight: bold;
+}
+
+.pic-title {
+    -fx-background-insets: 0px ;
+    -fx-text-fill: black;
+    -fx-background-color: transparent;
+    -fx-font: Courier New;
+    -fx-font-family: Courier New;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+.page-corner {
+   -fx-shape: " ";
+}
+
+.tooltip-background {
+   -fx-background-color: transparent;
 }
