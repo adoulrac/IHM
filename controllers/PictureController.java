@@ -1,5 +1,6 @@
 package IHM.controllers;
 
+import DATA.exceptions.BadInformationException;
 import DATA.model.*;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
@@ -546,9 +547,13 @@ public class PictureController extends Tab implements Initializable
     }
 
     private void deleteComment(CommentPane cp) {
-        //TODO app.getIHMtoDATA() delete comment
-        content.getChildren().remove(cp);
-        comments.remove(cp);
+        try {
+            app.getIHMtoDATA().deleteComment(cp.comment);
+            content.getChildren().remove(cp);
+            comments.remove(cp);
+        } catch (BadInformationException e) {
+            Dialogs.showWarningDialog("Informations du commentaire invalides pour la suppression.");
+        }
     }
 
     /**
@@ -616,7 +621,6 @@ public class PictureController extends Tab implements Initializable
         /**
          * If called with true, switch the UI to edition mode.
          * If called with false, switch back to the displaying of the comment.
-         * TODO => It also tests the rights of the current user for editing and displays what buttons are enable.
          * The method sets the correct behavior of the button callbacks, which calls the method itself to activate and deactivate edition mode.
          */
         private void switchEditionMode(boolean edition) {
@@ -684,6 +688,8 @@ public class PictureController extends Tab implements Initializable
 
         /**
          * Adds the UI correctly layed out.
+         * Test the rights of the user to edit or delete the comment
+         * and hides the buttons if he has no right.
          */
         private void addContent(){
             HBox hb = new HBox(8);
