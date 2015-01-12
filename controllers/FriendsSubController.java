@@ -284,6 +284,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      */
     public void connectUser(final User user) {
+        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Trying to connect user " + user.getLogin());
         User existingUser = lookForUser(user);
         if (existingUser != null) {
             reloadUser(user);
@@ -315,11 +316,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
             @Override
             public void run() {
         if (response) {
-            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'amis.");
-            application.getIHMtoDATA().addUserInGroup(sender, getFriendGroup());
+            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'ami.");
+            application.getIHMtoDATA().acceptUserInGroup(sender, getFriendGroup());
             moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
         } else {
-            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'amis.");
+            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'ami.");
         }
         }});
     }

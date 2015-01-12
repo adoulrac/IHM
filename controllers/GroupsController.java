@@ -116,7 +116,8 @@ public class GroupsController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
             try {
-                if (!groups.getSelectionModel().getSelectedItem().equals(null)) {
+                Object item = groups.getSelectionModel().getSelectedItem();
+                if (item != null) {
                     disableFields(false);
                     deleteMemberBtn.setDisable(true);
                     if (!listGroups.isEmpty()) {
@@ -173,6 +174,11 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void deleteGroup(ActionEvent event){
+        String groupToDelete = groups.getSelectionModel().getSelectedItem().toString();
+        if(groupToDelete.equals(Group.FRIENDS_GROUP_NAME)) {
+            Dialogs.showInformationDialog("Suppression impossible, le groupe Amis ne peut pas être supprimé.");
+            return;
+        }
         boolean response = Dialogs.showConfirmationDialog("Confirmez-vous la suppression du groupe ?");
         if(response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
@@ -219,10 +225,9 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void addNewGroup(ActionEvent event){
-        if(newGroupName.getText().equals("")) {
+        if(Strings.isNullOrEmpty(newGroupName.getText())) {
             showWarningDialog("Veuillez entrer un nom de groupe.");
-        }
-        else {
+        } else {
             Boolean exists = false;
             for (Group g : listGroups) {
                 if (g.getNom().equalsIgnoreCase(newGroupName.getText())) {

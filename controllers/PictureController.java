@@ -42,6 +42,8 @@ public class PictureController extends Tab implements Initializable
 {
     private static final int AVATAR_SIZE = 50;
 
+    private static final int MAX_TITLE_LENGTH = 65;
+
     /** The app. */
     private final MainController app;
     
@@ -147,7 +149,7 @@ public class PictureController extends Tab implements Initializable
         avatarImg = new ImageView();
         partageTxt = new Text();
         pictureName  = new TextArea();
-        refreshBtn = new Button("Refresh");
+        refreshBtn = new Button("Rafraîchir");
         pictureImg = new ImageView();
         noteTitle = new Text("Note : ");
         noteImg = new HBox();
@@ -163,7 +165,7 @@ public class PictureController extends Tab implements Initializable
         comments = new ArrayList<CommentPane>();
         writeArea = new TextArea();
         sendBtn = new Button("Envoyer");
-        descEditBtn = new Button("Modifier");
+        descEditBtn = new Button("Modifier la description");
         descDeleteBtn = new Button("Supprimer");
         validateDescBtn = new Button ("Terminer");
         editDescTxt = new TextArea();
@@ -181,7 +183,7 @@ public class PictureController extends Tab implements Initializable
         else {
             pictureName.setText(picture.getTitle());
         }
-        pictureName.setPrefSize(280, 70);
+        pictureName.setPrefSize(210, 70);
         pictureName.setEditable(true);
         pictureName.setWrapText(true);
 
@@ -233,7 +235,7 @@ public class PictureController extends Tab implements Initializable
             }
         }
         writeArea.setWrapText(true);
-        writeArea.setMaxHeight(100);
+        writeArea.setMaxHeight(60);
         writeArea.setPromptText("Ecrire un commentaire...");
         sendBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -256,9 +258,10 @@ public class PictureController extends Tab implements Initializable
             byte[] pixels = picture.getPixels();
             Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
                                          FileUtil.getFilenameFromPath(picture.getFilename()))));
+            Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
         }catch(Exception e){
             e.printStackTrace();
-            Dialogs.showInformationDialog("Error in saving file.");
+            Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
         }
     }
 
@@ -271,7 +274,7 @@ public class PictureController extends Tab implements Initializable
         if (average > 0.f) {
             voteTxt.setText(String.format("%.1f", average) + "/5 (" +   picture.getListNotes().size() + " votes)");
         } else {
-            voteTxt.setText("(Aucun vote pour le moment)");
+            voteTxt.setText("(Aucun vote)");
         }
         voteField.setMaxWidth(30.0);
         voteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -327,14 +330,14 @@ public class PictureController extends Tab implements Initializable
         hbox.setSpacing(10);
         hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, savePictureBtn);
 
-        // Limit the number of characters within the  textarea
+        // Limit the number of characters within the textarea
         pictureName.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable,
                                 String oldValue, String newValue) {
                 try {
                     // force correct length by resetting to old value if longer than maxLength
-                    if (newValue.length() > 65) {
+                    if (newValue.length() > MAX_TITLE_LENGTH) {
                         pictureName.setText(oldValue);
                     }
                 } catch (Exception e) {
@@ -534,7 +537,7 @@ public class PictureController extends Tab implements Initializable
         validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                // IHMtoDATA setDescription(editDescTxt.getText());
+                // TODO IHMtoDATA setDescription(editDescTxt.getText());
                 picture.setDescription(editDescTxt.getText());
                 descTxt.setText(editDescTxt.getText());
                 content.getChildren().remove(editDescTxt);
