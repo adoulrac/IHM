@@ -116,7 +116,8 @@ public class GroupsController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
             try {
-                if (!groups.getSelectionModel().getSelectedItem().equals(null)) {
+                Object item = groups.getSelectionModel().getSelectedItem();
+                if (item != null) {
                     disableFields(false);
                     deleteMemberBtn.setDisable(true);
                     if (!listGroups.isEmpty()) {
