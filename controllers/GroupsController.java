@@ -265,7 +265,7 @@ public class GroupsController implements Initializable {
                     if(!inGroup) {
                         User user = checkIfFriend(addUserName.getText());
                         if(user != null){
-                            application.getIHMtoDATA().addUserInGroup(user, g);
+                            application.getIHMtoDATA().acceptUserInGroup(user, g);
                             obsMembersList.add(user.getLogin());
                             showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
                             addUserName.clear();
