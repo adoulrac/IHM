@@ -271,7 +271,7 @@ public class GroupsController implements Initializable {
                             addUserName.clear();
                             return;
                         } else {
-                            showWarningDialog("Ajout impossible: L'utilisateur n'est pas votre amis ou n'existe pas.");
+                            showWarningDialog("Ajout impossible: L'utilisateur n'est pas votre ami ou n'existe pas.");
                             return;
                         }
                     }
