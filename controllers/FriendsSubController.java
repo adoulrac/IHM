@@ -317,7 +317,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
             public void run() {
         if (response) {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'ami.");
-            application.getIHMtoDATA().acceptUserInGroup(sender, getFriendGroup());
+            application.getIHMtoDATA().addUserInGroup(sender, getFriendGroup());
             moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
         } else {
             Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'ami.");
