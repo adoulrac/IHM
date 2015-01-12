@@ -373,13 +373,15 @@ public class ProfileController implements Initializable {
 	/**
 	 * On cancel: return to main window.
 	 */
-	public void onCancel() {
+    @FXML
+	private void onCancel() {
 		((Stage) profile.getScene().getWindow()).close();
 	}
 
 	/**
 	 * On ok: persists changes if needed, then return to main window.
 	 */
+    @FXML
     public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {

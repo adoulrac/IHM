@@ -219,10 +219,9 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void addNewGroup(ActionEvent event){
-        if(newGroupName.getText().equals("")) {
+        if(Strings.isNullOrEmpty(newGroupName.getText())) {
             showWarningDialog("Veuillez entrer un nom de groupe.");
-        }
-        else {
+        } else {
             Boolean exists = false;
             for (Group g : listGroups) {
                 if (g.getNom().equalsIgnoreCase(newGroupName.getText())) {
