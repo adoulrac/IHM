@@ -173,6 +173,11 @@ public class GroupsController implements Initializable {
      */
     @FXML
     public void deleteGroup(ActionEvent event){
+        String groupToDelete = groups.getSelectionModel().getSelectedItem().toString();
+        if(groupToDelete.equals(Group.FRIENDS_GROUP_NAME)) {
+            Dialogs.showInformationDialog("Suppression impossible, le groupe Amis ne peut pas être supprimé.");
+            return;
+        }
         boolean response = Dialogs.showConfirmationDialog("Confirmez-vous la suppression du groupe ?");
         if(response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
