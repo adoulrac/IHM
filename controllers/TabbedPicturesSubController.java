@@ -107,7 +107,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /** The tooltip for displaying picture names */
     private Tooltip tooltip;
 
-    private int currentRequestId;
+    private Integer currentRequestId;
 
     /**
      * The inner Class PicturePane.

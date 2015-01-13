@@ -114,8 +114,6 @@ public class PictureController extends Tab implements Initializable
 
     private Button descEditBtn;
 
-    private Button descDeleteBtn;
-
     private Button validateDescBtn;
 
     private TextArea editDescTxt;
@@ -124,7 +122,7 @@ public class PictureController extends Tab implements Initializable
 
     private TextField tagsEditTxt;
 
-    private int currentRequestId;
+    private Integer currentRequestId;
 
     /**
      * Instantiates a new picture controller.
@@ -169,7 +167,6 @@ public class PictureController extends Tab implements Initializable
         writeArea = new TextArea();
         sendBtn = new Button("Envoyer");
         descEditBtn = new Button("Modifier la description");
-        descDeleteBtn = new Button("Supprimer");
         validateDescBtn = new Button ("Terminer");
         editDescTxt = new TextArea();
         tagsEditBtn = new Button ("Terminer");
