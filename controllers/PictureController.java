@@ -124,6 +124,8 @@ public class PictureController extends Tab implements Initializable
 
     private TextField tagsEditTxt;
 
+    private int currentRequestId;
+
     /**
      * Instantiates a new picture controller.
      *
@@ -135,9 +137,10 @@ public class PictureController extends Tab implements Initializable
 
         this.app = app;
         this.picture = picture;
+        this.currentRequestId = app.addRequest(this);
 
         build();
-        app.getIHMtoDATA().getPictureById(this.picture.getUid(), app.addRequest(this));
+        app.getIHMtoDATA().getPictureById(this.picture.getUid(), currentRequestId);
     }
 
     /**
@@ -196,7 +199,9 @@ public class PictureController extends Tab implements Initializable
         refreshBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                app.getIHMtoDATA().getPictureById(picture.getUid(), app.addRequest(current));
+                app.removeRequest(currentRequestId);
+                currentRequestId = app.addRequest(current);
+                app.getIHMtoDATA().getPictureById(picture.getUid(), currentRequestId);
             }
         });
 
