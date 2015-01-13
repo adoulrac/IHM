@@ -60,6 +60,7 @@ public class PictureController extends Tab implements Initializable
     private ImageView avatarImg;
     
     /** The partageTxt. */
+    //TODO Is partage a english word ? please follow the code rules
     private Text partageTxt;
 
     /** The name of the file */
@@ -316,7 +317,6 @@ public class PictureController extends Tab implements Initializable
      * Adds the content.
      */
     private void addContent(){
-
         // Left side
         final HBox hbDesc = new HBox(3);
 
@@ -372,7 +372,7 @@ public class PictureController extends Tab implements Initializable
         HBox hboxNote = new HBox(2);
         HBox hboxNoteImage = new HBox(2);
         hboxNoteImage.getChildren().addAll(noteTitle, noteImg);
-        hboxNote.setSpacing(30);
+        hboxNote.setSpacing(10);
         hboxNote.getChildren().addAll(hboxNoteImage, voteTxt);
 
         HBox hboxVote = new HBox(2);
@@ -426,6 +426,7 @@ public class PictureController extends Tab implements Initializable
         tagsTitle.getStyleClass().add("pic-titles");
         descTitle.getStyleClass().add("pic-titles");
         comTitle.getStyleClass().add("pic-titles");
+
         // Picture Title textarea style
         pictureName.getStyleClass().add("pic-title");
         pictureName.setStyle("-fx-background-insets: 0px ;");
@@ -440,7 +441,9 @@ public class PictureController extends Tab implements Initializable
     /**
      * Clear and build.
      */
-    private void resetAllComponents() {
+    private void refreshAllComponents() {
+        //TODO refresh the components without instanciating them again, just change the content
+        //TODO Extract from build method the appropriate code and put it here
         build();
     }
 
@@ -451,7 +454,7 @@ public class PictureController extends Tab implements Initializable
      */
     public void receiveFullImage(Picture picture) {
         this.picture = picture;
-        resetAllComponents();
+        refreshAllComponents();
     }
 
     /**
@@ -517,10 +520,11 @@ public class PictureController extends Tab implements Initializable
         String[] array = str.split("(?<!\\\\),");
         List<Tag> tags = picture.getListTags();
         tags.removeAll(tags);
+
         for (int i = 0; i < array.length; i++) {
             tags.add(new Tag(array[i]));
         }
-        //Appel IHMtoDATA setListTags(tags);
+
         picture.setListTags(tags);
         Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
     }
@@ -618,8 +622,6 @@ public class PictureController extends Tab implements Initializable
 
             addContent();
             addCssClasses();
-
-            // adds the buttons for editing
             switchEditionMode(false);
         }
 
