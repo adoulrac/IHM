@@ -58,16 +58,13 @@ public class PictureController extends Tab implements Initializable
 
     /** The avatarImg. */
     private ImageView avatarImg;
-    
+
     /** The shareTxt. */
+    //TODO Is partage a english word ? please follow the code rules
     private Text shareTxt;
 
     /** The name of the file */
     private TextArea pictureName;
-
-    /** The name of the picture */
-    private Text filename = new  Text();
-
 
     /** The refreshBtn. */
     private Button refreshBtn;
@@ -77,13 +74,13 @@ public class PictureController extends Tab implements Initializable
 
     /** The noteTitle. */
     private Text noteTitle;
-    
+
     /** The noteImg. */
     private HBox noteImg;
-    
+
     /** The voteTxt. */
     private Text voteTxt;
-    
+
     /** The voteField. */
     private TextField voteField;
 
@@ -100,16 +97,16 @@ public class PictureController extends Tab implements Initializable
 
     /** The descTitle. */
     private Text descTitle;
-    
+
     /** The descTxt. */
     private Text descTxt;
 
     /** The comTitle. */
     private Text comTitle;
-    
+
     /** The comments. */
     private List<CommentPane> comments;
-    
+
     /** The writeArea. */
     private TextArea writeArea;
 
@@ -122,13 +119,11 @@ public class PictureController extends Tab implements Initializable
 
     private TextArea editDescTxt;
 
+    private Button tagsEditBtn;
+
     private TextField tagsEditTxt;
 
     private Integer currentRequestId;
-
-    private Button tagsEditBtn;
-
-    private Button tagsValidateBtn;
 
     /**
      * Instantiates a new picture controller.
@@ -177,8 +172,6 @@ public class PictureController extends Tab implements Initializable
         editDescTxt = new TextArea();
         tagsEditBtn = new Button ("Terminer");
         tagsEditTxt = new TextField();
-        Button tagsEditBtn = new Button ("Modifier");
-        Button tagsValidateBtn = new Button ("Terminer");
 
         // Avatar
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
@@ -267,7 +260,7 @@ public class PictureController extends Tab implements Initializable
         try {
             byte[] pixels = picture.getPixels();
             Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
-                                         FileUtil.getFilenameFromPath(picture.getFilename()))));
+                    FileUtil.getFilenameFromPath(picture.getFilename()))));
             Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
         }catch(Exception e){
             e.printStackTrace();
@@ -393,7 +386,7 @@ public class PictureController extends Tab implements Initializable
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
-            hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
+            hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsEditBtn);
         }
         else {
             hbox.getChildren().addAll(tagsTitle, tagsTxt);
@@ -553,32 +546,17 @@ public class PictureController extends Tab implements Initializable
      *  @param mouseEvent
      */
     private void  editTags(MouseEvent mouseEvent) {
+        String str = tagsEditTxt.getText();
+        String[] array = str.split("(?<!\\\\),");
+        List<Tag> tags = picture.getListTags();
+        tags.removeAll(tags);
 
-        final HBox hbox = new HBox(3);
-        hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsValidateBtn);
-        content.getChildren().remove(2);
-        content.getChildren().add(2,hbox);
+        for (int i = 0; i < array.length; i++) {
+            tags.add(new Tag(array[i]));
+        }
 
-        tagsValidateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                String str = tagsEditTxt.getText();
-                String[] array = str.split("(?<!\\\\),");
-                List<Tag> tags = picture.getListTags();
-                tags.removeAll(tags);
-                for (int i = 0; i < array.length; i++) {
-                    tags.add(new Tag(array[i]));
-                }
-                picture.setListTags(tags);
-                hbox.getChildren().removeAll(tagsTitle, tagsEditTxt, tagsValidateBtn);
-                hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
-                tagsTxt.setText(tagsEditTxt.getText());
-                content.getChildren().remove(2);
-                content.getChildren().add(2,hbox);
-
-                Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
-            }
-        });
+        picture.setListTags(tags);
+        Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
     }
 
     /**
@@ -588,22 +566,19 @@ public class PictureController extends Tab implements Initializable
      */
     private void editDescription(MouseEvent mouseEvent) {
         editDescTxt.setText(picture.getDescription());
-        final VBox vbox = new VBox(2);
-        vbox.getChildren().addAll(editDescTxt, validateDescBtn);
-        /*content.getChildren().add(content.getChildren().size() - 4, editDescTxt);
+        content.getChildren().add(content.getChildren().size() - 4, editDescTxt);
         content.getChildren().remove(descEditBtn);
-        content.getChildren().add(content.getChildren().size() - 3, validateDescBtn);*/
-        content.getChildren().add(content.getChildren().size() - 4, vbox);
-        content.getChildren().remove(descEditBtn);
-
+        content.getChildren().add(content.getChildren().size() - 3, validateDescBtn);
         descTxt.setText("");
         validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                // TODO IHMtoDATA setDescription(editDescTxt.getText());
                 picture.setDescription(editDescTxt.getText());
                 descTxt.setText(editDescTxt.getText());
-                content.getChildren().remove(vbox);
-                content.getChildren().add(5, descEditBtn);
+                content.getChildren().remove(editDescTxt);
+                content.getChildren().remove(validateDescBtn);
+                content.getChildren().add(content.getChildren().size() - 2, descEditBtn);
                 Dialogs.showInformationDialog("Description modifiée avec succès !");
             }
         });
@@ -632,10 +607,8 @@ public class PictureController extends Tab implements Initializable
 
         /** The avatarImg of the comment author. */
         public ImageView avatarImg = new ImageView();
-        
-        /** The userTxt contains the name of the user and some metadata (date, etc.). */
 
-        /** The userTxt. */
+        /** The userTxt contains the name of the user and some metadata (date, etc.). */
         public Text userTxt = new Text();
 
         /** Click to switch to edition mode. In edition mode, this button becomes the validate button. */
