@@ -59,9 +59,9 @@ public class PictureController extends Tab implements Initializable
     /** The avatarImg. */
     private ImageView avatarImg;
     
-    /** The partageTxt. */
+    /** The shareTxt. */
     //TODO Is partage a english word ? please follow the code rules
-    private Text partageTxt;
+    private Text shareTxt;
 
     /** The name of the file */
     private TextArea pictureName;
@@ -149,7 +149,7 @@ public class PictureController extends Tab implements Initializable
         ihm = new ScrollPane();
         content = new VBox(8);
         avatarImg = new ImageView();
-        partageTxt = new Text();
+        shareTxt = new Text();
         pictureName  = new TextArea();
         refreshBtn = new Button("Rafraîchir");
         pictureImg = new ImageView();
@@ -188,9 +188,9 @@ public class PictureController extends Tab implements Initializable
         pictureName.setEditable(true);
         pictureName.setWrapText(true);
 
-        partageTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
-        partageTxt.setText("a partagé l'image");
-        partageTxt.setTextAlignment(TextAlignment.JUSTIFY);
+        shareTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
+        shareTxt.setText("a partagé l'image");
+        shareTxt.setTextAlignment(TextAlignment.JUSTIFY);
 
         // Refresh button
         final PictureController current = this;
@@ -325,7 +325,7 @@ public class PictureController extends Tab implements Initializable
         Text userPartageTxt = new Text();
         userPartageTxt.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         userPartageTxt.setText(picture.getUser().getLogin());
-        textPartage.getChildren().addAll(userPartageTxt, partageTxt);
+        textPartage.getChildren().addAll(userPartageTxt, shareTxt);
 
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox(2);
@@ -421,7 +421,7 @@ public class PictureController extends Tab implements Initializable
         ihm.getStyleClass().add("pic-ihm");
         ihm.setStyle("-fx-padding: 20;");
         content.getStyleClass().add("pic-content");
-        partageTxt.getStyleClass().add("pic-titles");
+        shareTxt.getStyleClass().add("pic-titles");
         noteTitle.getStyleClass().add("pic-titles");
         tagsTitle.getStyleClass().add("pic-titles");
         descTitle.getStyleClass().add("pic-titles");
@@ -470,7 +470,8 @@ public class PictureController extends Tab implements Initializable
                     User currentUser = app.currentUser();
                     try {
                         Comment c = new Comment(msg, new Date(), currentUser, picture.getUid(), picture.getUser().getUid());
-                        app.getIHMtoDATA().addComment(c);
+                        //TODO à l'intégration, décommenter cette ligne (throw systématiquement actuellement, et dans ce cas on a un warningBox).
+                        //app.getIHMtoDATA().addComment(c);
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
                     } catch (Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
@@ -493,21 +494,50 @@ public class PictureController extends Tab implements Initializable
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
-                    //TODO verify the user has not voted yet, if so, modify the note ?
                     int vote = Integer.parseInt(voteField.getText());
-                    try {
-                        Note note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
-                        picture.getListNotes().add(note);
-                        buildVotes();
-                        app.getIHMtoDATA().addNote(note);
-                    }catch(Exception e) {
-                        Dialogs.showWarningDialog(e.getMessage());
+                    Note note = getNoteFromUser(picture, app.currentUser());
+
+                    if (note!=null) {
+                        // user has already voted
+                        boolean ok = Dialogs.showConfirmationDialog("Vous avez déjà voté pour cette image. Souhaitez-vous modifier votre vote ?");
+                        if (ok) {
+                            note.setValue(vote);
+                            addNote(note);
+                        }
                     }
+                    else {
+                        // first vote of the user
+                        note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
+                        addNote(note);
+                    }
+
                 } else {
                     Dialogs.showWarningDialog(VoteValidator.MESSAGE);
                 }
             }
         }
+    }
+
+    private void addNote(Note note) {
+        try {
+            //TODO Lors de l'intégration, à décommenter (throw systématiquement actuellement, et dans ce cas on a un warningBox)
+            //app.getIHMtoDATA().addNote(note);
+            picture.getListNotes().add(note);
+            buildVotes();
+        } catch (Exception e) {
+            Dialogs.showWarningDialog(e.getMessage());
+        }
+    }
+
+    //TODO lors de l'intégration, à remplacer par la méthode du même nom qu'Aurélie devrait ajouter à la classe Note (je lui envoie ce code par mail)
+    /// returns null if user has not yet voted
+    private Note getNoteFromUser(Picture p, User u) {
+        for (Note n : p.getListNotes()) {
+            if (n.getNoteUser().getUid()==u.getUid()) {
+                return n;
+            }
+        }
+        return null;
     }
 
     /***
@@ -719,7 +749,7 @@ public class PictureController extends Tab implements Initializable
          * Adds the css classes.
          */
         private void addCssClasses(){
-            userTxt.getStyleClass().add("pic-titles");
+            //userTxt.getStyleClass().add("pic-title");
         }
     }
 
