@@ -175,10 +175,9 @@ public class PictureController extends Tab implements Initializable
         descEditBtn = new Button("Modifier la description");
         validateDescBtn = new Button ("Terminer");
         editDescTxt = new TextArea();
-        tagsEditBtn = new Button ("Terminer");
+        tagsEditBtn = new Button ("Modifier");
         tagsEditTxt = new TextField();
-        Button tagsEditBtn = new Button ("Modifier");
-        Button tagsValidateBtn = new Button ("Terminer");
+        tagsValidateBtn = new Button ("Terminer");
 
         // Avatar
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
@@ -554,8 +553,9 @@ public class PictureController extends Tab implements Initializable
      */
     private void  editTags(MouseEvent mouseEvent) {
 
-        final HBox hbox = new HBox(3);
-        hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsValidateBtn);
+        final HBox hbox = new HBox(4);
+        final Text exampleTxt = new Text("(Ex : tag1,tag2,tag3)");
+        hbox.getChildren().addAll(tagsTitle, exampleTxt, tagsEditTxt , tagsValidateBtn);
         content.getChildren().remove(2);
         content.getChildren().add(2,hbox);
 
@@ -563,20 +563,30 @@ public class PictureController extends Tab implements Initializable
             @Override
             public void handle(MouseEvent mouseEvent) {
                 String str = tagsEditTxt.getText();
-                String[] array = str.split("(?<!\\\\),");
-                List<Tag> tags = picture.getListTags();
-                tags.removeAll(tags);
-                for (int i = 0; i < array.length; i++) {
-                    tags.add(new Tag(array[i]));
+                if(!str.matches("[a-zA-Z,0-9 ]*")) {
+                    Dialogs.showErrorDialog("Format non conforme. Veuillez séparer les tags par des virgules, sans utiliser d'espaces.");
+                    return;
                 }
-                picture.setListTags(tags);
-                hbox.getChildren().removeAll(tagsTitle, tagsEditTxt, tagsValidateBtn);
-                hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
-                tagsTxt.setText(tagsEditTxt.getText());
-                content.getChildren().remove(2);
-                content.getChildren().add(2,hbox);
+                else {
+                    String[] array = str.split("(?<!\\\\),");
+                    List<Tag> tags = picture.getListTags();
+                    tags.removeAll(tags);
+                    for (int i = 0; i < array.length; i++) {
+                        //remove spaces
+                        if(array[i].contains(" ")) {
+                            array[i] = array[i].replaceAll("\\s", "");
+                        }
+                        tags.add(new Tag(array[i]));
+                    }
+                    picture.setListTags(tags);
+                    hbox.getChildren().removeAll(tagsTitle, exampleTxt, tagsEditTxt, tagsValidateBtn);
+                    hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
+                    buildTags();
+                    content.getChildren().remove(2);
+                    content.getChildren().add(2, hbox);
 
-                Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
+                    Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
+                }
             }
         });
     }
