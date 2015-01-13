@@ -122,8 +122,6 @@ public class PictureController extends Tab implements Initializable
 
     private TextArea editDescTxt;
 
-    private Button tagsEditBtn;
-
     private TextField tagsEditTxt;
 
     private Integer currentRequestId;
@@ -578,7 +576,7 @@ public class PictureController extends Tab implements Initializable
                 content.getChildren().remove(2);
                 content.getChildren().add(2,hbox);
 
-                showInformationDialog("Liste de tags modifiée avec succès !");
+                Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
             }
         });
     }
@@ -606,7 +604,7 @@ public class PictureController extends Tab implements Initializable
                 descTxt.setText(editDescTxt.getText());
                 content.getChildren().remove(vbox);
                 content.getChildren().add(5, descEditBtn);
-                showInformationDialog("Description modifiée avec succès !");
+                Dialogs.showInformationDialog("Description modifiée avec succès !");
             }
         });
 
