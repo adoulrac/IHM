@@ -128,6 +128,21 @@ public class MainController {
     }
 
     /**
+     * Go to rules view.
+     */
+    public void goToRules() {
+        try {
+            RulesController rules = (RulesController) replaceSceneContent("views/gestion_droits.fxml", true);
+            rules.setApp(this);
+            rules.loadGroups();
+            removeAllRequests(currentController);
+            currentController = rules;
+        } catch (Exception ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
      * Replace scene content.
      *
      * @param fxml the fxml
