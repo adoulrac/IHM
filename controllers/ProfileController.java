@@ -129,6 +129,14 @@ public class ProfileController implements Initializable {
 			removeButton.setVisible(false);
 			okButton.setVisible(false);
 			changeAvatar.setVisible(false);
+            avatarPath.setDisable(true);
+            avatarPath.getStyleClass().add("txtfield-disabled");
+            lastname.setDisable(true);
+            lastname.getStyleClass().add("txtfield-disabled");
+            firstname.setDisable(true);
+            firstname.getStyleClass().add("txtfield-disabled");
+            birthdate.setDisable(true);
+            birthdate.getStyleClass().add("txtfield-disabled");
 		}
 		getUserInfos();
 		displayUserInfo();
