@@ -400,7 +400,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
 
     @Override
     public synchronized void save() throws IOException {
-        
+
     }
 
     @Override
