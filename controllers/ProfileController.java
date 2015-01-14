@@ -260,7 +260,6 @@ public class ProfileController implements Initializable {
 			File file = new File(userAvatarPath);
 			Image image = new Image(file.toURI().toString());
 			avatar.setImage(image);
-
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
 					Level.SEVERE, "Unknown User avatar");
@@ -397,6 +396,6 @@ public class ProfileController implements Initializable {
 	}
 
     public void exportProfile() {
-        //TODO
+        //TODO call DATA
     }
 }

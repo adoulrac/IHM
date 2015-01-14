@@ -444,8 +444,6 @@ public class PictureController extends Tab implements Initializable
      * Clear and build.
      */
     private void refreshAllComponents() {
-        //TODO refresh the components without instanciating them again, just change the content
-        //TODO Extract from build method the appropriate code and put it here
         build();
     }
 
@@ -472,8 +470,7 @@ public class PictureController extends Tab implements Initializable
                     User currentUser = app.currentUser();
                     try {
                         Comment c = new Comment(msg, new Date(), currentUser, picture.getUid(), picture.getUser().getUid());
-                        //TODO à l'intégration, décommenter cette ligne (throw systématiquement actuellement, et dans ce cas on a un warningBox).
-                        //app.getIHMtoDATA().addComment(c);
+                        app.getIHMtoDATA().addComment(c);
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
                     } catch (Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
@@ -522,8 +519,7 @@ public class PictureController extends Tab implements Initializable
 
     private void addNote(Note note) {
         try {
-            //TODO Lors de l'intégration, à décommenter (throw systématiquement actuellement, et dans ce cas on a un warningBox)
-            //app.getIHMtoDATA().addNote(note);
+            app.getIHMtoDATA().addNote(note);
             picture.getListNotes().add(note);
             buildVotes();
         } catch (Exception e) {
@@ -531,8 +527,6 @@ public class PictureController extends Tab implements Initializable
         }
     }
 
-    //TODO lors de l'intégration, à remplacer par la méthode du même nom qu'Aurélie devrait ajouter à la classe Note (je lui envoie ce code par mail)
-    /// returns null if user has not yet voted
     private Note getNoteFromUser(Picture p, User u) {
         for (Note n : p.getListNotes()) {
             if (n.getNoteUser().getUid()==u.getUid()) {
@@ -605,7 +599,6 @@ public class PictureController extends Tab implements Initializable
         validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                // TODO IHMtoDATA setDescription(editDescTxt.getText());
                 picture.setDescription(editDescTxt.getText());
                 descTxt.setText(editDescTxt.getText());
                 content.getChildren().remove(editDescTxt);
