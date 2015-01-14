@@ -46,11 +46,7 @@ public class GroupsController implements Initializable {
     /** The new group name. */
     @FXML
     private TextField newGroupName;
-    
-    /** The add group btn. */
-    @FXML
-    private Button addGroupBtn;
-    
+
     /** The add user name. */
     @FXML
     private TextField addUserName;
@@ -65,9 +61,6 @@ public class GroupsController implements Initializable {
 
     @FXML
     private Button deleteMemberBtn;
-
-    @FXML
-    private Button finishBtn;
 
     /** The application. */
     private MainController application;
@@ -102,14 +95,12 @@ public class GroupsController implements Initializable {
      * Load groups.
      */
     public void loadGroups() {
-
         disableFields(true);
         deleteMemberBtn.setDisable(true);
-
         try {
             listGroups = application.getIHMtoDATA().getGroups();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -127,7 +118,7 @@ public class GroupsController implements Initializable {
                 }
             }
             catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             }
         });
@@ -136,7 +127,7 @@ public class GroupsController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
             try {
-                if (!members.getSelectionModel().getSelectedItem().equals(null)) {
+                if (members.getSelectionModel().getSelectedItem() != null) {
                     deleteMemberBtn.setDisable(false);
                 }
             }

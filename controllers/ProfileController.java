@@ -263,7 +263,6 @@ public class ProfileController implements Initializable {
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
 					Level.SEVERE, "Unknown User avatar");
-            //TODO: if new user without avatar, shouldn't display an error message
 		}
 	}
 

@@ -1,5 +1,6 @@
 package IHM.controllers;
 
+import DATA.exceptions.PictureAlreadyExisted;
 import DATA.model.Picture;
 import DATA.model.Tag;
 import IHM.helpers.NoteHelper;
@@ -426,8 +427,10 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             Picture p = new Picture(f.toPath().toString(), "", application.currentUser());
             try {
                 application.getIHMtoDATA().addPicture(p);
-            } catch (Exception e) {
+            } catch (IOException e) {
                 Dialogs.showWarningDialog(e.getMessage());
+            } catch (PictureAlreadyExisted pictureAlreadyExisted) {
+                Dialogs.showWarningDialog(pictureAlreadyExisted.getMessage());
             }
             PicturePane pP = new PicturePane(p);
             myImgList.add(pP);
