@@ -553,7 +553,6 @@ public class PictureController extends Tab implements Initializable
     private void addNote(Note note) {
         try {
             app.getIHMtoDATA().addNote(note);
-            picture.getListNotes().add(note);
             buildVotes();
         } catch (Exception e) {
             Dialogs.showWarningDialog(e.getMessage());
@@ -779,10 +778,10 @@ public class PictureController extends Tab implements Initializable
             HBox hb = new HBox(8);
 
             hb.getChildren().add(userTxt);
-            if (comment.getCommentUser().getUid()==app.currentUser().getUid()) {
+            if (comment.getCommentUser().getUid().equals(app.currentUser().getUid())) {
                 hb.getChildren().addAll(editBtn, delBtn);
             }
-            else if (picture.getUser().getUid()==app.currentUser().getUid()) {
+            else if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
                 hb.getChildren().add(delBtn);
             }
 
