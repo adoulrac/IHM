@@ -99,7 +99,6 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPictures(pictures);
-                //app.removeRequest(queryId); TODO : find where to remove a request
             }
         }
     }
