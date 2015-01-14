@@ -74,19 +74,23 @@ public class PictureController extends Tab implements Initializable
     /** The noteTitle. */
     private Text noteTitle;
 
-    /** The noteImg. */
+    /** The note image. */
     private HBox noteImg;
 
-    /** The voteTxt. */
+    /** The vote text. */
     private Text voteTxt;
 
-    /** The voteField. */
+    /** The vote field. */
     private TextField voteField;
 
-    /** The voteBtn. */
+    /** The vote button. */
     private Button voteBtn;
 
+    /** The save picture button. */
     private Button savePictureBtn;
+
+    /** The button for the rules. */
+    private Button rulesBtn;
 
     /** The tagsTitle. */
     private Text tagsTitle;
@@ -174,7 +178,7 @@ public class PictureController extends Tab implements Initializable
         tagsEditBtn = new Button ("Modifier");
         tagsEditTxt = new TextField();
         tagsValidateBtn = new Button ("Terminer");
-
+        rulesBtn = new Button("Droits");
         // Avatar
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
@@ -246,6 +250,14 @@ public class PictureController extends Tab implements Initializable
             @Override
             public void handle(MouseEvent mouseEvent) {
                 comment(mouseEvent);
+            }
+        });
+
+        //rules button
+        rulesBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                launchRules();
             }
         });
 
@@ -382,7 +394,7 @@ public class PictureController extends Tab implements Initializable
             hboxVote.getChildren().addAll(voteField, voteBtn);
         }
 
-        vbox.getChildren().addAll(hboxNote, hboxVote, tagsTitle, tagsTxt, descTitle, descTxt);
+        vbox.getChildren().addAll(hboxNote, hboxVote, rulesBtn, tagsTitle, tagsTxt, descTitle, descTxt);
         HBox pictureAndDesc = new HBox(2);
         pictureAndDesc.getChildren().addAll(pictureImg, vbox);
         content.getChildren().addAll(pictureAndDesc);
@@ -441,6 +453,15 @@ public class PictureController extends Tab implements Initializable
                 "-fx-font-family: Courier New;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-size: 20;");
+    }
+
+    /**
+     * Launch rules view.
+     */
+    public void launchRules() {
+        if (app != null) {
+            app.goToRules();
+        }
     }
 
     /**
