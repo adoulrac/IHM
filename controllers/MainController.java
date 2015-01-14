@@ -2,6 +2,7 @@ package IHM.controllers;
 
 import DATA.interfaces.IHMtoDATA;
 import DATA.internal.IHMtoDATAImpl;
+import DATA.model.Picture;
 import DATA.model.User;
 import IHM.Main;
 import IHM.interfaces.DATAtoIHM;
@@ -130,10 +131,11 @@ public class MainController {
     /**
      * Go to rules view.
      */
-    public void goToRules() {
+    public void goToRules(Picture p) {
         try {
             RulesController rules = (RulesController) replaceSceneContent("views/gestion_droits.fxml", true);
             rules.setApp(this);
+            rules.setPicture(p);
             rules.loadGroups();
             removeAllRequests(currentController);
             currentController = rules;
