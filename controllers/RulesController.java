@@ -4,27 +4,26 @@ import DATA.model.Group;
 import DATA.model.Picture;
 import DATA.model.Rule;
 import DATA.model.User;
-import IHM.utils.Dialogs;
-import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static IHM.utils.Dialogs.*;
-import static javafx.collections.FXCollections.observableArrayList;
 
 /**
  * The Class GroupsController.
@@ -35,13 +34,9 @@ public class RulesController implements Initializable {
     @FXML
     private TitledPane manageRules;
     
-    /** The groups. */
-    @FXML
-    private ListView groups;
-
     /** The rules. */
     @FXML
-    private ListView rules;
+    private ListView<RuleHBoxCell> rules;
 
     /** The finish button. */
     @FXML
@@ -54,64 +49,65 @@ public class RulesController implements Initializable {
     private Picture picture;
 
     /** The obs groups list. */
-    private final ObservableList obsGroupsList= observableArrayList();
-    
-    /** The obs rules list. */
-    private final ObservableList obsRulesList= observableArrayList();
+    private List<RuleHBoxCell> groupsRules;
 
+    @FXML
+    private HBox checkAll;
 
     /**
      * The Class UserHBoxCell.
      */
-    private class UserHBoxCell extends HBox
-    {
+    private class RuleHBoxCell extends HBox {
 
-        /** The user. */
-        private User user;
+        /** The rule. */
+        private Rule rule;
 
         /** The label. */
-        private Label label;
+        private Label groupLbl;
 
-        /** The icon. */
-        private ImageView icon;
+        private CheckBox canComment;
 
-        /**
-         * Instantiates a new user h box cell.
-         *
-         * @param vUser the user
-         * @param status the status
-         */
-        public UserHBoxCell(final User vUser, final boolean status) {
-            this.user = vUser;
+        private CheckBox canRate;
 
-            label = new Label();
-            label.setText(user.getLogin());
-            HBox.setHgrow(label, Priority.ALWAYS);
+        private CheckBox canView;
 
-            icon = new ImageView();
-            //icon.setImage(new Image(status ? ON_PATH : OFF_PATH));
-            final float iconHeight = 11.0f;
-            final float iconWidth = 13.0f;
-            icon.setFitHeight(iconHeight);
-            icon.setFitWidth(iconWidth);
+        public RuleHBoxCell(final Rule rule) {
+            this.rule = rule;
 
-            this.getChildren().addAll(icon, label);
+            groupLbl = new Label();
+            groupLbl.setText(rule.getGroup().getNom());
 
-            this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(final MouseEvent mouseEvent) {
-                    application.goToProfile(user);
-                }
-            });
+            canView = new CheckBox();
+            canRate = new CheckBox();
+            canComment = new CheckBox();
+
+            canView.setSelected(rule.isCanView());
+            canComment.setSelected(rule.isCanComment());
+            canRate.setSelected(rule.isCanRate());
+
+            this.setSpacing(10);
+            this.getChildren().addAll(groupLbl, canView, canComment, canRate);
         }
 
-        /**
-         * Gets the user.
-         *
-         * @return the user
-         */
-        public User getUser() {
-            return user;
+        public Rule getRule() {
+            // Update the current rule
+            rule.setCanView(canView.isSelected());
+            rule.setCanComment(canComment.isSelected());
+            rule.setCanRate(canRate.isSelected());
+
+            return this.rule;
+        }
+
+        public void setCanComment(final boolean selected) {
+            canComment.setSelected(selected);
+        }
+
+        public void setCanView(final boolean selected) {
+            canView.setSelected(selected);
+        }
+
+        public void setCanRate(final boolean selected) {
+            canRate.setSelected(selected);
         }
     }
 
@@ -138,36 +134,82 @@ public class RulesController implements Initializable {
      */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-    }
+        checkAll = new HBox(10);
+        checkAll.toFront();
 
-    /**
-     * Load groups.
-     */
-    public void loadGroups() {
-        groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        final CheckBox checkAllComment = new CheckBox();
+        final CheckBox checkAllView = new CheckBox();
+        final CheckBox checkAllRate = new CheckBox();
+
+        checkAllComment.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-            try {
-                if (groups.getSelectionModel().getSelectedItem() != null) {
-                }
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+                System.out.println(checkAllComment.isSelected());
+                updateCells(checkAllComment.isSelected());
             }
         });
-        List<Rule> listRules = picture.getListRules();
-        if(listRules != null) {
-            for (Rule rule : listRules) {
-                obsGroupsList.add( rule.getGroup().getNom() );
-                // add in obsRulesList
-                //obsRulesList.add();
+
+        checkAllView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println(checkAllComment.isSelected());
+                updateCells(checkAllView.isSelected());
             }
+        });
+
+        checkAllRate.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                System.out.println(checkAllRate.isSelected());
+                updateCells(checkAllRate.isSelected());
+            }
+        });
+
+        Label label = new Label("Groupes: ");
+        label.setTextFill(Color.WHITE);
+        checkAll.getChildren().addAll(label, checkAllView, checkAllComment, checkAllRate);
+    }
+
+    private void updateCells(boolean checked) {
+        for(RuleHBoxCell cell : groupsRules) {
+            cell.setCanComment(checked);
+        }
+    }
+
+    public void loadRules(Picture p) {
+        picture = getStaticPicture(p);
+        groupsRules = Lists.newArrayList();
+        ObservableList<RuleHBoxCell> myObservableList = FXCollections.observableList(groupsRules);
+
+        rules = new ListView<RuleHBoxCell>();
+        rules.setItems(myObservableList);
+
+        // Add rules to the view
+        for(Rule rule : picture.getListRules()) {
+            RuleHBoxCell cell = new RuleHBoxCell(rule);
+            groupsRules.add(cell);
         }
     }
 
     @FXML
     private void finish() {
+        // Save rules
+        List<Rule> rules = Lists.newArrayList();
+        for(RuleHBoxCell ruleBox : groupsRules) {
+            rules.add(ruleBox.getRule());
+        }
+
+        picture.setListRules(rules);
+        application.getIHMtoDATA().updatePicture(picture);
+
         ((Stage) manageRules.getScene().getWindow()).close();
+    }
+
+    // TODO delete this fuckin method
+    private Picture getStaticPicture(Picture p) {
+        p.setListRules(Arrays.asList(new Rule(true, true, true, p, new Group("Autres")),
+                new Rule(true, true, true, p, new Group("Amis"))
+        ));
+        return p;
     }
 }
