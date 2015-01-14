@@ -438,7 +438,6 @@ public class PictureController extends Tab implements Initializable
         pictureName.setStyle("-fx-background-insets: 0px ;");
         pictureName.setStyle("-fx-text-fill: black;" +
                 "-fx-background-color: transparent;" +
-                "-fx-font: Courier New;" +
                 "-fx-font-family: Courier New;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-size: 20;");
@@ -476,8 +475,7 @@ public class PictureController extends Tab implements Initializable
                     User currentUser = app.currentUser();
                     try {
                         Comment c = new Comment(msg, new Date(), currentUser, picture.getUid(), picture.getUser().getUid());
-                        //TODO à l'intégration, décommenter cette ligne (throw systématiquement actuellement, et dans ce cas on a un warningBox).
-                        //app.getIHMtoDATA().addComment(c);
+                        app.getIHMtoDATA().addComment(c);
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
                     } catch (Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
@@ -501,7 +499,8 @@ public class PictureController extends Tab implements Initializable
             if(mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
                     int vote = Integer.parseInt(voteField.getText());
-                    Note note = getNoteFromUser(picture, app.currentUser());
+                    //Note note = getNoteFromUser(picture, app.currentUser());
+                    Note note = picture.getNoteFromUser(picture, app.currentUser());
 
                     if (note!=null) {
                         // user has already voted
@@ -526,24 +525,12 @@ public class PictureController extends Tab implements Initializable
 
     private void addNote(Note note) {
         try {
-            //TODO Lors de l'intégration, à décommenter (throw systématiquement actuellement, et dans ce cas on a un warningBox)
-            //app.getIHMtoDATA().addNote(note);
+            app.getIHMtoDATA().addNote(note);
             picture.getListNotes().add(note);
             buildVotes();
         } catch (Exception e) {
             Dialogs.showWarningDialog(e.getMessage());
         }
-    }
-
-    //TODO lors de l'intégration, à remplacer par la méthode du même nom qu'Aurélie devrait ajouter à la classe Note (je lui envoie ce code par mail)
-    /// returns null if user has not yet voted
-    private Note getNoteFromUser(Picture p, User u) {
-        for (Note n : p.getListNotes()) {
-            if (n.getNoteUser().getUid()==u.getUid()) {
-                return n;
-            }
-        }
-        return null;
     }
 
     /***
