@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -403,6 +404,12 @@ public class ProfileController implements Initializable {
 	}
 
     public void exportProfile() {
-        //TODO call DATA
+        try {
+            application.getIHMtoDATA().export();
+            Dialogs.showInformationDialog("Profil exporté.");
+        } catch (IOException e) {
+            Dialogs.showErrorDialog("Erreur durant l'export du profil.");
+            e.printStackTrace();
+        }
     }
 }
