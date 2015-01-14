@@ -390,7 +390,9 @@ public class PictureController extends Tab implements Initializable
         hboxNote.getChildren().addAll(hboxNoteImage, voteTxt);
 
         HBox hboxVote = new HBox(2);
-        hboxVote.getChildren().addAll(voteField, voteBtn);
+        if (app.getIHMtoDATA().canRate(picture)) {
+            hboxVote.getChildren().addAll(voteField, voteBtn);
+        }
 
         vbox.getChildren().addAll(hboxNote, hboxVote, rulesBtn, tagsTitle, tagsTxt, descTitle, descTxt);
         HBox pictureAndDesc = new HBox(2);
@@ -418,9 +420,11 @@ public class PictureController extends Tab implements Initializable
             content.getChildren().add(c);
         }
 
-        hbox = new HBox(5);
-        hbox.getChildren().addAll(writeArea, sendBtn);
-        content.getChildren().addAll(hbox);
+        if (app.getIHMtoDATA().canComment(picture)) {
+            hbox = new HBox(5);
+            hbox.getChildren().addAll(writeArea, sendBtn);
+            content.getChildren().addAll(hbox);
+        }
 
         // Finish
         ihm.setFitToWidth(true);
@@ -568,17 +572,16 @@ public class PictureController extends Tab implements Initializable
             @Override
             public void handle(MouseEvent mouseEvent) {
                 String str = tagsEditTxt.getText();
-                if(!str.matches("[a-zA-Z,0-9 ]*")) {
+                if (!str.matches("[a-zA-Z,0-9 ]*")) {
                     Dialogs.showErrorDialog("Format non conforme. Veuillez séparer les tags par des virgules, sans utiliser d'espaces.");
                     return;
-                }
-                else {
+                } else {
                     String[] array = str.split("(?<!\\\\),");
                     List<Tag> tags = picture.getListTags();
                     tags.removeAll(tags);
                     for (int i = 0; i < array.length; i++) {
                         //remove spaces
-                        if(array[i].contains(" ")) {
+                        if (array[i].contains(" ")) {
                             array[i] = array[i].replaceAll("\\s", "");
                         }
                         tags.add(new Tag(array[i]));
