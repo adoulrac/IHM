@@ -260,7 +260,6 @@ public class ProfileController implements Initializable {
 			File file = new File(userAvatarPath);
 			Image image = new Image(file.toURI().toString());
 			avatar.setImage(image);
-
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
 					Level.SEVERE, "Unknown User avatar");
@@ -373,13 +372,15 @@ public class ProfileController implements Initializable {
 	/**
 	 * On cancel: return to main window.
 	 */
-	public void onCancel() {
+    @FXML
+	private void onCancel() {
 		((Stage) profile.getScene().getWindow()).close();
 	}
 
 	/**
 	 * On ok: persists changes if needed, then return to main window.
 	 */
+    @FXML
     public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {
@@ -395,6 +396,6 @@ public class ProfileController implements Initializable {
 	}
 
     public void exportProfile() {
-        //TODO
+        //TODO call DATA
     }
 }

@@ -106,6 +106,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     /** The tooltip for displaying picture names */
     private Tooltip tooltip;
+
+    private Integer currentRequestId;
+
     /**
      * The inner Class PicturePane.
      */
@@ -136,6 +139,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             isSelected = false;
             hBoxStars = new HBox();
             lblVotes = new Label();
+            currentRequestId = 0;
             build();
         }
 
@@ -268,12 +272,12 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             @Override
             public void handle(final KeyEvent keyEvent) {
                 if (keyEvent.getCode().equals(KeyCode.ENTER) && (tagSearch.isSelected() || userSearch.isSelected())) {
-                    Integer requestId = application.addRequest(current);
-                    pendingRequestId = requestId;
+                    application.removeRequest(pendingRequestId);
+                    pendingRequestId = application.addRequest(current);
                     if (tagSearch.isSelected()) {
-                        searchPicturesByTag(searchField.getText(), requestId);
+                        searchPicturesByTag(searchField.getText(), pendingRequestId);
                     } else if (userSearch.isSelected()) {
-                        searchPicturesByUser(searchField.getText(), requestId);
+                        searchPicturesByUser(searchField.getText(), pendingRequestId);
                     }
                     // We clear the tab because it will be fill in asynchronously
                     clearTabContent(allImgTab);
@@ -477,11 +481,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     private void requestAllPictures() {
-        Integer requestId = application.addRequest(this);
-        if (requestId != null) {
-            pendingRequestId = requestId;
-            application.getIHMtoDATA().getPictures(requestId);
-        }
+        application.removeRequest(pendingRequestId);
+        pendingRequestId = application.addRequest(this);
+        application.getIHMtoDATA().getPictures(pendingRequestId);
     }
 
     /**
