@@ -493,7 +493,6 @@ public class PictureController extends Tab implements Initializable
             if(mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
                     int vote = Integer.parseInt(voteField.getText());
-                    //Note note = getNoteFromUser(picture, app.currentUser());
                     Note note = picture.getNoteFromUser(picture, app.currentUser());
 
                     if (note!=null) {
