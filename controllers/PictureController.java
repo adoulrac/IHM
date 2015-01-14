@@ -60,7 +60,6 @@ public class PictureController extends Tab implements Initializable
     private ImageView avatarImg;
 
     /** The shareTxt. */
-    //TODO Is partage a english word ? please follow the code rules
     private Text shareTxt;
 
     /** The name of the file */
@@ -123,6 +122,8 @@ public class PictureController extends Tab implements Initializable
 
     private TextField tagsEditTxt;
 
+    private Button tagsValidateBtn;
+
     private Integer currentRequestId;
 
     /**
@@ -170,8 +171,9 @@ public class PictureController extends Tab implements Initializable
         descEditBtn = new Button("Modifier la description");
         validateDescBtn = new Button ("Terminer");
         editDescTxt = new TextArea();
-        tagsEditBtn = new Button ("Terminer");
+        tagsEditBtn = new Button ("Modifier");
         tagsEditTxt = new TextField();
+        tagsValidateBtn = new Button ("Terminer");
 
         // Avatar
         setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
@@ -551,12 +553,42 @@ public class PictureController extends Tab implements Initializable
         List<Tag> tags = picture.getListTags();
         tags.removeAll(tags);
 
-        for (int i = 0; i < array.length; i++) {
-            tags.add(new Tag(array[i]));
-        }
+        final HBox hbox = new HBox(4);
+        final Text exampleTxt = new Text("(Ex : tag1,tag2,tag3)");
+        hbox.getChildren().addAll(tagsTitle, exampleTxt, tagsEditTxt , tagsValidateBtn);
+        content.getChildren().remove(2);
+        content.getChildren().add(2,hbox);
 
-        picture.setListTags(tags);
-        Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
+        tagsValidateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String str = tagsEditTxt.getText();
+                if(!str.matches("[a-zA-Z,0-9 ]*")) {
+                    Dialogs.showErrorDialog("Format non conforme. Veuillez séparer les tags par des virgules, sans utiliser d'espaces.");
+                    return;
+                }
+                else {
+                    String[] array = str.split("(?<!\\\\),");
+                    List<Tag> tags = picture.getListTags();
+                    tags.removeAll(tags);
+                    for (int i = 0; i < array.length; i++) {
+                        //remove spaces
+                        if(array[i].contains(" ")) {
+                            array[i] = array[i].replaceAll("\\s", "");
+                        }
+                        tags.add(new Tag(array[i]));
+                    }
+                    picture.setListTags(tags);
+                    hbox.getChildren().removeAll(tagsTitle, exampleTxt, tagsEditTxt, tagsValidateBtn);
+                    hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
+                    buildTags();
+                    content.getChildren().remove(2);
+                    content.getChildren().add(2, hbox);
+
+                    Dialogs.showInformationDialog("Liste de tags modifiée avec succès !");
+                }
+            }
+        });
     }
 
     /**
