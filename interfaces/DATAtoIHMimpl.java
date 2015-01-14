@@ -61,7 +61,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
      */
     @Override
     public void receivePicture(Picture picture, int queryId) {
-        Initializable controller = app.getRequests().get(queryId);
+        Initializable controller = app.getRequests().get(new Integer(queryId));
         if (controller==null){
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)
@@ -91,7 +91,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
      */
     @Override
     public void receivePictures(List<Picture> pictures, int queryId) {
-        Initializable controller = app.getRequests().get(queryId);
+        Initializable controller = app.getRequests().get(new Integer(queryId));
         if (controller==null){
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)
