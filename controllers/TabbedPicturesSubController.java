@@ -361,20 +361,21 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         for (int i = 0; i < grid.getChildren().size(); ++i) { // thread-safe
             if (grid.getChildren().get(i) instanceof TilePane) {
                 for (Picture p : pictures) {
-                    final PicturePane picturePane = new PicturePane(p);
-                    if (tab.getText().equals("Mes images")) {
-                        myImgList.add(picturePane);
-                    } else {
-                        allImgList.add(picturePane);
-                    }
-                    final TilePane current = ((TilePane) grid.getChildren().get(i));
-                    Platform.runLater(new Runnable()
-                    {
-                        @Override
-                        public void run() {
-                            current.getChildren().add(picturePane);
+                    if (application.getIHMtoDATA().canView(p)) {
+                        final PicturePane picturePane = new PicturePane(p);
+                        if (tab.getText().equals("Mes images")) {
+                            myImgList.add(picturePane);
+                        } else {
+                            allImgList.add(picturePane);
                         }
-                    });
+                        final TilePane current = ((TilePane) grid.getChildren().get(i));
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                current.getChildren().add(picturePane);
+                            }
+                        });
+                    }
                 }
                 tab.setContent(grid);
             }

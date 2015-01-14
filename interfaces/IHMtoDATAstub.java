@@ -408,4 +408,19 @@ public class IHMtoDATAstub implements IHMtoDATA {
 
     }
 
+    @Override
+    public boolean canView(Picture p) {
+        return false;
+    }
+
+    @Override
+    public boolean canComment(Picture p) {
+        return false;
+    }
+
+    @Override
+    public boolean canRate(Picture p) {
+        return false;
+    }
+
 }
