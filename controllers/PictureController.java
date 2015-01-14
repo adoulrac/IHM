@@ -388,13 +388,13 @@ public class PictureController extends Tab implements Initializable
         hbox = new HBox(5);
 
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
-            hbox.getChildren().addAll(tagsTitle, tagsEditTxt, tagsEditBtn);
+            hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
         }
         else {
             hbox.getChildren().addAll(tagsTitle, tagsTxt);
         }
 
-        //Check if owner
+        //Check if ownerF
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
             content.getChildren().addAll(hbox, descTitle, descTxt, descEditBtn, comTitle);
         }
