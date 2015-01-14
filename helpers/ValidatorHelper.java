@@ -1,5 +1,6 @@
 package IHM.helpers;
 
+import IHM.utils.StringUtil;
 import IHM.validators.IPAddressValidator;
 import IHM.validators.LoginValidator;
 import IHM.validators.PasswordValidator;
@@ -38,7 +39,7 @@ public class ValidatorHelper {
         if(Strings.isNullOrEmpty(ipsText)) {
             return true;
         }
-        String[] lines = ipsText.split("\\r?\\n");
+        String[] lines = ipsText.split(StringUtil.SYSTEM_SEPARATOR);
         boolean valid = true;
 
         for(String line : lines) {
