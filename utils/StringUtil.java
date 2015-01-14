@@ -13,7 +13,7 @@ import java.util.List;
 public class StringUtil {
 
     /** The Constant SYSTEM_SEPARATOR. */
-    public static final String SYSTEM_SEPARATOR = System.getProperty("line.separator");
+    public static final String SYSTEM_SEPARATOR = "\\r?\\n";
 
     /**
      * To list.

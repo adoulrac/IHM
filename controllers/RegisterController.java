@@ -87,7 +87,6 @@ public class RegisterController implements Initializable {
         User userToAdd = new User();
         userToAdd.setLogin(loginText);
         userToAdd.setPassword(passwordText);
-
         userToAdd.setListIP(StringUtil.toList(ipsText, StringUtil.SYSTEM_SEPARATOR));
 
         application.getIHMtoDATA().signup(userToAdd);

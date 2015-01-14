@@ -468,8 +468,8 @@ public class PictureController extends Tab implements Initializable
      * Launch rules view.
      */
     public void launchRules() {
-        if (app != null) {
-            app.goToRules();
+        if (this.app != null) {
+            this.app.goToRules(this.picture);
         }
     }
 
@@ -563,7 +563,7 @@ public class PictureController extends Tab implements Initializable
      *
      *  @param mouseEvent
      */
-    private void  editTags(MouseEvent mouseEvent) {
+    private void editTags(MouseEvent mouseEvent) {
         String str = tagsEditTxt.getText();
         String[] array = str.split("(?<!\\\\),");
         List<Tag> tags = picture.getListTags();

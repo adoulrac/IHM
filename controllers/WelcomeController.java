@@ -1,5 +1,6 @@
 package IHM.controllers;
 
+import IHM.utils.Dialogs;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -78,6 +79,7 @@ public class WelcomeController implements Initializable {
      */
     public void launchPreferences() {
         if (application != null) {
+            System.out.println("launch:"+application.currentUser().getListIP().size());
             application.goToProfile(application.currentUser());
         }
     }
@@ -153,7 +155,13 @@ public class WelcomeController implements Initializable {
      * Saves the modifications.
      */
     public void saveChanges() {
-        //TODO call DATA
+        try {
+            application.getIHMtoDATA().save();
+            Dialogs.showInformationDialog("Profil sauvegardé.");
+        } catch (IOException e) {
+            Dialogs.showErrorDialog("Erreur durant la sauvegarde du profil.");
+            e.printStackTrace();
+        }
     }
 
     /**
