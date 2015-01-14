@@ -84,7 +84,7 @@ public class LoginController extends Pane implements Initializable {
             openApplication();
         } catch (Exception e) {
             Dialogs.showErrorDialog("Error in loading the profile file");
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the profile file.");
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Erreur durant le chargement du profil.");
         }
     }
 
@@ -99,7 +99,7 @@ public class LoginController extends Pane implements Initializable {
             application.openWelcome();
         } else {
             Dialogs.showErrorDialog("Error while loading the current user");
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Error in loading the current user.");
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Erreur durant le chargement de l'utilisateur");
         }
     }
 
