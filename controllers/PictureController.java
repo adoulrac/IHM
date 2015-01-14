@@ -257,7 +257,7 @@ public class PictureController extends Tab implements Initializable
             Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
                                          FileUtil.getFilenameFromPath(picture.getFilename()))));
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             Dialogs.showInformationDialog("Error in saving file.");
         }
     }

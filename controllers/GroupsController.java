@@ -102,21 +102,19 @@ public class GroupsController implements Initializable {
      * Load groups.
      */
     public void loadGroups() {
-
         disableFields(true);
         deleteMemberBtn.setDisable(true);
-
         try {
             listGroups = application.getIHMtoDATA().getGroups();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
             try {
-                if (!groups.getSelectionModel().getSelectedItem().equals(null)) {
+                if (groups.getSelectionModel().getSelectedItem() != null) {
                     disableFields(false);
                     deleteMemberBtn.setDisable(true);
                     if (!listGroups.isEmpty()) {
@@ -126,7 +124,7 @@ public class GroupsController implements Initializable {
                 }
             }
             catch (Exception e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
             }
         });
@@ -135,7 +133,7 @@ public class GroupsController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
             try {
-                if (!members.getSelectionModel().getSelectedItem().equals(null)) {
+                if (members.getSelectionModel().getSelectedItem() != null) {
                     deleteMemberBtn.setDisable(false);
                 }
             }
