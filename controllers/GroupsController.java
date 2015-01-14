@@ -46,11 +46,7 @@ public class GroupsController implements Initializable {
     /** The new group name. */
     @FXML
     private TextField newGroupName;
-    
-    /** The add group btn. */
-    @FXML
-    private Button addGroupBtn;
-    
+
     /** The add user name. */
     @FXML
     private TextField addUserName;
@@ -65,9 +61,6 @@ public class GroupsController implements Initializable {
 
     @FXML
     private Button deleteMemberBtn;
-
-    @FXML
-    private Button finishBtn;
 
     /** The application. */
     private MainController application;
