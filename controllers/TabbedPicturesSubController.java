@@ -110,6 +110,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
 
     private Integer currentRequestId;
 
+    private long lastTimeRefreshMillis;
+
     /**
      * The inner Class PicturePane.
      */
@@ -238,6 +240,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         super();
 
         pendingRequestId = 0;
+        lastTimeRefreshMillis = System.currentTimeMillis();
         myImgList = new CopyOnWriteArrayList<PicturePane>();
         allImgList = new CopyOnWriteArrayList<PicturePane>();
     }
@@ -490,11 +493,16 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /**
-     * Loads all the pictures.
+     * Loads all the pictures and is bound to the "Recharger" button.
+     * Will not execute any behavior if called in the last 2 seconds.
      */
     public void loadAllPictures() {
-        clearTabContent(allImgTab);
-        requestAllPictures();
+        long currentTimeMillis = System.currentTimeMillis();
+        if (currentTimeMillis - lastTimeRefreshMillis > 2000) {
+            clearTabContent(allImgTab);
+            requestAllPictures();
+            lastTimeRefreshMillis = currentTimeMillis;
+        }
     }
 
     /**

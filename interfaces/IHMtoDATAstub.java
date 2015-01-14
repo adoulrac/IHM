@@ -399,12 +399,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
     public boolean logout() { return true; }
 
     @Override
-    public synchronized void save() throws IOException {
+    public void save() throws IOException {
 
     }
 
     @Override
-    public synchronized void forceSave() throws IOException {
+    public void forceSave() throws IOException {
 
     }
 
