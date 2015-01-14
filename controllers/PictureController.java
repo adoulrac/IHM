@@ -147,6 +147,14 @@ public class PictureController extends Tab implements Initializable
         app.getIHMtoDATA().getPictureById(this.picture.getUid(), currentRequestId);
     }
 
+    /* (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+    */
+    @Override
+    public void initialize( final URL url, final ResourceBundle resourceBundle ){
+        // NOP
+    }
+
     /**
      * Builds the picture.
      */
@@ -265,67 +273,6 @@ public class PictureController extends Tab implements Initializable
         addCssClasses();
     }
 
-    private void savePictureLocally() {
-        String targetPath = FileUtil.chooseDirectory();
-        if(Strings.isNullOrEmpty(targetPath)) {
-            return;
-        }
-
-        try {
-            byte[] pixels = picture.getPixels();
-            Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
-                    FileUtil.getFilenameFromPath(picture.getFilename()))));
-            Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-            Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
-        }
-    }
-
-    /**
-     * Builds the votes.
-     */
-    private void buildVotes() {
-        noteImg.getChildren().clear();
-        float average = NoteHelper.getPictureAverage(picture, noteImg);
-        if (average > 0.f) {
-            voteTxt.setText(String.format("%.1f", average) + "/5 (" +   picture.getListNotes().size() + " votes)");
-        } else {
-            voteTxt.setText("(Aucun vote)");
-        }
-        voteField.setMaxWidth(30.0);
-        voteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                vote(mouseEvent);
-            }
-        });
-    }
-
-    /**
-     * Builds the tags.
-     */
-    private void buildTags() {
-        final StringBuilder sb_tags = new StringBuilder();
-        for (Tag tag : picture.getListTags()) {
-            sb_tags.append(tag.getValue());
-            sb_tags.append(", ");
-        }
-        if (sb_tags.length() > 2) {
-            sb_tags.setLength(sb_tags.length() - 2);
-        }
-        tagsTxt.setText(sb_tags.toString());
-
-        if(picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
-            tagsEditTxt.setText(sb_tags.toString());
-            tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    editTags(mouseEvent);
-                }
-            });
-        }
-    }
 
     /**
      * Adds the content.
@@ -430,6 +377,68 @@ public class PictureController extends Tab implements Initializable
         ihm.setFitToWidth(true);
         ihm.setContent(content);
         setContent(ihm);
+    }
+
+    private void savePictureLocally() {
+        String targetPath = FileUtil.chooseDirectory();
+        if(Strings.isNullOrEmpty(targetPath)) {
+            return;
+        }
+
+        try {
+            byte[] pixels = picture.getPixels();
+            Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
+                    FileUtil.getFilenameFromPath(picture.getFilename()))));
+            Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
+        }
+    }
+
+    /**
+     * Builds the votes.
+     */
+    private void buildVotes() {
+        noteImg.getChildren().clear();
+        float average = NoteHelper.getPictureAverage(picture, noteImg);
+        if (average > 0.f) {
+            voteTxt.setText(String.format("%.1f", average) + "/5 (" +   picture.getListNotes().size() + " votes)");
+        } else {
+            voteTxt.setText("(Aucun vote)");
+        }
+        voteField.setMaxWidth(30.0);
+        voteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                vote(mouseEvent);
+            }
+        });
+    }
+
+    /**
+     * Builds the tags.
+     */
+    private void buildTags() {
+        final StringBuilder sb_tags = new StringBuilder();
+        for (Tag tag : picture.getListTags()) {
+            sb_tags.append(tag.getValue());
+            sb_tags.append(", ");
+        }
+        if (sb_tags.length() > 2) {
+            sb_tags.setLength(sb_tags.length() - 2);
+        }
+        tagsTxt.setText(sb_tags.toString());
+
+        if(picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
+            tagsEditTxt.setText(sb_tags.toString());
+            tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    editTags(mouseEvent);
+                }
+            });
+        }
     }
 
     /**
@@ -808,11 +817,4 @@ public class PictureController extends Tab implements Initializable
         img.setCache(true);
     }
 
-    /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
-     */
-    @Override
-    public void initialize( final URL url, final ResourceBundle resourceBundle ){
-        // NOP
-    }
 }
