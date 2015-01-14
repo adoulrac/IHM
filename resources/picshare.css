@@ -141,3 +141,7 @@
 .tooltip-background {
    -fx-background-color: transparent;
 }
+
+.txtfield-disabled {
+    -fx-opacity: 1.0;
+}
