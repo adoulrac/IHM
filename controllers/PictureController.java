@@ -434,7 +434,6 @@ public class PictureController extends Tab implements Initializable
         pictureName.setStyle("-fx-background-insets: 0px ;");
         pictureName.setStyle("-fx-text-fill: black;" +
                 "-fx-background-color: transparent;" +
-                "-fx-font: Courier New;" +
                 "-fx-font-family: Courier New;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-size: 20;");
@@ -494,7 +493,8 @@ public class PictureController extends Tab implements Initializable
             if(mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
                     int vote = Integer.parseInt(voteField.getText());
-                    Note note = getNoteFromUser(picture, app.currentUser());
+                    //Note note = getNoteFromUser(picture, app.currentUser());
+                    Note note = picture.getNoteFromUser(picture, app.currentUser());
 
                     if (note!=null) {
                         // user has already voted
@@ -526,16 +526,6 @@ public class PictureController extends Tab implements Initializable
             Dialogs.showWarningDialog(e.getMessage());
         }
     }
-
-    private Note getNoteFromUser(Picture p, User u) {
-        for (Note n : p.getListNotes()) {
-            if (n.getNoteUser().getUid()==u.getUid()) {
-                return n;
-            }
-        }
-        return null;
-    }
-
     /***
      * Edit Tags
      *
