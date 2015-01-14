@@ -264,8 +264,8 @@ public class PictureController extends Tab implements Initializable
             Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
                     FileUtil.getFilenameFromPath(picture.getFilename()))));
             Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
-        }catch(Exception e){
-            e.printStackTrace();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
             Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
         }
     }
