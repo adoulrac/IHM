@@ -129,6 +129,14 @@ public class ProfileController implements Initializable {
 			removeButton.setVisible(false);
 			okButton.setVisible(false);
 			changeAvatar.setVisible(false);
+            avatarPath.setDisable(true);
+            avatarPath.getStyleClass().add("txtfield-disabled");
+            lastname.setDisable(true);
+            lastname.getStyleClass().add("txtfield-disabled");
+            firstname.setDisable(true);
+            firstname.getStyleClass().add("txtfield-disabled");
+            birthdate.setDisable(true);
+            birthdate.getStyleClass().add("txtfield-disabled");
 		}
 		getUserInfos();
 		displayUserInfo();
@@ -261,9 +269,10 @@ public class ProfileController implements Initializable {
 			Image image = new Image(file.toURI().toString());
 			avatar.setImage(image);
 		} catch (Exception e) {
-			Logger.getLogger(ProfileController.class.getName()).log(
-					Level.SEVERE, "Unknown User avatar");
-            //TODO: if new user without avatar, shouldn't display an error message
+			if (!this.avatarPath.getText().isEmpty()) { // Do not display error if user has not set his avatar yet
+                Logger.getLogger(ProfileController.class.getName()).log(
+                        Level.SEVERE, "Unknown User avatar");
+            }
 		}
 	}
 
