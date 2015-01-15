@@ -135,8 +135,7 @@ public class MainController {
         try {
             RulesController rules = (RulesController) replaceSceneContent("views/gestion_droits.fxml", true);
             rules.setApp(this);
-            rules.setPicture(p);
-            rules.loadGroups();
+            rules.loadRules(p);
             removeAllRequests(currentController);
             currentController = rules;
         } catch (Exception ex) {

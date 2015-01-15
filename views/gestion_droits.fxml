@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<TitledPane fx:id="manageRules" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="600.0" text="Gestion des droits" textFill="WHITE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.RulesController">
-  <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="485.0" prefWidth="638.0">
-         <children>
-            <Pane layoutX="20.0" layoutY="14.0" prefHeight="329.0" prefWidth="500.0" style="-fx-background-color: grey;">
-               <children>
-                  <Label layoutX="13.0" layoutY="46.0" text="Groupes :" textFill="WHITE" />
-                  <ListView fx:id="groups" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="252.0" />
-               </children>
-            </Pane>
-             <ListView fx:id="rules" layoutX="300.0" layoutY="79.0" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="finishBtn" layoutX="521.0" layoutY="354.0" mnemonicParsing="false" onAction="#finish" text="Ok" />
-         </children></AnchorPane>
-  </content>
-   <font>
-      <Font name="System Bold" size="16.0" />
-   </font>
+
+<TitledPane fx:id="manageRules" animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="550.0" text="Gestion des droits" textFill="WHITE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.RulesController">
+    <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="485.0" prefWidth="600.0">
+            <children>
+                <Pane layoutX="20.0" layoutY="14.0" prefHeight="329.0" prefWidth="500.0" style="-fx-background-color: grey;">
+                    <children>
+                        <ListView fx:id="rules" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="452.0" />
+                    </children>
+                </Pane>
+                <HBox fx:id="checkAll" layoutX="253.0" layoutY="31.0" prefHeight="25.0" prefWidth="213.0" />
+                <Button fx:id="finishBtn" layoutX="420.0" layoutY="354.0" mnemonicParsing="false" onAction="#finish" text="Terminer" />
+            </children></AnchorPane>
+    </content>
+    <font>
+        <Font name="System Bold" size="16.0" />
+    </font>
 </TitledPane>

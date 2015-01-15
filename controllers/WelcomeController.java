@@ -79,7 +79,6 @@ public class WelcomeController implements Initializable {
      */
     public void launchPreferences() {
         if (application != null) {
-            System.out.println("launch:"+application.currentUser().getListIP().size());
             application.goToProfile(application.currentUser());
         }
     }

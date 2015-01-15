@@ -4,6 +4,7 @@ import DATA.model.Group;
 import DATA.model.User;
 import IHM.utils.Dialogs;
 import com.google.common.base.Strings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,9 +20,6 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static IHM.utils.Dialogs.*;
-import static javafx.collections.FXCollections.observableArrayList;
 
 /**
  * The Class GroupsController.
@@ -66,10 +64,10 @@ public class GroupsController implements Initializable {
     private MainController application;
 
     /** The obs groups list. */
-    private final ObservableList obsGroupsList= observableArrayList();
+    private final ObservableList obsGroupsList = FXCollections.observableArrayList();
     
     /** The obs members list. */
-    private final ObservableList obsMembersList= observableArrayList();
+    private final ObservableList obsMembersList = FXCollections.observableArrayList();
 
     List<Group> listGroups = null;
 
@@ -217,7 +215,7 @@ public class GroupsController implements Initializable {
     @FXML
     public void addNewGroup(ActionEvent event){
         if(Strings.isNullOrEmpty(newGroupName.getText())) {
-            showWarningDialog("Veuillez entrer un nom de groupe.");
+            Dialogs.showWarningDialog("Veuillez entrer un nom de groupe.");
         } else {
             Boolean exists = false;
             for (Group g : listGroups) {
@@ -230,7 +228,7 @@ public class GroupsController implements Initializable {
                 obsGroupsList.add(newGroupName.getText());
                 newGroupName.clear();
             } else {
-                showErrorDialog("Le groupe existe déjà !");
+                Dialogs.showErrorDialog("Le groupe existe déjà !");
             }
         }
     }
@@ -238,7 +236,7 @@ public class GroupsController implements Initializable {
     @FXML
     public void addMemberInGroup(ActionEvent event) {
         if(Strings.isNullOrEmpty(addUserName.getText())) {
-            showWarningDialog("Veuillez entrer le login de l'utilisateur.");
+            Dialogs.showWarningDialog("Veuillez entrer le login de l'utilisateur.");
         }
         else {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
@@ -247,7 +245,7 @@ public class GroupsController implements Initializable {
                     Boolean inGroup = false;
                     for (User u : g.getUsers()) {
                         if (addUserName.getText().equalsIgnoreCase(u.getLogin())) {
-                            showWarningDialog("Ajout impossible: L'utilisateur existe déjà dans le groupe !");
+                            Dialogs.showWarningDialog("Ajout impossible: L'utilisateur existe déjà dans le groupe !");
                             inGroup = true;
                             return;
                         }
@@ -258,11 +256,11 @@ public class GroupsController implements Initializable {
                         if(user != null){
                             application.getIHMtoDATA().addUserInGroup(user, g);
                             obsMembersList.add(user.getLogin());
-                            showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
+                            Dialogs.showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
                             addUserName.clear();
                             return;
                         } else {
-                            showWarningDialog("Ajout impossible: L'utilisateur n'est pas votre ami ou n'existe pas.");
+                            Dialogs.showWarningDialog("Ajout impossible: L'utilisateur n'est pas votre ami ou n'existe pas.");
                             return;
                         }
                     }
