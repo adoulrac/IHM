@@ -171,7 +171,7 @@ public class PictureController extends Tab implements Initializable
         voteTxt = new Text();
         voteField = new TextField("3");
         voteBtn = new Button("Voter");
-        savePictureBtn = new Button("Sauvegarder");
+        savePictureBtn = new Button("Sauver");
         tagsTitle = new Text("Tags : ");
         tagsTxt = new Text();
         descTitle = new Text("Description : ");
@@ -289,9 +289,9 @@ public class PictureController extends Tab implements Initializable
         textPartage.getChildren().addAll(userPartageTxt, shareTxt);
 
         hbDesc.getChildren().addAll(avatarImg, textPartage);
-        HBox hbox = new HBox(2);
-        hbox.setSpacing(10);
-        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, savePictureBtn);
+        HBox hbox = new HBox();
+        hbox.setSpacing(3);
+        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, rulesBtn, savePictureBtn);
 
         // Limit the number of characters within the textarea
         pictureName.textProperty().addListener(new ChangeListener<String>() {
@@ -341,13 +341,12 @@ public class PictureController extends Tab implements Initializable
             hboxVote.getChildren().addAll(voteField, voteBtn);
         }
 
-        vbox.getChildren().addAll(hboxNote, hboxVote, rulesBtn, tagsTitle, tagsTxt, descTitle, descTxt);
+        vbox.getChildren().addAll(hboxNote, hboxVote, tagsTitle, tagsTxt, descTitle, descTxt);
         HBox pictureAndDesc = new HBox(2);
         pictureAndDesc.getChildren().addAll(pictureImg, vbox);
         content.getChildren().addAll(pictureAndDesc);
 
         hbox = new HBox(5);
-
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
             hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
         }
@@ -358,8 +357,7 @@ public class PictureController extends Tab implements Initializable
         //Check if ownerF
         if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
             content.getChildren().addAll(hbox, descTitle, descTxt, descEditBtn, comTitle);
-        }
-        else {
+        } else {
             content.getChildren().addAll(hbox, descTitle, descTxt, comTitle);
         }
 

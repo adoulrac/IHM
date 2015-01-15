@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -75,6 +76,7 @@ public class RulesController implements Initializable {
             this.rule = rule;
 
             groupLbl = new Label();
+            groupLbl.setPrefWidth(300);
             groupLbl.setText(rule.getGroup().getNom());
 
             canView = new CheckBox();
@@ -85,7 +87,7 @@ public class RulesController implements Initializable {
             canComment.setSelected(rule.isCanComment());
             canRate.setSelected(rule.isCanRate());
 
-            this.setSpacing(10);
+            this.setSpacing(20);
             this.getChildren().addAll(groupLbl, canView, canComment, canRate);
         }
 
@@ -134,8 +136,8 @@ public class RulesController implements Initializable {
      */
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        checkAll = new HBox(10);
         checkAll.toFront();
+        checkAll.setSpacing(20);
 
         final CheckBox checkAllComment = new CheckBox();
         final CheckBox checkAllView = new CheckBox();
@@ -144,29 +146,33 @@ public class RulesController implements Initializable {
         checkAllComment.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(checkAllComment.isSelected());
-                updateCells(checkAllComment.isSelected());
+                for(RuleHBoxCell cell : groupsRules) {
+                    cell.setCanComment(checkAllComment.isSelected());
+                }
             }
         });
 
         checkAllView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(checkAllComment.isSelected());
-                updateCells(checkAllView.isSelected());
+                for(RuleHBoxCell cell : groupsRules) {
+                    cell.setCanView(checkAllView.isSelected());
+                }
             }
         });
 
         checkAllRate.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println(checkAllRate.isSelected());
-                updateCells(checkAllRate.isSelected());
+                for(RuleHBoxCell cell : groupsRules) {
+                    cell.setCanRate(checkAllRate.isSelected());
+                }
             }
         });
 
         Label label = new Label("Groupes: ");
         label.setTextFill(Color.WHITE);
+        label.setPrefWidth(305);
         checkAll.getChildren().addAll(label, checkAllView, checkAllComment, checkAllRate);
     }
 
@@ -181,14 +187,22 @@ public class RulesController implements Initializable {
         groupsRules = Lists.newArrayList();
         ObservableList<RuleHBoxCell> myObservableList = FXCollections.observableList(groupsRules);
 
-        rules = new ListView<RuleHBoxCell>();
         rules.setItems(myObservableList);
+        rules.setEditable(true);
 
         // Add rules to the view
         for(Rule rule : picture.getListRules()) {
+            System.out.println("Creating rule");
             RuleHBoxCell cell = new RuleHBoxCell(rule);
             groupsRules.add(cell);
         }
+
+        ((Stage) manageRules.getScene().getWindow()).setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(final WindowEvent windowEvent) {
+                finish();
+            }
+        });
     }
 
     @FXML
@@ -208,7 +222,7 @@ public class RulesController implements Initializable {
     // TODO delete this fuckin method
     private Picture getStaticPicture(Picture p) {
         p.setListRules(Arrays.asList(new Rule(true, true, true, p, new Group("Autres")),
-                new Rule(true, true, true, p, new Group("Amis"))
+                                     new Rule(true, true, true, p, new Group("Amis"))
         ));
         return p;
     }

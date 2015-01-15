@@ -10,10 +10,11 @@
             <children>
                 <Pane layoutX="20.0" layoutY="14.0" prefHeight="329.0" prefWidth="500.0" style="-fx-background-color: grey;">
                     <children>
-                        <ListView fx:id="rules" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="452.0" />
+                        <ListView fx:id="rules" layoutX="14.0" layoutY="65.0" prefHeight="200.0" prefWidth="452.0">
+                        </ListView>
+                        <HBox fx:id="checkAll" layoutX="15.0" layoutY="31.0" prefHeight="25.0" prefWidth="451.0" />
                     </children>
                 </Pane>
-                <HBox fx:id="checkAll" layoutX="253.0" layoutY="31.0" prefHeight="25.0" prefWidth="213.0" />
                 <Button fx:id="finishBtn" layoutX="420.0" layoutY="354.0" mnemonicParsing="false" onAction="#finish" text="Terminer" />
             </children></AnchorPane>
     </content>
