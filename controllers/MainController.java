@@ -29,37 +29,59 @@ import java.util.logging.Logger;
  */
 public class MainController {
 
-    /** The Constant APP_NAME. */
+    /**
+     * The Constant APP_NAME.
+     */
     private final static String APP_NAME = "PicShare";
 
-    /** The Constant CSS_PATH. */
+    /**
+     * The Constant CSS_PATH.
+     */
     private final static String CSS_PATH = "IHM/resources/picshare.css";
 
-    /** The stage. */
+    /**
+     * The stage.
+     */
     private Stage stage;
 
-    /** The current user. */
+    /**
+     * The current user.
+     */
     private User currentUser;
 
-    /** The requests. */
+    /**
+     * The requests.
+     */
     private Map<Integer, Initializable> requests;
 
-    /** The current id. */
+    /**
+     * The current id.
+     */
     private int currentId;
 
-    /** The DATA interface. */
+    /**
+     * The DATA interface.
+     */
     private IHMtoDATA dataInterface;
 
-    /** The DATA interface receiver. */
+    /**
+     * The DATA interface receiver.
+     */
     private DATAtoIHM dataInterfaceReceiver;
 
-    /** The current controller. */
+    /**
+     * The current controller.
+     */
     private Initializable currentController;
 
-    /** The welcome controller. */
+    /**
+     * The welcome controller.
+     */
     private WelcomeController welcomeController;
 
-    /** The new stages. */
+    /**
+     * The new stages.
+     */
     private List<Stage> newStages;
 
     /**
@@ -146,7 +168,7 @@ public class MainController {
     /**
      * Replace scene content.
      *
-     * @param fxml the fxml
+     * @param fxml       the fxml
      * @param isNewStage the is new stage
      * @return the initializable
      * @throws Exception the exception
@@ -159,7 +181,7 @@ public class MainController {
         // currentStage.initStyle(StageStyle.UNDECORATED);
         currentStage.setResizable(false);
         currentStage.sizeToScene();
-        if(isNewStage) {
+        if (isNewStage) {
             currentStage.show();
             currentStage.toFront();
             newStages.add(currentStage);
@@ -181,7 +203,7 @@ public class MainController {
     /**
      * Builds the scene.
      *
-     * @param fxml the fxml
+     * @param fxml   the fxml
      * @param loader the loader
      * @return the scene
      * @throws Exception the exception
@@ -204,19 +226,19 @@ public class MainController {
     /**
      * User logging.
      *
-     * @param userId the user id
+     * @param userId   the user id
      * @param password the password
      * @return true, if successful
      */
-    public boolean userLogging(String userId, String password){
+    public boolean userLogging(String userId, String password) {
         return true;
     }
 
     /**
      * User logout.
      */
-    public void userLogout(){
-        for(Stage stage : newStages)
+    public void userLogout() {
+        for (Stage stage : newStages)
             stage.close();
         resetCurrentUser();
         goToLogin();
@@ -268,7 +290,7 @@ public class MainController {
      * @return the integer
      */
     public Integer addRequest(Initializable controller) {
-        if(controller == null) {
+        if (controller == null) {
             return null;
         }
         requests.put(++currentId, controller);

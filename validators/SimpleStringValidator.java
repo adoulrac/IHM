@@ -11,13 +11,19 @@ import java.util.regex.Pattern;
  */
 public class SimpleStringValidator {
 
-    /** The Constant MESSAGE. */
+    /**
+     * The Constant MESSAGE.
+     */
     public static final String MESSAGE = "Les champs doivent être remplis.";
 
-    /** The pattern. */
+    /**
+     * The pattern.
+     */
     private Pattern pattern;
 
-    /** The matcher. */
+    /**
+     * The matcher.
+     */
     private Matcher matcher;
 
     /**
@@ -33,7 +39,7 @@ public class SimpleStringValidator {
      * @param login the login
      * @return true, if successful
      */
-    public boolean validate(final String login){
+    public boolean validate(final String login) {
         return !Strings.isNullOrEmpty(login);
     }
 }

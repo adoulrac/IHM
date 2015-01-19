@@ -38,82 +38,129 @@ import java.util.ResourceBundle;
 /**
  * The Class PictureController.
  */
-public class PictureController extends Tab implements Initializable
-{
+public class PictureController extends Tab implements Initializable {
     private static final int AVATAR_SIZE = 50;
 
     private static final int MAX_TITLE_LENGTH = 65;
 
-    /** The app. */
+    /**
+     * The app.
+     */
     private final MainController app;
 
-    /** The picture. */
+    /**
+     * The picture.
+     */
     private Picture picture;
 
-    /** The ihm. */
+    /**
+     * The ihm.
+     */
     private ScrollPane ihm;
 
-    /** The content. */
+    /**
+     * The content.
+     */
     private VBox content;
 
-    /** The avatarImg. */
+    /**
+     * The avatarImg.
+     */
     private ImageView avatarImg;
 
-    /** The shareTxt. */
+    /**
+     * The shareTxt.
+     */
     private Text shareTxt;
 
-    /** The name of the file */
+    /**
+     * The name of the file
+     */
     private TextArea pictureName;
 
-    /** The refreshBtn. */
+    /**
+     * The refreshBtn.
+     */
     private Button refreshBtn;
 
-    /** The pictureImg. */
+    /**
+     * The pictureImg.
+     */
     private ImageView pictureImg;
 
-    /** The noteTitle. */
+    /**
+     * The noteTitle.
+     */
     private Text noteTitle;
 
-    /** The note image. */
+    /**
+     * The note image.
+     */
     private HBox noteImg;
 
-    /** The vote text. */
+    /**
+     * The vote text.
+     */
     private Text voteTxt;
 
-    /** The vote field. */
+    /**
+     * The vote field.
+     */
     private TextField voteField;
 
-    /** The vote button. */
+    /**
+     * The vote button.
+     */
     private Button voteBtn;
 
-    /** The save picture button. */
+    /**
+     * The save picture button.
+     */
     private Button savePictureBtn;
 
-    /** The button for the rules. */
+    /**
+     * The button for the rules.
+     */
     private Button rulesBtn;
 
-    /** The tagsTitle. */
+    /**
+     * The tagsTitle.
+     */
     private Text tagsTitle;
 
-    /** The tagsTxt. */
+    /**
+     * The tagsTxt.
+     */
     private Text tagsTxt;
 
-    /** The descTitle. */
+    /**
+     * The descTitle.
+     */
     private Text descTitle;
 
-    /** The descTxt. */
+    /**
+     * The descTxt.
+     */
     private Text descTxt;
 
-    /** The comTitle. */
+    /**
+     * The comTitle.
+     */
     private Text comTitle;
 
-    /** The comments. */
+    /**
+     * The comments.
+     */
     private List<CommentPane> comments;
 
-    /** The writeArea. */
+    /**
+     * The writeArea.
+     */
     private TextArea writeArea;
 
-    /** The sendBtn. */
+    /**
+     * The sendBtn.
+     */
     private Button sendBtn;
 
     private Button descEditBtn;
@@ -134,7 +181,7 @@ public class PictureController extends Tab implements Initializable
      * Instantiates a new picture controller.
      *
      * @param picture the picture
-     * @param app the app
+     * @param app     the app
      */
     public PictureController(Picture picture, MainController app) {
         super(FileUtil.getFilenameFromPath(picture.getFilename()));
@@ -147,23 +194,40 @@ public class PictureController extends Tab implements Initializable
         app.getIHMtoDATA().getPictureById(this.picture.getUid(), currentRequestId);
     }
 
+    /**
+     * Sets the image.
+     *
+     * @param img       the img
+     * @param source    the source
+     * @param fitWidth  the fit width
+     * @param fitHeight the fit height
+     */
+    private static void setImage(ImageView img, Image source, int fitWidth, int fitHeight) {
+        img.setImage(source);
+        img.setFitWidth(fitWidth);
+        img.setFitHeight(fitHeight);
+        img.setPreserveRatio(true);
+        img.setSmooth(true);
+        img.setCache(true);
+    }
+
     /* (non-Javadoc)
      * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
     */
     @Override
-    public void initialize( final URL url, final ResourceBundle resourceBundle ){
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
         // NOP
     }
 
     /**
      * Builds the picture.
      */
-    public void build(){
+    public void build() {
         ihm = new ScrollPane();
         content = new VBox(8);
         avatarImg = new ImageView();
         shareTxt = new Text();
-        pictureName  = new TextArea();
+        pictureName = new TextArea();
         refreshBtn = new Button("Rafraîchir");
         pictureImg = new ImageView();
         noteTitle = new Text("Note : ");
@@ -181,21 +245,20 @@ public class PictureController extends Tab implements Initializable
         writeArea = new TextArea();
         sendBtn = new Button("Envoyer");
         descEditBtn = new Button("Modifier la description");
-        validateDescBtn = new Button ("Terminer");
+        validateDescBtn = new Button("Terminer");
         editDescTxt = new TextArea();
-        tagsEditBtn = new Button ("Modifier");
+        tagsEditBtn = new Button("Modifier");
         tagsEditTxt = new TextField();
-        tagsValidateBtn = new Button ("Terminer");
+        tagsValidateBtn = new Button("Terminer");
         rulesBtn = new Button("Droits");
         // Avatar
-        setImage(avatarImg, app.currentUser().getAvatar()==null ? new Image("IHM/resources/avatar_icon.png"):new Image("file:"+app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
+        setImage(avatarImg, app.currentUser().getAvatar() == null ? new Image("IHM/resources/avatar_icon.png") : new Image("file:" + app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
         // Picture name
         Tooltip.install(pictureName, Tooltips.getTooltip("Press enter to save"));
         if (picture.getTitle() == null) {
             pictureName.setPromptText("(sans titre)");
-        }
-        else {
+        } else {
             pictureName.setText(picture.getTitle());
         }
         pictureName.setPrefSize(210, 70);
@@ -273,11 +336,10 @@ public class PictureController extends Tab implements Initializable
         addCssClasses();
     }
 
-
     /**
      * Adds the content.
      */
-    private void addContent(){
+    private void addContent() {
         // Left side
         final HBox hbDesc = new HBox(3);
 
@@ -312,10 +374,11 @@ public class PictureController extends Tab implements Initializable
         // VALIDATE ON ENTER
         pictureName.setOnKeyReleased(new EventHandler<KeyEvent>() {
             final KeyCombination combo = new KeyCodeCombination(KeyCode.ENTER);
+
             public void handle(KeyEvent t) {
                 if (combo.match(t)) {
                     // Prevents linebreaks
-                    pictureName.setText(pictureName.getText().replace("\n",""));
+                    pictureName.setText(pictureName.getText().replace("\n", ""));
                     picture.setTitle(pictureName.getText());
                 }
             }
@@ -347,15 +410,14 @@ public class PictureController extends Tab implements Initializable
         content.getChildren().addAll(pictureAndDesc);
 
         hbox = new HBox(5);
-        if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
+        if (app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
             hbox.getChildren().addAll(tagsTitle, tagsTxt, tagsEditBtn);
-        }
-        else {
+        } else {
             hbox.getChildren().addAll(tagsTitle, tagsTxt);
         }
 
         //Check if ownerF
-        if(app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
+        if (app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
             content.getChildren().addAll(hbox, descTitle, descTxt, descEditBtn, comTitle);
         } else {
             content.getChildren().addAll(hbox, descTitle, descTxt, comTitle);
@@ -379,7 +441,7 @@ public class PictureController extends Tab implements Initializable
 
     private void savePictureLocally() {
         String targetPath = FileUtil.chooseDirectory();
-        if(Strings.isNullOrEmpty(targetPath)) {
+        if (Strings.isNullOrEmpty(targetPath)) {
             return;
         }
 
@@ -388,7 +450,7 @@ public class PictureController extends Tab implements Initializable
             Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
                     FileUtil.getFilenameFromPath(picture.getFilename()))));
             Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
         }
@@ -401,7 +463,7 @@ public class PictureController extends Tab implements Initializable
         noteImg.getChildren().clear();
         float average = NoteHelper.getPictureAverage(picture, noteImg);
         if (average > 0.f) {
-            voteTxt.setText(String.format("%.1f", average) + "/5 (" +   picture.getListNotes().size() + " votes)");
+            voteTxt.setText(String.format("%.1f", average) + "/5 (" + picture.getListNotes().size() + " votes)");
         } else {
             voteTxt.setText("(Aucun vote)");
         }
@@ -428,7 +490,7 @@ public class PictureController extends Tab implements Initializable
         }
         tagsTxt.setText(sb_tags.toString());
 
-        if(picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
+        if (picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
             tagsEditTxt.setText(sb_tags.toString());
             tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -442,7 +504,7 @@ public class PictureController extends Tab implements Initializable
     /**
      * Adds the css classes.
      */
-    private void addCssClasses(){
+    private void addCssClasses() {
         ihm.getStyleClass().add("pic-ihm");
         ihm.setStyle("-fx-padding: 20;");
         content.getStyleClass().add("pic-content");
@@ -457,7 +519,6 @@ public class PictureController extends Tab implements Initializable
         pictureName.setStyle("-fx-background-insets: 0px ;");
         pictureName.setStyle("-fx-text-fill: black;" +
                 "-fx-background-color: transparent;" +
-                "-fx-font-family: Courier New;" +
                 "-fx-font-weight: bold;" +
                 "-fx-font-size: 20;");
     }
@@ -494,8 +555,8 @@ public class PictureController extends Tab implements Initializable
      * @param mouseEvent the mouse event
      */
     private void comment(MouseEvent mouseEvent) {
-        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-            if(mouseEvent.getClickCount() == 1) {
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if (mouseEvent.getClickCount() == 1) {
                 String msg = writeArea.getText();
                 if (ValidatorHelper.validateString(msg)) {
                     User currentUser = app.currentUser();
@@ -521,21 +582,20 @@ public class PictureController extends Tab implements Initializable
      * @param mouseEvent the mouse event
      */
     private void vote(MouseEvent mouseEvent) {
-        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-            if(mouseEvent.getClickCount() == 1) {
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            if (mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
                     int vote = Integer.parseInt(voteField.getText());
                     Note note = picture.getNoteFromUser(picture, app.currentUser());
 
-                    if (note!=null) {
+                    if (note != null) {
                         // user has already voted
                         boolean ok = Dialogs.showConfirmationDialog("Vous avez déjà voté pour cette image. Souhaitez-vous modifier votre vote ?");
                         if (ok) {
                             note.setValue(vote);
                             addNote(note);
                         }
-                    }
-                    else {
+                    } else {
                         // first vote of the user
                         note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
                         addNote(note);
@@ -556,22 +616,22 @@ public class PictureController extends Tab implements Initializable
             Dialogs.showWarningDialog(e.getMessage());
         }
     }
-    /***
+
+    /**
      * Edit Tags
      *
-     *  @param mouseEvent
+     * @param mouseEvent
      */
     private void editTags(MouseEvent mouseEvent) {
         String str = tagsEditTxt.getText();
-        String[] array = str.split("(?<!\\\\),");
         List<Tag> tags = picture.getListTags();
         tags.removeAll(tags);
 
         final HBox hbox = new HBox(4);
         final Text exampleTxt = new Text("(Ex : tag1,tag2,tag3)");
-        hbox.getChildren().addAll(tagsTitle, exampleTxt, tagsEditTxt , tagsValidateBtn);
+        hbox.getChildren().addAll(tagsTitle, exampleTxt, tagsEditTxt, tagsValidateBtn);
         content.getChildren().remove(2);
-        content.getChildren().add(2,hbox);
+        content.getChildren().add(2, hbox);
 
         tagsValidateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -643,28 +703,37 @@ public class PictureController extends Tab implements Initializable
      * The Class CommentPane.
      */
     private class CommentPane extends HBox {
-        /** VBox that contains userTxt/buttons on first line and commentTxt on second line */
-        VBox vb = new VBox(5);
-
-        /** The comment. */
+        /**
+         * The comment.
+         */
         public Comment comment;
-
-        /** The avatarImg of the comment author. */
+        /**
+         * The avatarImg of the comment author.
+         */
         public ImageView avatarImg = new ImageView();
-
-        /** The userTxt contains the name of the user and some metadata (date, etc.). */
+        /**
+         * The userTxt contains the name of the user and some metadata (date, etc.).
+         */
         public Text userTxt = new Text();
-
-        /** Click to switch to edition mode. In edition mode, this button becomes the validate button. */
+        /**
+         * Click to switch to edition mode. In edition mode, this button becomes the validate button.
+         */
         public Button editBtn = new Button("Editer");
-
-        /** Click to delete comment. In edition, becomes cancel button. */
+        /**
+         * Click to delete comment. In edition, becomes cancel button.
+         */
         public Button delBtn = new Button("Supprimer");
-
-        /** The commentTxt contains the text of the comment. */
+        /**
+         * The commentTxt contains the text of the comment.
+         */
         public Text commentTxt = new Text();
-
-        /** The commentField replace the commentTxt when editing. */
+        /**
+         * VBox that contains userTxt/buttons on first line and commentTxt on second line
+         */
+        VBox vb = new VBox(5);
+        /**
+         * The commentField replace the commentTxt when editing.
+         */
         private TextField commentField = new TextField();
 
         /**
@@ -681,11 +750,11 @@ public class PictureController extends Tab implements Initializable
         /**
          * Builds the UI for a comment.
          */
-        public void build(){
-            if (comment.getCommentUser().getAvatar()==null) {
+        public void build() {
+            if (comment.getCommentUser().getAvatar() == null) {
                 setImage(avatarImg, new Image("IHM/resources/avatar_icon.png"), 75, 75);
             } else {
-                setImage(avatarImg, new Image("file:"+comment.getCommentUser().getAvatar()), 75, 75);
+                setImage(avatarImg, new Image("file:" + comment.getCommentUser().getAvatar()), 75, 75);
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("'Le' dd/MM/yyyy 'à' HH'h'mm");
@@ -739,8 +808,7 @@ public class PictureController extends Tab implements Initializable
                         switchEditionMode(false);
                     }
                 });
-            }
-            else { // switch back to display
+            } else { // switch back to display
                 if (!vb.getChildren().contains(commentTxt)) {
                     // if we are not already in display mode, hide field and display text
                     vb.getChildren().remove(commentField);
@@ -772,14 +840,13 @@ public class PictureController extends Tab implements Initializable
          * Test the rights of the user to edit or delete the comment
          * and hides the buttons if he has no right.
          */
-        private void addContent(){
+        private void addContent() {
             HBox hb = new HBox(8);
 
             hb.getChildren().add(userTxt);
             if (comment.getCommentUser().getUid().equals(app.currentUser().getUid())) {
                 hb.getChildren().addAll(editBtn, delBtn);
-            }
-            else if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
+            } else if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
                 hb.getChildren().add(delBtn);
             }
 
@@ -792,26 +859,9 @@ public class PictureController extends Tab implements Initializable
         /**
          * Adds the css classes.
          */
-        private void addCssClasses(){
+        private void addCssClasses() {
             //userTxt.getStyleClass().add("pic-title");
         }
-    }
-
-    /**
-     * Sets the image.
-     *
-     * @param img the img
-     * @param source the source
-     * @param fitWidth the fit width
-     * @param fitHeight the fit height
-     */
-    private static void setImage(ImageView img, Image source, int fitWidth, int fitHeight) {
-        img.setImage(source);
-        img.setFitWidth(fitWidth);
-        img.setFitHeight(fitHeight);
-        img.setPreserveRatio(true);
-        img.setSmooth(true);
-        img.setCache(true);
     }
 
 }

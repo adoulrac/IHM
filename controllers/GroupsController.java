@@ -25,58 +25,66 @@ import java.util.ResourceBundle;
  * The Class GroupsController.
  */
 public class GroupsController implements Initializable {
-    
-    /** The groups. */
+
+    /**
+     * The obs groups list.
+     */
+    private final ObservableList obsGroupsList = FXCollections.observableArrayList();
+    /**
+     * The obs members list.
+     */
+    private final ObservableList obsMembersList = FXCollections.observableArrayList();
+    List<Group> listGroups = null;
+    /**
+     * The groups.
+     */
     @FXML
     private TitledPane manageGroups;
-
     @FXML
     private ListView groups;
-    
-    /** The members. */
+    /**
+     * The members.
+     */
     @FXML
     private ListView members;
-    
-    /** The group selected. */
+    /**
+     * The group selected.
+     */
     @FXML
     private TextField groupSelected;
-    
-    /** The new group name. */
+    /**
+     * The new group name.
+     */
     @FXML
     private TextField newGroupName;
-
-    /** The add user name. */
+    /**
+     * The add user name.
+     */
     @FXML
     private TextField addUserName;
-    
-    /** The add user btn. */
+    /**
+     * The add user btn.
+     */
     @FXML
     private Button addUserBtn;
-    
-    /** The delete group btn. */
+    /**
+     * The delete group btn.
+     */
     @FXML
     private Button deleteGroupBtn;
-
     @FXML
     private Button deleteMemberBtn;
-
-    /** The application. */
+    /**
+     * The application.
+     */
     private MainController application;
-
-    /** The obs groups list. */
-    private final ObservableList obsGroupsList = FXCollections.observableArrayList();
-    
-    /** The obs members list. */
-    private final ObservableList obsMembersList = FXCollections.observableArrayList();
-
-    List<Group> listGroups = null;
 
     /**
      * Sets the app.
      *
      * @param application the new app
      */
-    public void setApp(MainController application){
+    public void setApp(MainController application) {
         this.application = application;
     }
 
@@ -104,40 +112,38 @@ public class GroupsController implements Initializable {
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-            try {
-                Object item = groups.getSelectionModel().getSelectedItem();
-                if (item != null) {
-                    disableFields(false);
-                    deleteMemberBtn.setDisable(true);
-                    if (!listGroups.isEmpty()) {
-                        displayUsers(groups.getSelectionModel().getSelectedItem().toString());
-                        groupSelected.setText(groups.getSelectionModel().getSelectedItem().toString());
+                try {
+                    Object item = groups.getSelectionModel().getSelectedItem();
+                    if (item != null) {
+                        disableFields(false);
+                        deleteMemberBtn.setDisable(true);
+                        if (!listGroups.isEmpty()) {
+                            displayUsers(groups.getSelectionModel().getSelectedItem().toString());
+                            groupSelected.setText(groups.getSelectionModel().getSelectedItem().toString());
+                        }
                     }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
             }
         });
 
         members.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-            try {
-                if (members.getSelectionModel().getSelectedItem() != null) {
-                    deleteMemberBtn.setDisable(false);
+                try {
+                    if (members.getSelectionModel().getSelectedItem() != null) {
+                        deleteMemberBtn.setDisable(false);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
             }
         });
 
         groups.setItems(obsGroupsList);
 
-        if(listGroups != null) {
+        if (listGroups != null) {
             for (Group g : listGroups) {
                 obsGroupsList.add(g.getNom());
             }
@@ -152,7 +158,7 @@ public class GroupsController implements Initializable {
     @FXML
     public void changeGroupName(ActionEvent event) {
         application.getIHMtoDATA().addGroup(new Group(groupSelected.getText()));
-        obsGroupsList.set(groups.getSelectionModel().getSelectedIndex(),groupSelected.getText());
+        obsGroupsList.set(groups.getSelectionModel().getSelectedIndex(), groupSelected.getText());
     }
 
 
@@ -162,14 +168,14 @@ public class GroupsController implements Initializable {
      * @param event the event
      */
     @FXML
-    public void deleteGroup(ActionEvent event){
+    public void deleteGroup(ActionEvent event) {
         String groupToDelete = groups.getSelectionModel().getSelectedItem().toString();
-        if(groupToDelete.equals(Group.FRIENDS_GROUP_NAME)) {
+        if (groupToDelete.equals(Group.FRIENDS_GROUP_NAME)) {
             Dialogs.showInformationDialog("Suppression impossible, le groupe Amis ne peut pas être supprimé.");
             return;
         }
         boolean response = Dialogs.showConfirmationDialog("Confirmez-vous la suppression du groupe ?");
-        if(response) {
+        if (response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
@@ -187,16 +193,16 @@ public class GroupsController implements Initializable {
     }
 
     @FXML
-    public void deleteMemberFromGroup(ActionEvent event){
+    public void deleteMemberFromGroup(ActionEvent event) {
         boolean response = Dialogs.showConfirmationDialog("Confirmez-vous la suppression du membre ?");
-        if(response) {
+        if (response) {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             String selectedMmb = members.getSelectionModel().getSelectedItem().toString();
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
                     for (User u : g.getUsers()) {
-                        if((u.getLogin()).equals(selectedMmb)) {
-                            application.getIHMtoDATA().deleteUserFromGroup(u,g);
+                        if ((u.getLogin()).equals(selectedMmb)) {
+                            application.getIHMtoDATA().deleteUserFromGroup(u, g);
                             obsMembersList.remove(members.getSelectionModel().getSelectedIndex());
                             deleteMemberBtn.setDisable(true);
                             return;
@@ -213,8 +219,8 @@ public class GroupsController implements Initializable {
      * @param event the event
      */
     @FXML
-    public void addNewGroup(ActionEvent event){
-        if(Strings.isNullOrEmpty(newGroupName.getText())) {
+    public void addNewGroup(ActionEvent event) {
+        if (Strings.isNullOrEmpty(newGroupName.getText())) {
             Dialogs.showWarningDialog("Veuillez entrer un nom de groupe.");
         } else {
             Boolean exists = false;
@@ -235,10 +241,9 @@ public class GroupsController implements Initializable {
 
     @FXML
     public void addMemberInGroup(ActionEvent event) {
-        if(Strings.isNullOrEmpty(addUserName.getText())) {
+        if (Strings.isNullOrEmpty(addUserName.getText())) {
             Dialogs.showWarningDialog("Veuillez entrer le login de l'utilisateur.");
-        }
-        else {
+        } else {
             String selectedGrp = groups.getSelectionModel().getSelectedItem().toString();
             for (Group g : listGroups) {
                 if (g.getNom().equals(selectedGrp)) {
@@ -251,9 +256,9 @@ public class GroupsController implements Initializable {
                         }
                     }
 
-                    if(!inGroup) {
+                    if (!inGroup) {
                         User user = checkIfFriend(addUserName.getText());
-                        if(user != null){
+                        if (user != null) {
                             application.getIHMtoDATA().addUserInGroup(user, g);
                             obsMembersList.add(user.getLogin());
                             Dialogs.showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
@@ -275,10 +280,9 @@ public class GroupsController implements Initializable {
      * @param groupName the group name
      */
     private void displayUsers(String groupName) {
-        if(groupName == null) {
+        if (groupName == null) {
             obsMembersList.clear();
-        }
-        else {
+        } else {
             obsMembersList.clear();
             for (Group g : listGroups) {
                 if (g.getNom().equals(groupName)) {
@@ -296,7 +300,7 @@ public class GroupsController implements Initializable {
      *
      * @param b the b
      */
-    private void disableFields (Boolean b) {
+    private void disableFields(Boolean b) {
         groupSelected.setDisable(b);
         deleteGroupBtn.setDisable(b);
         addUserName.setDisable(b);
@@ -311,9 +315,9 @@ public class GroupsController implements Initializable {
 
     private User checkIfFriend(String login) {
         User user = null;
-        for(Group g : listGroups) {
-            for(User u : g.getUsers()) {
-                if(u.getLogin().equalsIgnoreCase(addUserName.getText())) {
+        for (Group g : listGroups) {
+            for (User u : g.getUsers()) {
+                if (u.getLogin().equalsIgnoreCase(addUserName.getText())) {
                     user = u;
                     return user;
                 }

@@ -5,49 +5,61 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.*?>
-<Pane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IHM.controllers.LoginController">
-   <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="192.0" layoutX="114.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="367.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="180.0" layoutX="120.0" layoutY="165.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="356.0" />
-      <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" styleClass="connexion-btn" text="Se connecter" textFill="#6d6e71" onAction="#login" />
-      <TextField layoutX="254.0" layoutY="200.0" fx:id="login"/>
+<Pane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
+      fx:controller="IHM.controllers.LoginController">
+    <children>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6d6e71" height="192.0" layoutX="114.0" layoutY="159.0"
+                   stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="367.0"/>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8b77a" height="180.0" layoutX="120.0" layoutY="165.0"
+                   stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="356.0"/>
+        <Button layoutX="348.0" layoutY="300.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0"
+                styleClass="connexion-btn" text="Se connecter" textFill="#6d6e71" onAction="#login"/>
+        <TextField layoutX="254.0" layoutY="200.0" fx:id="login"/>
 
-      <PasswordField layoutX="254.0" layoutY="244.0" fx:id="password"/>
-      <Label layoutX="203.0" layoutY="203.0" text="Login" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font></Label>
-      <Label layoutX="157.0" layoutY="246.0" text="Mot de passe" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font></Label>
-      <Hyperlink layoutX="373.0" layoutY="37.0" styleClass="connexion-link" text="S'inscrire" textFill="#6d6e71" onAction="#register">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font></Hyperlink>
-      <Hyperlink layoutX="487.0" layoutY="37.0" styleClass="connexion-link" text="Charger profil" textFill="#6d6e71" onAction="#loadProfile">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font></Hyperlink>
-      <ImageView fitHeight="85.0" fitWidth="82.0" layoutX="34.0" layoutY="30.0">
-         <image>
-            <Image url="@../resources/logo.jpeg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="34.0" fitWidth="29.0" layoutX="348.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/signup_icon.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="25.0" fitWidth="29.0" layoutX="461.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/load_profile_icon.png" />
-         </image>
-      </ImageView>
-      <Label layoutX="248.0" layoutY="115.0" text="Connexion" textFill="#6d6e71">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-   </children>
+        <PasswordField layoutX="254.0" layoutY="244.0" fx:id="password"/>
+        <Label layoutX="203.0" layoutY="203.0" text="Login" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Label>
+        <Label layoutX="157.0" layoutY="246.0" text="Mot de passe" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="13.0"/>
+            </font>
+        </Label>
+        <Hyperlink layoutX="373.0" layoutY="37.0" styleClass="connexion-link" text="S'inscrire" textFill="#6d6e71"
+                   onAction="#register">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Hyperlink>
+        <Hyperlink layoutX="487.0" layoutY="37.0" styleClass="connexion-link" text="Charger profil" textFill="#6d6e71"
+                   onAction="#loadProfile">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Hyperlink>
+        <ImageView fitHeight="85.0" fitWidth="82.0" layoutX="34.0" layoutY="30.0">
+            <image>
+                <Image url="@../resources/logo.jpeg"/>
+            </image>
+        </ImageView>
+        <ImageView fitHeight="34.0" fitWidth="29.0" layoutX="348.0" layoutY="31.0" pickOnBounds="true"
+                   preserveRatio="true">
+            <image>
+                <Image url="@../resources/signup_icon.png"/>
+            </image>
+        </ImageView>
+        <ImageView fitHeight="25.0" fitWidth="29.0" layoutX="461.0" layoutY="33.0" pickOnBounds="true"
+                   preserveRatio="true">
+            <image>
+                <Image url="@../resources/load_profile_icon.png"/>
+            </image>
+        </ImageView>
+        <Label layoutX="248.0" layoutY="115.0" text="Connexion" textFill="#6d6e71">
+            <font>
+                <Font name="System Bold" size="20.0"/>
+            </font>
+        </Label>
+    </children>
 </Pane>

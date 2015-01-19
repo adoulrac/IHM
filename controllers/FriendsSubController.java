@@ -34,101 +34,39 @@ import java.util.logging.Logger;
  */
 public class FriendsSubController extends SplitPane implements Initializable {
 
-    /** The application. */
+    /**
+     * The application.
+     */
     private MainController application;
 
-    /** The groups accordion. */
+    /**
+     * The groups accordion.
+     */
     @FXML
     private Accordion groupsAccordion;
 
-    /** The btn add friend. */
+    /**
+     * The btn add friend.
+     */
     @FXML
     private Button btnAddFriend;
 
-    /** The box add friend. */
+    /**
+     * The box add friend.
+     */
     @FXML
     private HBox boxAddFriend;
 
-    /** The friend name. */
+    /**
+     * The friend name.
+     */
     @FXML
     private TextField friendName;
 
-    /** The groups. */
-    private Map<String, ObservableList<UserHBoxCell>> groups;
-
     /**
-     * The Class UserHBoxCell.
+     * The groups.
      */
-    private class UserHBoxCell extends HBox {
-
-        /** The user. */
-        private User user;
-
-        /** The label. */
-        private Label label;
-
-        /** The icon. */
-        private ImageView icon;
-
-        /** The Constant ON_PATH. */
-        private static final String ON_PATH = "IHM/resources/online_icon.png";
-
-        /** The Constant OFF_PATH. */
-        private static final String OFF_PATH = "IHM/resources/offline_icon.png";
-
-        /**
-         * Instantiates a new user h box cell.
-         *
-         * @param vUser the user
-         * @param status the status
-         */
-        public UserHBoxCell(final User vUser, final boolean status) {
-            this.user = vUser;
-
-            label = new Label();
-            label.setText(user.getLogin());
-            HBox.setHgrow(label, Priority.ALWAYS);
-
-            icon = new ImageView();
-            icon.setImage(new Image(status ? ON_PATH : OFF_PATH));
-            final float iconHeight = 11.0f;
-            final float iconWidth = 13.0f;
-            icon.setFitHeight(iconHeight);
-            icon.setFitWidth(iconWidth);
-
-            this.getChildren().addAll(icon, label);
-
-            this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(final MouseEvent mouseEvent) {
-                    application.goToProfile(user);
-                }
-            });
-        }
-
-        /**
-         * Switch on. Sets the connected user icon.
-         */
-        public void switchOn() {
-            icon.setImage(new Image(ON_PATH));
-        }
-
-        /**
-         * Switch off. Sets the disconnected user icon.
-         */
-        public void switchOff() {
-            icon.setImage(new Image(OFF_PATH));
-        }
-
-        /**
-         * Gets the user.
-         *
-         * @return the user
-         */
-        public User getUser() {
-            return user;
-        }
-    }
+    private Map<String, ObservableList<UserHBoxCell>> groups;
 
     /**
      * Instantiates a new friends sub controller.
@@ -191,7 +129,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     /**
      * Add a user in an existing group.
      *
-     * @param user the user
+     * @param user      the user
      * @param groupName the group name
      */
     public void addUserInGroup(final User user, final String groupName) {
@@ -209,7 +147,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
     /**
      * Adds the users in group.
      *
-     * @param users the users
+     * @param users     the users
      * @param groupName the group name
      */
     public void addUsersInGroup(final List<User> users, final String groupName) {
@@ -256,8 +194,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
     public void addFriend() {
         String friend = friendName.getText();
         User userToAdd = lookForUser(friend);
-        if(userToAdd != null) {
-            if(!isMyFriend(userToAdd)) {
+        if (userToAdd != null) {
+            if (!isMyFriend(userToAdd)) {
                 application.getIHMtoDATA().addUserInGroup(userToAdd, getFriendGroup());
                 Dialogs.showInformationDialog("Une demande d'ami a été envoyé à " + friend);
             } else {
@@ -308,21 +246,22 @@ public class FriendsSubController extends SplitPane implements Initializable {
     /**
      * Receive friend response.
      *
-     * @param sender the sender
+     * @param sender   the sender
      * @param response the response
      */
     public void receiveFriendResponse(final User sender, final boolean response) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-        if (response) {
-            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'ami.");
-            application.getIHMtoDATA().addUserInGroup(sender, getFriendGroup());
-            moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
-        } else {
-            Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'ami.");
-        }
-        }});
+                if (response) {
+                    Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'ami.");
+                    application.getIHMtoDATA().addUserInGroup(sender, getFriendGroup());
+                    moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
+                } else {
+                    Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'ami.");
+                }
+            }
+        });
     }
 
     /**
@@ -365,19 +304,19 @@ public class FriendsSubController extends SplitPane implements Initializable {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
                 if (u.getUser().getUid().equals(user.getUid())) {
-                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+user.getLogin()+" found in group " + entry.getKey());
+                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User " + user.getLogin() + " found in group " + entry.getKey());
                     return u.getUser();
                 }
             }
         }
-        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User "+user.getLogin()+" not found");
+        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User " + user.getLogin() + " not found");
         return null;
     }
 
     private boolean isMyFriend(User user) {
         List<User> users = getFriendGroup().getUsers();
-        for(User u : users) {
-            if(u.getUid().equals(user.getUid())){
+        for (User u : users) {
+            if (u.getUid().equals(user.getUid())) {
                 return true;
             }
         }
@@ -391,7 +330,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @return the user h box cell
      */
     private User lookForUser(final String login) {
-        if(Strings.isNullOrEmpty(login)) {
+        if (Strings.isNullOrEmpty(login)) {
             return null;
         }
 
@@ -413,7 +352,7 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @return the string
      */
     private String removeUserFromGroup(final User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         }
 
@@ -436,23 +375,23 @@ public class FriendsSubController extends SplitPane implements Initializable {
     /**
      * Move user.
      *
-     * @param user the user
+     * @param user      the user
      * @param groupName the group name
      */
     private void moveUserToGroup(final User user, final String groupName) {
-        if(user == null) {
+        if (user == null) {
             return;
         }
 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-            if(user != null) {
-                String currGroupName = removeUserFromGroup(user);
-                if(currGroupName != null || groupName != null) {
-                    addUserInGroup(user, groupName == null ? currGroupName : groupName);
+                if (user != null) {
+                    String currGroupName = removeUserFromGroup(user);
+                    if (currGroupName != null || groupName != null) {
+                        addUserInGroup(user, groupName == null ? currGroupName : groupName);
+                    }
                 }
-            }
             }
         });
     }
@@ -475,6 +414,86 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
     private void reloadUser(final User user) {
         moveUserToGroup(user, null);
+    }
+
+    /**
+     * The Class UserHBoxCell.
+     */
+    private class UserHBoxCell extends HBox {
+
+        /**
+         * The Constant ON_PATH.
+         */
+        private static final String ON_PATH = "IHM/resources/online_icon.png";
+        /**
+         * The Constant OFF_PATH.
+         */
+        private static final String OFF_PATH = "IHM/resources/offline_icon.png";
+        /**
+         * The user.
+         */
+        private User user;
+        /**
+         * The label.
+         */
+        private Label label;
+        /**
+         * The icon.
+         */
+        private ImageView icon;
+
+        /**
+         * Instantiates a new user h box cell.
+         *
+         * @param vUser  the user
+         * @param status the status
+         */
+        public UserHBoxCell(final User vUser, final boolean status) {
+            this.user = vUser;
+
+            label = new Label();
+            label.setText(user.getLogin());
+            HBox.setHgrow(label, Priority.ALWAYS);
+
+            icon = new ImageView();
+            icon.setImage(new Image(status ? ON_PATH : OFF_PATH));
+            final float iconHeight = 11.0f;
+            final float iconWidth = 13.0f;
+            icon.setFitHeight(iconHeight);
+            icon.setFitWidth(iconWidth);
+
+            this.getChildren().addAll(icon, label);
+
+            this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(final MouseEvent mouseEvent) {
+                    application.goToProfile(user);
+                }
+            });
+        }
+
+        /**
+         * Switch on. Sets the connected user icon.
+         */
+        public void switchOn() {
+            icon.setImage(new Image(ON_PATH));
+        }
+
+        /**
+         * Switch off. Sets the disconnected user icon.
+         */
+        public void switchOff() {
+            icon.setImage(new Image(OFF_PATH));
+        }
+
+        /**
+         * Gets the user.
+         *
+         * @return the user
+         */
+        public User getUser() {
+            return user;
+        }
     }
 
 }

@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
@@ -24,29 +23,41 @@ import java.util.logging.Logger;
  */
 public class WelcomeController implements Initializable {
 
-    /** The application. */
-    private MainController application;
-
-    /** The Constant AVATAR_DIM. Dimensions of the avatar image. */
+    /**
+     * The Constant AVATAR_DIM. Dimensions of the avatar image.
+     */
     private static final double AVATAR_DIM = 30.0;
-
-    /** The welcome pane. */
+    /**
+     * The application.
+     */
+    private MainController application;
+    /**
+     * The welcome pane.
+     */
     @FXML
     private Pane welcome;
 
-    /** The tabbed pictures sub controller. */
+    /**
+     * The tabbed pictures sub controller.
+     */
     @FXML
     private TabbedPicturesSubController tabbedPicturesSubController;
 
-    /** The friends sub controller. */
+    /**
+     * The friends sub controller.
+     */
     @FXML
     private FriendsSubController friendsSubController;
 
-    /** The user name (label). */
+    /**
+     * The user name (label).
+     */
     @FXML
     private Label lblUserName;
 
-    /** The avatar of the user. */
+    /**
+     * The avatar of the user.
+     */
     @FXML
     private ImageView avatarUser;
 
@@ -87,9 +98,9 @@ public class WelcomeController implements Initializable {
      * Launch groups view.
      */
     public void launchGroups() {
-       if (application != null) {
-           application.goToGroups();
-       }
+        if (application != null) {
+            application.goToGroups();
+        }
     }
 
     /**
@@ -142,7 +153,7 @@ public class WelcomeController implements Initializable {
             Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
         }
 
-        ((Stage) welcome.getScene().getWindow()).setOnCloseRequest(new EventHandler<WindowEvent>() {
+        welcome.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(final WindowEvent windowEvent) {
                 logout();

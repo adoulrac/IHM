@@ -12,13 +12,15 @@ import java.util.List;
  */
 public class StringUtil {
 
-    /** The Constant SYSTEM_SEPARATOR. */
+    /**
+     * The Constant SYSTEM_SEPARATOR.
+     */
     public static final String SYSTEM_SEPARATOR = "\\r?\\n";
 
     /**
      * To list.
      *
-     * @param string the string
+     * @param string    the string
      * @param separator the separator
      * @return the list
      */

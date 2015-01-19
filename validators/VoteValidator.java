@@ -8,7 +8,9 @@ import com.google.common.base.Strings;
  */
 public class VoteValidator {
 
-    /** The Constant MESSAGE. */
+    /**
+     * The Constant MESSAGE.
+     */
     public static final String MESSAGE = "Le vote doit être un chiffre entre 1 et 5";
 
     /**
@@ -17,7 +19,7 @@ public class VoteValidator {
      * @param vote the vote
      * @return true, if successful
      */
-    public static boolean validate(final String vote){
+    public static boolean validate(final String vote) {
         if (Strings.isNullOrEmpty(vote))
             return false;
 

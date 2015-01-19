@@ -13,30 +13,38 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The Class RegisterController.
  */
 public class RegisterController implements Initializable {
 
-    /** The application. */
+    /**
+     * The application.
+     */
     private MainController application;
 
-    /** The login. */
+    /**
+     * The login.
+     */
     @FXML
     private TextField login;
 
-    /** The password. */
+    /**
+     * The password.
+     */
     @FXML
     private PasswordField password;
 
-    /** The confirmation. */
+    /**
+     * The confirmation.
+     */
     @FXML
     private PasswordField confirmation;
 
-    /** The ips. */
+    /**
+     * The ips.
+     */
     @FXML
     private TextArea ips;
 
@@ -64,22 +72,22 @@ public class RegisterController implements Initializable {
         String confirmText = confirmation.getText();
         String ipsText = ips.getText();
 
-        if(!ValidatorHelper.validateString(loginText)) {
+        if (!ValidatorHelper.validateString(loginText)) {
             Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE + " Please check your login.");
             return;
         }
 
-        if(passwordText == null || confirmText == null || !passwordText.equals(confirmText)) {
+        if (passwordText == null || confirmText == null || !passwordText.equals(confirmText)) {
             Dialogs.showInformationDialog("Password are different.");
             return;
         }
 
-        if(!ValidatorHelper.validateString(passwordText)) {
+        if (!ValidatorHelper.validateString(passwordText)) {
             Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE + " Please check your password.");
             return;
         }
 
-        if(!ValidatorHelper.validateIPs(ipsText)) {
+        if (!ValidatorHelper.validateIPs(ipsText)) {
             Dialogs.showInformationDialog("Invalid IP Addresses. Please check the IP format.");
             return;
         }
@@ -102,8 +110,8 @@ public class RegisterController implements Initializable {
      *
      * @param application the new app
      */
-    public void setApp(MainController application){
+    public void setApp(MainController application) {
         this.application = application;
     }
-    
+
 }

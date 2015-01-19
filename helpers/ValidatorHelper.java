@@ -36,13 +36,13 @@ public class ValidatorHelper {
      * @return true, if successful
      */
     public static boolean validateIPs(final String ipsText) {
-        if(Strings.isNullOrEmpty(ipsText)) {
+        if (Strings.isNullOrEmpty(ipsText)) {
             return true;
         }
         String[] lines = ipsText.split(StringUtil.SYSTEM_SEPARATOR);
         boolean valid = true;
 
-        for(String line : lines) {
+        for (String line : lines) {
             valid = new IPAddressValidator().validate(line);
         }
 

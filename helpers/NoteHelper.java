@@ -7,10 +7,14 @@ import javafx.scene.layout.HBox;
 
 public class NoteHelper {
 
-    /** The stars dim. */
+    /**
+     * The stars dim.
+     */
     private static final int STARS_DIM = 23;
 
-    /** The number of stars. */
+    /**
+     * The number of stars.
+     */
     private static final int NB_STARS = 5;
 
     private static final String STAR_ACTIVE = "IHM/resources/star_active.png";
@@ -45,8 +49,8 @@ public class NoteHelper {
     /**
      * Sets an image to keep its ratio.
      *
-     * @param img the img
-     * @param fitWidth the fit width
+     * @param img       the img
+     * @param fitWidth  the fit width
      * @param fitHeight the fit height
      */
     public static void adaptImage(ImageView img, final int fitWidth, final int fitHeight) {

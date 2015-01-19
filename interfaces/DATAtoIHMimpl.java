@@ -18,11 +18,28 @@ import java.util.UUID;
  */
 public class DATAtoIHMimpl implements DATAtoIHM {
 
-    /** The app. */
+    /**
+     * The app.
+     */
     private MainController app;
 
-    /** The friend requests. */
+    /**
+     * The friend requests.
+     */
     private List<User> friendRequests = Lists.newArrayList();
+    /**
+     * The connected users.
+     */
+    private List<UUID> connectedUsers = new ArrayList<UUID>();
+
+    /**
+     * Instantiates a new DAT ato ih mimpl.
+     *
+     * @param app the app
+     */
+    public DATAtoIHMimpl(MainController app) {
+        this.app = app;
+    }
 
     /**
      * Empty pending friend requests.
@@ -35,15 +52,12 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         return result;
     }
 
-    /** The connected users. */
-    private List<UUID> connectedUsers = new ArrayList<UUID>();
-
     /* (non-Javadoc)
      * @see IHM.interfaces.DATAtoIHM#receiveConnectedUser(DATA.model.User)
      */
     @Override
     public void receiveConnectedUser(User user) {
-        if(app.getWelcomeController() != null)
+        if (app.getWelcomeController() != null)
             app.getWelcomeController().getFriendsSubController().connectUser(user);
     }
 
@@ -62,16 +76,14 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     @Override
     public void receivePicture(Picture picture, int queryId) {
         Initializable controller = app.getRequests().get(new Integer(queryId));
-        if (controller==null){
+        if (controller == null) {
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)
-        }
-        else {
+        } else {
             if (controller instanceof TabbedPicturesSubController && ((TabbedPicturesSubController) controller).isPendingRequest(queryId)) {
                 ((TabbedPicturesSubController) controller).addPicture(picture);
                 app.removeRequest(queryId);
-            } else
-            if (controller instanceof PictureController) {
+            } else if (controller instanceof PictureController) {
                 ((PictureController) controller).receiveFullImage(picture);
                 app.removeRequest(queryId);
             }
@@ -81,7 +93,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     @Override
     public void receiveReloadUserGroups() {
         WelcomeController welcome = app.getWelcomeController();
-        if(welcome != null){
+        if (welcome != null) {
             welcome.getFriendsSubController().reloadUserGroups();
         }
     }
@@ -92,11 +104,10 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     @Override
     public void receivePictures(List<Picture> pictures, int queryId) {
         Initializable controller = app.getRequests().get(new Integer(queryId));
-        if (controller==null){
+        if (controller == null) {
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)
-        }
-        else {
+        } else {
             if (controller instanceof TabbedPicturesSubController) {
                 ((TabbedPicturesSubController) controller).addPictures(pictures);
             }
@@ -109,7 +120,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     @Override
     public void receiveFriendRequest(User user) {
         WelcomeController welcome = app.getWelcomeController();
-        if(welcome != null){
+        if (welcome != null) {
             welcome.getFriendsSubController().receiveFriendRequest(user);
         }
     }
@@ -120,7 +131,7 @@ public class DATAtoIHMimpl implements DATAtoIHM {
     @Override
     public void receiveFriendResponse(User user, boolean response) {
         WelcomeController welcome = app.getWelcomeController();
-        if(welcome != null){
+        if (welcome != null) {
             welcome.getFriendsSubController().receiveFriendResponse(user, response);
         }
     }
@@ -132,14 +143,5 @@ public class DATAtoIHMimpl implements DATAtoIHM {
      */
     public List<UUID> getConnectedUsers() {
         return connectedUsers;
-    }
-
-    /**
-     * Instantiates a new DAT ato ih mimpl.
-     *
-     * @param app the app
-     */
-    public DATAtoIHMimpl(MainController app) {
-        this.app = app;
     }
 }

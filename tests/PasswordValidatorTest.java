@@ -14,7 +14,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(JUnit4.class)
 public class PasswordValidatorTest {
 
-    /** The tester. */
+    /**
+     * The tester.
+     */
     PasswordValidator tester = new PasswordValidator();
 
     /**

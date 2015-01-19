@@ -12,46 +12,68 @@ import java.util.UUID;
  * The Class IHMtoDATAstub.
  */
 public class IHMtoDATAstub implements IHMtoDATA {
-    
-    /** The list users. */
+
+    /**
+     * The list users.
+     */
     List<User> listUsers = new ArrayList<User>();
     List<User> listUsers2 = new ArrayList<User>();
     List<User> listUsers3 = new ArrayList<User>();
 
-    /** The list groups. */
+    /**
+     * The list groups.
+     */
     List<Group> listGroups = new ArrayList<Group>();
-    
-    /** The pictures. */
+
+    /**
+     * The pictures.
+     */
     List<Picture> pictures = new ArrayList<>();
-    
-    /** The amis. */
+
+    /**
+     * The amis.
+     */
     Group amis = new Group("Amis");
     Group famille = new Group("Famille");
     Group travail = new Group("Travail");
 
-    
-    /** The arthur. */
+
+    /**
+     * The arthur.
+     */
     User arthur = new User("avanceul", "password", "Arthur", "Van Ceulen", "arthur.jpg", "16/08/1991");
-    
-    /** The rachid. */
+
+    /**
+     * The rachid.
+     */
     User rachid = new User("adoulrac", "password", "Rachid", "Adoul", "rachid.jpg", "08/06/1992");
 
     User arthurt = new User("tranarth", "password", "Arthur", "Tran", "arthurt.jpg", "03/07/1991");
 
-    
-    /** The selim. */
+
+    /**
+     * The selim.
+     */
     User selim = new User("selim", "selim", "Sélim", "Zénagui", "selim.jpg", "08/06/1992");
 
-    /** The pic a. */
+    /**
+     * The pic a.
+     */
     Picture picA = new Picture("IHM/resources/logo.jpeg", null);
-    
-    /** The pic b. */
+
+    /**
+     * The pic b.
+     */
     Picture picB = new Picture("IHM/resources/avatar_icon.png", null);
-    
-    /** The pic c. */
+
+    /**
+     * The pic c.
+     */
     Picture picC = new Picture("IHM/resources/avatar_icon.png", null);
-    
-    /** The pic d. */
+
+    /**
+     * The pic d.
+     */
     Picture picD = new Picture("IHM/resources/logo.jpeg", null);
 
     /**
@@ -90,10 +112,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param comment The comment
      */
     @Override
-    public void addComment(Comment comment) { }
+    public void addComment(Comment comment) {
+    }
 
     @Override
-    public void deleteComment(Comment comment) {}
+    public void deleteComment(Comment comment) {
+    }
 
     /* (non-Javadoc)
      * @see DATA.interfaces.IHMtoDATA#addNote(DATA.model.Note)
@@ -109,7 +133,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param group The new group
      */
     @Override
-    public void addGroup(Group group)  {
+    public void addGroup(Group group) {
         listGroups.add(group);
     }
 
@@ -119,16 +143,17 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param picture The picture
      */
     @Override
-    public void addPicture(Picture picture)  { }
+    public void addPicture(Picture picture) {
+    }
 
     /**
      * Add a user in a group.
      *
-     * @param user The user to add
+     * @param user  The user to add
      * @param group The group
      */
     @Override
-    public void addUserInGroup(User user, Group group)  {
+    public void addUserInGroup(User user, Group group) {
         group.getUsers().add(user);
     }
 
@@ -154,7 +179,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param group The gorup to delete
      */
     @Override
-    public void deleteGroup(Group group)  {
+    public void deleteGroup(Group group) {
         listGroups.remove(group);
     }
 
@@ -164,16 +189,17 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param picture The picture to delete
      */
     @Override
-    public void deletePicture(Picture picture)  { }
+    public void deletePicture(Picture picture) {
+    }
 
     /**
      * Delete the user from the group specified.
      *
-     * @param user : The user to delete
+     * @param user  : The user to delete
      * @param group : The group
      */
     @Override
-    public void deleteUserFromGroup(User user, Group group)  {
+    public void deleteUserFromGroup(User user, Group group) {
         group.getUsers().remove(user);
     }
 
@@ -181,17 +207,19 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * Save the current user in a JSON file.
      */
     @Override
-    public void export()  { }
+    public void export() {
+    }
 
     /**
      * Get the user information.
      *
-     * @param idUser : The user ID
+     * @param idUser    : The user ID
      * @param idRequest : The request ID (for IHM)
      * @return the user by id
      */
     @Override
-    public void getUserById(UUID idUser, int idRequest)  { }
+    public void getUserById(UUID idUser, int idRequest) {
+    }
 
     /**
      * Get all the users in the specified group.
@@ -200,7 +228,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @return The user list
      */
     @Override
-    public List<User> getUsersInGroup(Group g)  {
+    public List<User> getUsersInGroup(Group g) {
         if (g.getNom().equals("Amis"))
             return listUsers;
         else
@@ -215,7 +243,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief : Request the list of users who are not in this group
      */
     @Override
-    public List<User> getUserNotInGroup(Group group)  {
+    public List<User> getUserNotInGroup(Group group) {
         if (!group.getNom().equals("Amis"))
             return listUsers;
         else
@@ -230,7 +258,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Request the Group with the name in param
      */
     @Override
-    public Group getGroupByName(String group)  {
+    public Group getGroupByName(String group) {
         if (group.equals("Amis")) {
             return amis;
         } else return null;
@@ -243,7 +271,7 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief : Request all the group of the current user
      */
     @Override
-    public List<Group> getGroups()  {
+    public List<Group> getGroups() {
         /*List<Group> lg = new ArrayList<Group>();
         lg.add(amis);*/
         return listGroups;
@@ -257,41 +285,41 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief : Request all the group where the user is not in
      */
     @Override
-    public List<Group> getGroupsUserNotIn(User user)  {
+    public List<Group> getGroupsUserNotIn(User user) {
         return new ArrayList<Group>();
     }
 
     /**
      * Gets the picture by id.
      *
-     * @param picture : id of the picture
+     * @param picture   : id of the picture
      * @param idRequest the id request
      * @return : None (catch exception)
      * @Brief : Request a picture (with the id) on the network
      */
     @Override
-    public void getPictureById(UUID picture, int idRequest)  { }
+    public void getPictureById(UUID picture, int idRequest) {
+    }
 
     /**
      * Gets the pictures.
      *
-     * @param user the user
+     * @param user      the user
      * @param idRequest the id request
      * @return the pictures
      * @Brief Request a user’s pictures on the network
      */
     @Override
-    public void getPictures(User user, int idRequest)  { }
+    public void getPictures(User user, int idRequest) {
+    }
 
     @Override
-    public void getPictures( List<Tag> listtag, int idRequest )
-    {
+    public void getPictures(List<Tag> listtag, int idRequest) {
 
     }
 
     @Override
-    public void getPicturesByUsers( List<String> listUser, int idRequest )
-    {
+    public void getPicturesByUsers(List<String> listUser, int idRequest) {
 
     }
 
@@ -314,7 +342,8 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Request all the pictures from all connected users
      */
     @Override
-    public void getPictures(int idRequest)  { }
+    public void getPictures(int idRequest) {
+    }
 
     /**
      * Gets the current user.
@@ -323,7 +352,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Visit current user’s profile
      */
     @Override
-    public User getCurrentUser()  { return rachid; }
+    public User getCurrentUser() {
+        return rachid;
+    }
 
     /**
      * Import_.
@@ -333,7 +364,9 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Import a user from JSON file’s path
      */
     @Override
-    public User import_(String parameter)  { return rachid; }
+    public User import_(String parameter) {
+        return rachid;
+    }
 
     /**
      * Update picture.
@@ -342,7 +375,8 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Update current picture
      */
     @Override
-    public void updatePicture(Picture picture)  { }
+    public void updatePicture(Picture picture) {
+    }
 
     /**
      * Update profile.
@@ -351,17 +385,20 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @Brief Update user in the JSON file
      */
     @Override
-    public void updateProfile(User parameter)  { }
+    public void updateProfile(User parameter) {
+    }
 
     /**
      * Sign Up a new user, start the server and connect the user.
      *
      * @param u : A light User with the login information
      * @return true : signup OK
-     * 		   false : signup KO
+     * false : signup KO
      */
     @Override
-    public boolean signup(User u) { return true; }
+    public boolean signup(User u) {
+        return true;
+    }
 
     /**
      * Connect the user, check the password and username.
@@ -369,12 +406,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * @param username the username
      * @param password the password
      * @return true : Connect OK
-     * 		 false : Connect KO
+     * false : Connect KO
      */
     @Override
     public boolean login(String username, String password) {
         if ((username.equals("avanceul") || username.equals("adoulrac") || username.equals("selim"))
-                && (password.equals("password") || password.equals( "selim" )))
+                && (password.equals("password") || password.equals("selim")))
             return true;
         else
             return false;
@@ -393,10 +430,12 @@ public class IHMtoDATAstub implements IHMtoDATA {
      * Save its state.
      *
      * @return true : OK
-     * 			false : KO
+     * false : KO
      */
     @Override
-    public boolean logout() { return true; }
+    public boolean logout() {
+        return true;
+    }
 
     @Override
     public void save() throws IOException {
