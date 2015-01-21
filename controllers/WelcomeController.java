@@ -1,6 +1,11 @@
 package IHM.controllers;
 
-import IHM.utils.Dialogs;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,15 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import IHM.utils.Dialogs;
 
 /**
  * The Class WelcomeController.
@@ -24,160 +22,171 @@ import java.util.logging.Logger;
  */
 public class WelcomeController implements Initializable {
 
-    /** The application. */
-    private MainController application;
+	/**
+	 * The Constant AVATAR_DIM. Dimensions of the avatar image.
+	 */
+	private static final double AVATAR_DIM = 30.0;
+	/**
+	 * The application.
+	 */
+	private MainController application;
+	/**
+	 * The welcome pane.
+	 */
+	@FXML
+	private Pane welcome;
 
-    /** The Constant AVATAR_DIM. Dimensions of the avatar image. */
-    private static final double AVATAR_DIM = 30.0;
+	/**
+	 * The tabbed pictures sub controller.
+	 */
+	@FXML
+	private TabbedPicturesSubController tabbedPicturesSubController;
 
-    /** The welcome pane. */
-    @FXML
-    private Pane welcome;
+	/**
+	 * The friends sub controller.
+	 */
+	@FXML
+	private FriendsSubController friendsSubController;
 
-    /** The tabbed pictures sub controller. */
-    @FXML
-    private TabbedPicturesSubController tabbedPicturesSubController;
+	/**
+	 * The user name (label).
+	 */
+	@FXML
+	private Label lblUserName;
 
-    /** The friends sub controller. */
-    @FXML
-    private FriendsSubController friendsSubController;
+	/**
+	 * The avatar of the user.
+	 */
+	@FXML
+	private ImageView avatarUser;
 
-    /** The user name (label). */
-    @FXML
-    private Label lblUserName;
+	/**
+	 * Instantiates a new welcome controller.
+	 */
+	public WelcomeController() {
+		super();
+	}
 
-    /** The avatar of the user. */
-    @FXML
-    private ImageView avatarUser;
+	/* (non-Javadoc)
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	 */
+	@Override
+	public void initialize(final URL url, final ResourceBundle resourceBundle) {
+		// NOP
+	}
 
-    /**
-     * Instantiates a new welcome controller.
-     */
-    public WelcomeController() {
-        super();
-    }
+	/**
+	 * Sets the app.
+	 *
+	 * @param app the new app
+	 */
+	public void setApp(final MainController app) {
+		this.application = app;
+	}
 
-    /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
-     */
-    @Override
-    public void initialize(final URL url, final ResourceBundle resourceBundle) {
-        // NOP
-    }
+	/**
+	 * Launch preferences view.
+	 */
+	public void launchPreferences() {
+		if (application != null) {
+			application.goToProfile(application.currentUser());
+		}
+	}
 
-    /**
-     * Sets the app.
-     *
-     * @param app the new app
-     */
-    public void setApp(final MainController app) {
-        this.application = app;
-    }
+	/**
+	 * Launch groups view.
+	 */
+	public void launchGroups() {
+		if (application != null) {
+			application.goToGroups();
+		}
+	}
 
-    /**
-     * Launch preferences view.
-     */
-    public void launchPreferences() {
-        if (application != null) {
-            application.goToProfile(application.currentUser());
-        }
-    }
+	/**
+	 * Handles the user logout.
+	 */
+	public void logout() {
+		try {
+			if (application.currentUser() != null) {
+				application.getIHMtoDATA().logout();
+			}
+		} catch (IOException e) {
+			Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Error in disconnecting the user.");
+		}
+		application.userLogout();
+	}
 
-    /**
-     * Launch groups view.
-     */
-    public void launchGroups() {
-       if (application != null) {
-           application.goToGroups();
-       }
-    }
+	/**
+	 * Builds the main components of the welcome view.
+	 */
+	public void build() {
+		if (application.currentUser() != null) {
+			if (application.currentUser().getAvatar() != null) {
+				Image f = application.currentUser().getAvatarImageObject();
+				if (f != null) {
+					avatarUser.setImage(f);
+					avatarUser.setFitWidth(AVATAR_DIM);
+					avatarUser.setFitHeight(AVATAR_DIM);
+					avatarUser.setPreserveRatio(true);
+					avatarUser.setSmooth(true);
+					avatarUser.setCache(true);
+				}
+			}
+			lblUserName.setText(" Connecté (" + application.currentUser().getLogin() + ")");
+		}
 
-    /**
-     * Handles the user logout.
-     */
-    public void logout() {
-        try {
-            if (application.currentUser() != null) {
-                application.getIHMtoDATA().logout();
-            }
-        } catch (IOException e) {
-            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Error in disconnecting the user.");
-        }
-        application.userLogout();
-    }
+		// Build Pictures interface
+		if (tabbedPicturesSubController != null) {
+			tabbedPicturesSubController.setApp(application);
+			tabbedPicturesSubController.build();
+		} else {
+			Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Pictures controller is null.");
+		}
 
-    /**
-     * Builds the main components of the welcome view.
-     */
-    public void build() {
-        if (application.currentUser() != null) {
-            if (application.currentUser().getAvatar() != null) {
-                File f = new File(application.currentUser().getAvatar());
-                if (f.isFile()) {
-                    avatarUser.setImage(new Image(f.toURI().toString()));
-                    avatarUser.setFitWidth(AVATAR_DIM);
-                    avatarUser.setFitHeight(AVATAR_DIM);
-                    avatarUser.setPreserveRatio(true);
-                    avatarUser.setSmooth(true);
-                    avatarUser.setCache(true);
-                }
+		// Build Friends interface
+		if (friendsSubController != null) {
+			friendsSubController.setApp(application);
+			friendsSubController.build();
+		} else {
+			Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
+		}
 
-            }
-            lblUserName.setText(" Connecté (" + application.currentUser().getLogin() + ")");
-        }
+		welcome.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(final WindowEvent windowEvent) {
+				logout();
+			}
+		});
+	}
 
-        // Build Pictures interface
-        if (tabbedPicturesSubController != null) {
-            tabbedPicturesSubController.setApp(application);
-            tabbedPicturesSubController.build();
-        } else {
-            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Pictures controller is null.");
-        }
+	/**
+	 * Saves the modifications.
+	 */
+	public void saveChanges() {
+		try {
+			application.getIHMtoDATA().save();
+			Dialogs.showInformationDialog("Profil sauvegardé.");
+		} catch (IOException e) {
+			Dialogs.showErrorDialog("Erreur durant la sauvegarde du profil.");
+			e.printStackTrace();
+		}
+	}
 
-        // Build Friends interface
-        if (friendsSubController != null) {
-            friendsSubController.setApp(application);
-            friendsSubController.build();
-        } else {
-            Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
-        }
+	/**
+	 * Gets the friends sub controller.
+	 *
+	 * @return the friends sub controller
+	 */
+	public FriendsSubController getFriendsSubController() {
+		return friendsSubController;
+	}
 
-        ((Stage) welcome.getScene().getWindow()).setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(final WindowEvent windowEvent) {
-                logout();
-            }
-        });
-    }
-
-    /**
-     * Saves the modifications.
-     */
-    public void saveChanges() {
-        try {
-            application.getIHMtoDATA().save();
-            Dialogs.showInformationDialog("Profil sauvegardé.");
-        } catch (IOException e) {
-            Dialogs.showErrorDialog("Erreur durant la sauvegarde du profil.");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Gets the friends sub controller.
-     *
-     * @return the friends sub controller
-     */
-    public FriendsSubController getFriendsSubController() {
-        return friendsSubController;
-    }
-
-    /**
-     * Gets the tabbed pictures sub controller.
-     *
-     * @return the tabbed pictures sub controller
-     */
-    public TabbedPicturesSubController getTabbedPicturesSubController() {
-        return tabbedPicturesSubController;
-    }
+	/**
+	 * Gets the tabbed pictures sub controller.
+	 *
+	 * @return the tabbed pictures sub controller
+	 */
+	public TabbedPicturesSubController getTabbedPicturesSubController() {
+		return tabbedPicturesSubController;
+	}
 }

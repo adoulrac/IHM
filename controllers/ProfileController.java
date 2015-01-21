@@ -1,20 +1,5 @@
 package IHM.controllers;
 
-import DATA.model.User;
-import IHM.helpers.ValidatorHelper;
-import IHM.utils.Dialogs;
-import IHM.utils.FileUtil;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -24,90 +9,156 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import DATA.model.User;
+import IHM.helpers.ValidatorHelper;
+import IHM.utils.Dialogs;
+import IHM.utils.FileUtil;
+
 /**
  * The Class ProfileController.
  */
 public class ProfileController implements Initializable {
 
-	/** The profile. */
+	/**
+	 * The profile.
+	 */
 	@FXML
 	private TitledPane profile;
 
-	/** The nickname. */
+	/**
+	 * The nickname.
+	 */
 	@FXML
 	private Label nickname;
 
-	/** The avatar path. */
+	/**
+	 * The avatar path.
+	 */
 	@FXML
 	private TextField avatarPath;
 
-	/** The change avatar button. */
+	/**
+	 * The change avatar button.
+	 */
 	@FXML
 	private Button changeAvatar;
 
-	/** The lastname. */
+	/**
+	 * The lastname.
+	 */
 	@FXML
 	private TextField lastname;
 
-	/** The firstname. */
+	/**
+	 * The firstname.
+	 */
 	@FXML
 	private TextField firstname;
 
-	/** The birthdate. */
+	/**
+	 * The birthdate.
+	 */
 	@FXML
 	private TextField birthdate;
 
-	/** The new ip. */
+	/**
+	 * The new ip.
+	 */
 	@FXML
 	private TextField newIP;
 
-	/** The validate new ip. */
+	/**
+	 * The validate new ip.
+	 */
 	@FXML
 	private Button validateNewIP;
 
-	/** The ok button. */
+	/**
+	 * The ok button.
+	 */
 	@FXML
 	private Button okButton;
 
-	/** The cancel button. */
+	/**
+	 * The cancel button.
+	 */
 	@FXML
 	private Button cancelButton;
 
-	/** The avatar. */
+	/**
+	 * The avatar.
+	 */
 	@FXML
 	private ImageView avatar;
 
-	/** The list view. */
+	/**
+	 * The list view.
+	 */
 	@FXML
 	private ListView<String> listView;
 
-	/** The remove button. */
+	/**
+	 * The remove button.
+	 */
 	@FXML
 	private Button removeButton;
-	
-	/** The IP panel. */
+
+	/**
+	 * The IP panel.
+	 */
 	@FXML
 	private TitledPane IPPanel;
-	
-	/** The application. */
+
+	/**
+	 * The application.
+	 */
 	private MainController application;
 
-	/** The user nick name. */
-	private String userFirstName, userLastName, userAvatar, userBirthDate,
-			userNickName;
+	/**
+	 * The user nick name.
+	 */
+	private String userFirstName, userLastName, userBirthDate,
+	userNickName;
 
-	/** The default value. */
+	/**
+	 * The use image.
+	 */
+	private Image userAvatar;
+
+	/**
+	 * The default value.
+	 */
 	private String defaultValue = "Unknown";
 
-	/** The user ip. */
+	/**
+	 * The user ip.
+	 */
 	private List<String> userIP;
 
-	/** The user. */
+	/**
+	 * The user.
+	 */
 	private User user;
 
-	/** The editable. */
+	/**
+	 * The editable.
+	 */
 	private boolean editable = false;
-	
+
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
@@ -130,72 +181,71 @@ public class ProfileController implements Initializable {
 			removeButton.setVisible(false);
 			okButton.setVisible(false);
 			changeAvatar.setVisible(false);
-            avatarPath.setDisable(true);
-            avatarPath.getStyleClass().add("txtfield-disabled");
-            lastname.setDisable(true);
-            lastname.getStyleClass().add("txtfield-disabled");
-            firstname.setDisable(true);
-            firstname.getStyleClass().add("txtfield-disabled");
-            birthdate.setDisable(true);
-            birthdate.getStyleClass().add("txtfield-disabled");
+			avatarPath.setDisable(true);
+			avatarPath.getStyleClass().add("txtfield-disabled");
+			lastname.setDisable(true);
+			lastname.getStyleClass().add("txtfield-disabled");
+			firstname.setDisable(true);
+			firstname.getStyleClass().add("txtfield-disabled");
+			birthdate.setDisable(true);
+			birthdate.getStyleClass().add("txtfield-disabled");
 		}
 		getUserInfos();
 		displayUserInfo();
 		removeButton.setDisable(true);
 		listView.getSelectionModel().selectedItemProperty()
-				.addListener(new ChangeListener<String>() {
-					@Override
-					public void changed(final ObservableValue<? extends String> arg0,
-							final String arg1, final String arg2) {
-						removeButton.setDisable(false);
-					}
-				});
+		.addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(final ObservableValue<? extends String> arg0,
+					final String arg1, final String arg2) {
+				removeButton.setDisable(false);
+			}
+		});
 	}
 
 	/**
 	 * Gets the user infos.
-	 *
 	 */
 	public void getUserInfos() {
 		try {
 			userLastName = user.getLastname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.INFO,
-							"Lastname is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO,
+					"Lastname is empty or original value cannot be retrieved, changes will not be persisted");
 			this.userLastName = defaultValue;
 		}
 		try {
 			userFirstName = user.getFirstname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.INFO,
-							"Fistname is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO,
+					"Fistname is empty or original value cannot be retrieved, changes will not be persisted");
 			userFirstName = defaultValue;
 		}
 		try {
 			userBirthDate = user.getBirthDate();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.INFO,
-							"Birthdate is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO,
+					"Birthdate is empty or original value cannot be retrieved, changes will not be persisted");
 			userBirthDate = defaultValue;
 		}
 
 		try {
-			userAvatar = user.getAvatar();
+			userAvatar = user.getAvatarImageObject();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.INFO,
-							"Avatar path is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO,
+					"Avatar path is empty or original value cannot be retrieved, changes will not be persisted");
 		}
 
 		try {
 			userNickName = user.getLogin();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.INFO,
-							"Login is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO,
+					"Login is empty or original value cannot be retrieved, changes will not be persisted");
 			userNickName = defaultValue;
 		}
 		userIP = new ArrayList<String>();
@@ -204,8 +254,8 @@ public class ProfileController implements Initializable {
 			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-					.log(Level.INFO,
-							"List of addresses is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO,
+					"List of addresses is empty or original value cannot be retrieved, changes will not be persisted");
 		}
 
 	}
@@ -227,23 +277,23 @@ public class ProfileController implements Initializable {
 	private boolean isEditable() {
 		return editable;
 	}
-	
+
 	/**
 	 * Display Avatar picker and persists data.
 	 */
 	public void avatarPicker() {
-		File f = null;
 		try {
-			f = FileUtil.chooseFile();
+			File f = FileUtil.chooseFile();
 			Image image = new Image(f.toURI().toString());
 			avatar.setImage(image);
 			avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
 			if (isEditable()) {
-				application.currentUser().setAvatar(avatarPath.getText());
+				application.getIHMtoDATA().addAvatar(avatarPath.getText());
 			}
 			Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
 					"Avatar changed");
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -256,7 +306,8 @@ public class ProfileController implements Initializable {
 		this.lastname.setText(this.userLastName);
 		this.firstname.setText(this.userFirstName);
 		this.birthdate.setText(this.userBirthDate);
-		this.avatarPath.setText(this.userAvatar);
+		// TODO: CHANGE THIS
+		this.avatarPath.setText("MIAOU");
 		displayIPAddressesList();
 	}
 
@@ -265,10 +316,7 @@ public class ProfileController implements Initializable {
 	 */
 	private void displayUserAvatar() {
 		try {
-			String userAvatarPath = userAvatar;
-			File file = new File(userAvatarPath);
-			Image image = new Image(file.toURI().toString());
-			avatar.setImage(image);
+			avatar.setImage(userAvatar);
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
 					Level.SEVERE, "Unknown User avatar");
@@ -316,7 +364,7 @@ public class ProfileController implements Initializable {
 		int selectedId = listView.getSelectionModel().getSelectedIndex();
 		if (selectedId != -1) {
 			int newSelectedId = (selectedId == listView.getItems().size() - 1)
-                    ? selectedId - 1 : selectedId;
+					? selectedId - 1 : selectedId;
 			listView.getItems().remove(selectedId);
 			listView.getSelectionModel().select(newSelectedId);
 			userIP.remove(listView.getItems().get(selectedId));
@@ -347,8 +395,8 @@ public class ProfileController implements Initializable {
 	 */
 	private void persistUserInfoChanges() {
 		if (!isEditable()) {
-            return;
-        }
+			return;
+		}
 		try {
 			application.currentUser().setBirthDate(birthdate.getText());
 			application.currentUser().setFirstname(firstname.getText());
@@ -372,15 +420,16 @@ public class ProfileController implements Initializable {
 		if (userBirthDate == null) {
 			userLastName = "";
 		}
+		// TODO: CHECK THIS
 		if (userAvatar == null) {
-			userAvatar = "";
+			userAvatar = null;
 		}
 	}
 
 	/**
 	 * On cancel: return to main window.
 	 */
-    @FXML
+	@FXML
 	private void onCancel() {
 		((Stage) profile.getScene().getWindow()).close();
 	}
@@ -388,8 +437,8 @@ public class ProfileController implements Initializable {
 	/**
 	 * On ok: persists changes if needed, then return to main window.
 	 */
-    @FXML
-    public void onOK() {
+	@FXML
+	public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {
 			boolean response = Dialogs
@@ -397,19 +446,19 @@ public class ProfileController implements Initializable {
 			if (response) {
 				persistUserInfoChanges();
 				((Stage) profile.getScene().getWindow()).close();
-                return;
+				return;
 			}
 		}
-        ((Stage) profile.getScene().getWindow()).close();
+		((Stage) profile.getScene().getWindow()).close();
 	}
 
-    public void exportProfile() {
-        try {
-            application.getIHMtoDATA().export();
-            Dialogs.showInformationDialog("Profil exporté.");
-        } catch (IOException e) {
-            Dialogs.showErrorDialog("Erreur durant l'export du profil.");
-            e.printStackTrace();
-        }
-    }
+	public void exportProfile() {
+		try {
+			application.getIHMtoDATA().export();
+			Dialogs.showInformationDialog("Profil exporté.");
+		} catch (IOException e) {
+			Dialogs.showErrorDialog("Erreur durant l'export du profil.");
+			e.printStackTrace();
+		}
+	}
 }

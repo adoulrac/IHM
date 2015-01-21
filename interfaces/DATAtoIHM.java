@@ -9,16 +9,17 @@ import java.util.List;
  * Interface DATA uses to call IHM with asynchronous results.
  * queryId the id of the query if the result was previously requested by IHM, -1 if not.
  */
-public interface DATAtoIHM
-{
+public interface DATAtoIHM {
     /**
      * Receive a notification of connection.
+     *
      * @param user the user connected.
      */
     public void receiveConnectedUser(User user);
 
     /**
      * Receive a notification of unconnection.
+     *
      * @param user the user unconnected.
      */
     public void receiveUnconnectedUser(User user);
@@ -35,7 +36,7 @@ public interface DATAtoIHM
      * Send back the list of pictures requested.
      *
      * @param pictures the list of pictures requested.
-     * @param queryId the query id
+     * @param queryId  the query id
      */
     public void receivePictures(List<Picture> pictures, int queryId);
 
@@ -49,7 +50,7 @@ public interface DATAtoIHM
     /**
      * Receive a friend response by another user.
      *
-     * @param user the other user who sent the request.
+     * @param user     the other user who sent the request.
      * @param response the response
      */
     public void receiveFriendResponse(User user, boolean response);

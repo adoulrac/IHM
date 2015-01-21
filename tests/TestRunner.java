@@ -1,4 +1,5 @@
 package IHM.tests;
+
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
  * Entry point for running tests.
  */
 public class TestRunner {
-    
+
     /**
      * The main method.
      *

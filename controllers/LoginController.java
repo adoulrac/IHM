@@ -24,15 +24,21 @@ import java.util.logging.Logger;
  */
 public class LoginController extends Pane implements Initializable {
 
-    /** The login. */
+    /**
+     * The login.
+     */
     @FXML
     TextField login;
-    
-    /** The password. */
+
+    /**
+     * The password.
+     */
     @FXML
     PasswordField password;
 
-    /** The application. */
+    /**
+     * The application.
+     */
     private MainController application;
 
     /* (non-Javadoc)
@@ -48,16 +54,17 @@ public class LoginController extends Pane implements Initializable {
      */
     public void build() {
         EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent keyEvent) {
+            @Override
+            public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-                   login();
+                    login();
                 }
             }
-    	};
+        };
         login.setOnKeyPressed(eventHandler);
         password.setOnKeyPressed(eventHandler);
     }
+
     /**
      * Login.
      */
@@ -65,7 +72,7 @@ public class LoginController extends Pane implements Initializable {
         String loginText = login.getText();
         String passwordText = password.getText();
 
-        if(ValidatorHelper.validateString(loginText) &&
+        if (ValidatorHelper.validateString(loginText) &&
                 ValidatorHelper.validateString(passwordText)
                 && application.getIHMtoDATA().login(loginText, passwordText)) {
             openApplication();
@@ -93,7 +100,7 @@ public class LoginController extends Pane implements Initializable {
      */
     private void openApplication() {
         User user = application.getIHMtoDATA().getCurrentUser();
-        if(user != null) {
+        if (user != null) {
             Logger.getLogger(LoginController.class.getName()).log(Level.INFO, "User " + user.getLogin() + " has logged in.");
             application.setCurrentUser(user);
             application.openWelcome();
@@ -115,7 +122,7 @@ public class LoginController extends Pane implements Initializable {
      *
      * @param application the new app
      */
-    public void setApp(MainController application){
+    public void setApp(MainController application) {
         this.application = application;
     }
 }

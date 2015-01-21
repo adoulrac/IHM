@@ -14,7 +14,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(JUnit4.class)
 public class IPAddressValidatorTest {
 
-    /** The tester. */
+    /**
+     * The tester.
+     */
     IPAddressValidator tester = new IPAddressValidator();
 
     /**

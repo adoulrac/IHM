@@ -6,24 +6,29 @@ import java.util.regex.Pattern;
 /*
  * 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter
  */
+
 /**
  * The Class PasswordValidator.
  */
 public class PasswordValidator extends SimpleStringValidator {
 
-    /** The pattern. */
-    private Pattern pattern;
-
-    /** The matcher. */
-    private Matcher matcher;
-
-    /** The Constant MESSAGE. */
+    /**
+     * The Constant MESSAGE.
+     */
     public static final String MESSAGE = "Mot de passe incorrect: 6 et 20 caractères avec ua moins 1 chiffre, 1 majuscule, 1 minuscule et 1 caractère spécial.";
-
-
-    /** The Constant PASSWORD_PATTERN. */
+    /**
+     * The Constant PASSWORD_PATTERN.
+     */
     private static final String PASSWORD_PATTERN =
             "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
+    /**
+     * The pattern.
+     */
+    private Pattern pattern;
+    /**
+     * The matcher.
+     */
+    private Matcher matcher;
 
     /**
      * Instantiates a new password validator.
@@ -39,8 +44,8 @@ public class PasswordValidator extends SimpleStringValidator {
      * @return true valid password, false invalid password
      */
     @Override
-    public boolean validate(final String password){
-        if(!super.validate(password)) {
+    public boolean validate(final String password) {
+        if (!super.validate(password)) {
             return false;
         }
         matcher = pattern.matcher(password);

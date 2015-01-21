@@ -8,9 +8,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * The Class AllTests.
  */
 @RunWith(Suite.class)
-@SuiteClasses({ IPAddressValidatorTest.class,
-                LoginValidatorTest.class,
-                PasswordValidatorTest.class })
+@SuiteClasses({IPAddressValidatorTest.class,
+        LoginValidatorTest.class,
+        PasswordValidatorTest.class})
 public class AllTests {
 
 }

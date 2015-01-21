@@ -10,29 +10,18 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    /** The main. */
+    /**
+     * The main.
+     */
     private static MainController main;
 
-	/**
-	 * The main method.
-	 *
-	 * @param args            the command line arguments
-	 */
-	public static void main(String[] args) {
-		Application.launch(Main.class, (java.lang.String[]) null);
-	}
-
     /**
-     * Start.
+     * The main method.
      *
-     * @param primaryStage the primary stage
+     * @param args the command line arguments
      */
-    @Override
-    public void start(Stage primaryStage) {
-        main = new MainController(primaryStage);
-        if(main != null) {
-            main.instanciateInterfaces();
-        }
+    public static void main(String[] args) {
+        Application.launch(Main.class, (java.lang.String[]) null);
     }
 
     /**
@@ -42,5 +31,18 @@ public class Main extends Application {
      */
     public static DATAtoIHM getDATAtoIHMimpl() {
         return main.getDATAInterfaceReceiver();
+    }
+
+    /**
+     * Start.
+     *
+     * @param primaryStage the primary stage
+     */
+    @Override
+    public void start(Stage primaryStage) {
+        main = new MainController(primaryStage);
+        if (main != null) {
+            main.instanciateInterfaces();
+        }
     }
 }
