@@ -46,12 +46,6 @@ public class ProfileController implements Initializable {
 	private Label nickname;
 
 	/**
-	 * The avatar path.
-	 */
-	@FXML
-	private TextField avatarPath;
-
-	/**
 	 * The change avatar button.
 	 */
 	@FXML
@@ -181,8 +175,6 @@ public class ProfileController implements Initializable {
 			removeButton.setVisible(false);
 			okButton.setVisible(false);
 			changeAvatar.setVisible(false);
-			avatarPath.setDisable(true);
-			avatarPath.getStyleClass().add("txtfield-disabled");
 			lastname.setDisable(true);
 			lastname.getStyleClass().add("txtfield-disabled");
 			firstname.setDisable(true);
@@ -286,9 +278,8 @@ public class ProfileController implements Initializable {
 			File f = FileUtil.chooseFile();
 			Image image = new Image(f.toURI().toString());
 			avatar.setImage(image);
-			avatarPath.setText(f.toURI().toString().replaceFirst("file:/", ""));
 			if (isEditable()) {
-				application.getIHMtoDATA().addAvatar(avatarPath.getText());
+				application.getIHMtoDATA().addAvatar(f.toURI().toString());
 			}
 			Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
 					"Avatar changed");
@@ -306,8 +297,6 @@ public class ProfileController implements Initializable {
 		this.lastname.setText(this.userLastName);
 		this.firstname.setText(this.userFirstName);
 		this.birthdate.setText(this.userBirthDate);
-		// TODO: CHANGE THIS
-		this.avatarPath.setText("MIAOU");
 		displayIPAddressesList();
 	}
 
