@@ -9,7 +9,11 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -50,7 +54,7 @@ public class RulesController implements Initializable {
     private MainController application;
 
     /**
-     * The picture (to be ruled)
+     * The picture (to be ruled).
      */
     private Picture picture;
 
@@ -59,16 +63,19 @@ public class RulesController implements Initializable {
      */
     private List<RuleHBoxCell> groupsRules;
 
+    /**
+     * The checkbox to select all.
+     */
     @FXML
     private HBox checkAll;
 
     /**
      * Sets the app.
      *
-     * @param application the new app
+     * @param app the new app
      */
-    public void setApp(MainController application) {
-        this.application = application;
+    public final void setApp(final MainController app) {
+        this.application = app;
     }
 
     /**
@@ -76,17 +83,20 @@ public class RulesController implements Initializable {
      *
      * @param p the picture
      */
-    public void setPicture(Picture p) {
+    private void setPicture(final Picture p) {
         this.picture = p;
     }
 
-    /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+    /*
+     * (non-Javadoc)
+     * @see javafx.fxml.Initializable#initialize
+     * (java.net.URL, java.util.ResourceBundle)
      */
     @FXML
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
         checkAll.toFront();
-        checkAll.setSpacing(20);
+        final int spacing = 20;
+        checkAll.setSpacing(spacing);
 
         final CheckBox checkAllComment = new CheckBox();
         final CheckBox checkAllView = new CheckBox();
@@ -121,7 +131,8 @@ public class RulesController implements Initializable {
 
         Label label = new Label("Groupes: ");
         label.setTextFill(Color.WHITE);
-        label.setPrefWidth(305);
+        final int prefWidth = 305;
+        label.setPrefWidth(prefWidth);
         checkAll.getChildren().addAll(label, checkAllView, checkAllComment, checkAllRate);
     }
 
@@ -162,8 +173,8 @@ public class RulesController implements Initializable {
             rules.add(ruleBox.getRule());
         }
 
-        picture.setListRules(rules);
-        application.getIHMtoDATA().updatePicture(picture);
+        picture.setListRules( rules );
+        application.getIHMtoDATA().updatePicture( picture );
 
         ((Stage) manageRules.getScene().getWindow()).close();
     }
