@@ -287,7 +287,8 @@ public class ProfileController implements Initializable {
 			Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
 					"Avatar changed");
 		} catch (Exception e) {
-			e.printStackTrace();
+            Logger.getLogger(ProfileController.class.getName())
+                    .log(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -454,7 +455,6 @@ public class ProfileController implements Initializable {
 			Dialogs.showInformationDialog("Profil exporté.");
 		} catch (IOException e) {
 			Dialogs.showErrorDialog("Erreur durant l'export du profil.");
-			e.printStackTrace();
 		}
 	}
 }
