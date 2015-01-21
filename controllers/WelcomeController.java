@@ -68,7 +68,8 @@ public class WelcomeController implements Initializable {
 	}
 
 	/* (non-Javadoc)
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	 * @see javafx.fxml.Initializable#initialize
+	 * (java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(final URL url, final ResourceBundle resourceBundle) {
@@ -87,7 +88,7 @@ public class WelcomeController implements Initializable {
 	/**
 	 * Launch preferences view.
 	 */
-	public void launchPreferences() {
+	public final void launchPreferences() {
 		if (application != null) {
 			application.goToProfile(application.currentUser());
 		}
@@ -96,7 +97,7 @@ public class WelcomeController implements Initializable {
 	/**
 	 * Launch groups view.
 	 */
-	public void launchGroups() {
+	public final void launchGroups() {
 		if (application != null) {
 			application.goToGroups();
 		}
@@ -105,13 +106,14 @@ public class WelcomeController implements Initializable {
 	/**
 	 * Handles the user logout.
 	 */
-	public void logout() {
+	public final void logout() {
 		try {
 			if (application.currentUser() != null) {
 				application.getIHMtoDATA().logout();
 			}
 		} catch (IOException e) {
-			Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Error in disconnecting the user.");
+			Logger.getLogger(WelcomeController.class.getName())
+                    .log(Level.SEVERE, "Error in disconnecting the user.");
 		}
 		application.userLogout();
 	}
@@ -119,7 +121,7 @@ public class WelcomeController implements Initializable {
 	/**
 	 * Builds the main components of the welcome view.
 	 */
-	public void build() {
+	public final void build() {
 		if (application.currentUser() != null) {
 			if (application.currentUser().getAvatar() != null) {
 				Image f = application.currentUser().getAvatarImageObject();
@@ -132,7 +134,8 @@ public class WelcomeController implements Initializable {
 					avatarUser.setCache(true);
 				}
 			}
-			lblUserName.setText(" Connecté (" + application.currentUser().getLogin() + ")");
+			lblUserName.setText(" Connecté ("
+                    + application.currentUser().getLogin() + ")");
 		}
 
 		// Build Pictures interface
@@ -140,7 +143,8 @@ public class WelcomeController implements Initializable {
 			tabbedPicturesSubController.setApp(application);
 			tabbedPicturesSubController.build();
 		} else {
-			Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Pictures controller is null.");
+			Logger.getLogger(WelcomeController.class.getName())
+                    .log(Level.SEVERE, "Pictures controller is null.");
 		}
 
 		// Build Friends interface
@@ -148,10 +152,12 @@ public class WelcomeController implements Initializable {
 			friendsSubController.setApp(application);
 			friendsSubController.build();
 		} else {
-			Logger.getLogger(WelcomeController.class.getName()).log(Level.SEVERE, "Friends sub controller is null.");
+			Logger.getLogger(WelcomeController.class.getName())
+                    .log(Level.SEVERE, "Friends sub controller is null.");
 		}
 
-		welcome.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+		welcome.getScene().getWindow()
+                .setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(final WindowEvent windowEvent) {
 				logout();
@@ -162,13 +168,15 @@ public class WelcomeController implements Initializable {
 	/**
 	 * Saves the modifications.
 	 */
-	public void saveChanges() {
+	public final void saveChanges() {
 		try {
 			application.getIHMtoDATA().save();
 			Dialogs.showInformationDialog("Profil sauvegardé.");
 		} catch (IOException e) {
-			Dialogs.showErrorDialog("Erreur durant la sauvegarde du profil.");
-			e.printStackTrace();
+			Dialogs.showErrorDialog("Erreur"
+                    + " durant la sauvegarde du profil.");
+            Logger.getLogger(WelcomeController.class.getName())
+                    .log(Level.SEVERE, "Error in saving the profile.");
 		}
 	}
 
@@ -177,7 +185,7 @@ public class WelcomeController implements Initializable {
 	 *
 	 * @return the friends sub controller
 	 */
-	public FriendsSubController getFriendsSubController() {
+	public final FriendsSubController getFriendsSubController() {
 		return friendsSubController;
 	}
 
@@ -186,7 +194,7 @@ public class WelcomeController implements Initializable {
 	 *
 	 * @return the tabbed pictures sub controller
 	 */
-	public TabbedPicturesSubController getTabbedPicturesSubController() {
+	public final TabbedPicturesSubController getTabbedPicturesSubController() {
 		return tabbedPicturesSubController;
 	}
 }

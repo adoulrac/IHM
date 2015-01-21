@@ -28,13 +28,13 @@ public class LoginController extends Pane implements Initializable {
      * The login.
      */
     @FXML
-    TextField login;
+    private TextField login;
 
     /**
      * The password.
      */
     @FXML
-    PasswordField password;
+    private PasswordField password;
 
     /**
      * The application.
@@ -42,20 +42,21 @@ public class LoginController extends Pane implements Initializable {
     private MainController application;
 
     /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     * @see javafx.fxml.Initializable#initialize
+     * (java.net.URL, java.util.ResourceBundle)
      */
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(final URL location, final ResourceBundle resources) {
         //NOP
     }
 
     /**
      * Build: adds listener to Enter key.
      */
-    public void build() {
+    public final void build() {
         EventHandler<KeyEvent> eventHandler = new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent keyEvent) {
+            public void handle(final KeyEvent keyEvent) {
                 if (keyEvent.getCode().equals(KeyCode.ENTER)) {
                     login();
                 }
@@ -68,30 +69,34 @@ public class LoginController extends Pane implements Initializable {
     /**
      * Login.
      */
-    public void login() {
+    public final void login() {
         String loginText = login.getText();
         String passwordText = password.getText();
 
-        if (ValidatorHelper.validateString(loginText) &&
-                ValidatorHelper.validateString(passwordText)
+        if (ValidatorHelper.validateString(loginText)
+                && ValidatorHelper.validateString(passwordText)
                 && application.getIHMtoDATA().login(loginText, passwordText)) {
             openApplication();
         } else {
-            Dialogs.showInformationDialog("Login failed, please check if your password and login are correct.");
+            Dialogs.showInformationDialog("Login failed, "
+                    + "please check if your password and login are correct.");
         }
     }
 
     /**
      * Load profile.
      */
-    public void loadProfile() {
+    public final void loadProfile() {
         File profileFile = FileUtil.chooseFile();
         try {
             application.getIHMtoDATA().import_(profileFile.getAbsolutePath());
             openApplication();
         } catch (Exception e) {
-            Dialogs.showErrorDialog("Error in loading the profile file");
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Erreur durant le chargement du profil.");
+            Dialogs.showErrorDialog("Error "
+                    + "in loading the profile file");
+            Logger.getLogger(LoginController.class.getName())
+                    .log(Level.SEVERE, "Erreur"
+                            + " durant le chargement du profil.");
         }
     }
 
@@ -101,28 +106,32 @@ public class LoginController extends Pane implements Initializable {
     private void openApplication() {
         User user = application.getIHMtoDATA().getCurrentUser();
         if (user != null) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.INFO, "User " + user.getLogin() + " has logged in.");
+            Logger.getLogger(LoginController.class.getName())
+                    .log(Level.INFO, "User "
+                    + user.getLogin() + " has logged in.");
             application.setCurrentUser(user);
             application.openWelcome();
         } else {
             Dialogs.showErrorDialog("Error while loading the current user");
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Erreur durant le chargement de l'utilisateur");
+            Logger.getLogger(LoginController.class.getName())
+                    .log(Level.SEVERE, "Erreur "
+                            + "durant le chargement de l'utilisateur");
         }
     }
 
     /**
      * Register.
      */
-    public void register() {
+    public final void register() {
         application.goToRegister();
     }
 
     /**
      * Sets the app.
      *
-     * @param application the new app
+     * @param app the new app
      */
-    public void setApp(MainController application) {
-        this.application = application;
+    public final void setApp(final MainController app) {
+        this.application = app;
     }
 }
