@@ -49,10 +49,11 @@ public class RegisterController implements Initializable {
     private TextArea ips;
 
     /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     * @see javafx.fxml.Initializable#initialize
+     * (java.net.URL, java.util.ResourceBundle)
      */
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(final URL url, final ResourceBundle resourceBundle) {
         //NOP
     }
 
@@ -73,29 +74,35 @@ public class RegisterController implements Initializable {
         String ipsText = ips.getText();
 
         if (!ValidatorHelper.validateString(loginText)) {
-            Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE + " Please check your login.");
+            Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE
+                    + " Please check your login.");
             return;
         }
 
-        if (passwordText == null || confirmText == null || !passwordText.equals(confirmText)) {
+        if (passwordText == null
+                || confirmText == null
+                || !passwordText.equals(confirmText)) {
             Dialogs.showInformationDialog("Password are different.");
             return;
         }
 
         if (!ValidatorHelper.validateString(passwordText)) {
-            Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE + " Please check your password.");
+            Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE
+                    + " Please check your password.");
             return;
         }
 
         if (!ValidatorHelper.validateIPs(ipsText)) {
-            Dialogs.showInformationDialog("Invalid IP Addresses. Please check the IP format.");
+            Dialogs.showInformationDialog("Invalid IP Addresses."
+                    + " Please check the IP format.");
             return;
         }
 
         User userToAdd = new User();
         userToAdd.setLogin(loginText);
         userToAdd.setPassword(passwordText);
-        userToAdd.setListIP(StringUtil.toList(ipsText, StringUtil.SYSTEM_SEPARATOR));
+        userToAdd.setListIP(StringUtil.toList(ipsText,
+                StringUtil.SYSTEM_SEPARATOR));
 
         application.getIHMtoDATA().signup(userToAdd);
         User user = application.getIHMtoDATA().getCurrentUser();
@@ -108,10 +115,10 @@ public class RegisterController implements Initializable {
     /**
      * Sets the app.
      *
-     * @param application the new app
+     * @param app the new app
      */
-    public void setApp(MainController application) {
-        this.application = application;
+    public void setApp(final MainController app) {
+        this.application = app;
     }
 
 }

@@ -1,7 +1,11 @@
 package IHM.controllers;
 
 import DATA.exceptions.BadInformationException;
-import DATA.model.*;
+import DATA.model.Picture;
+import DATA.model.Comment;
+import DATA.model.Note;
+import DATA.model.Tag;
+import DATA.model.User;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
@@ -15,10 +19,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Tab;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -34,13 +48,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class PictureController.
  */
 public class PictureController extends Tab implements Initializable {
+
+    /**
+     * The avatar size.
+     */
     private static final int AVATAR_SIZE = 50;
 
+    /**
+     * The maximum length of the title.
+     */
     private static final int MAX_TITLE_LENGTH = 65;
 
     /**
@@ -74,7 +97,7 @@ public class PictureController extends Tab implements Initializable {
     private Text shareTxt;
 
     /**
-     * The name of the file
+     * The name of the file.
      */
     private TextArea pictureName;
 
@@ -163,35 +186,57 @@ public class PictureController extends Tab implements Initializable {
      */
     private Button sendBtn;
 
+    /**
+     * The edition of description button.
+     */
     private Button descEditBtn;
 
+    /**
+     * The validation of description button.
+     */
     private Button validateDescBtn;
 
+    /**
+     * The description text area.
+     */
     private TextArea editDescTxt;
 
+    /**
+     * The edition of tages button.
+     */
     private Button tagsEditBtn;
 
+    /**
+     * The edition of tags text.
+     */
     private TextField tagsEditTxt;
 
+    /**
+     * The validation of tags button.
+     */
     private Button tagsValidateBtn;
 
+    /**
+     * The current request ID.
+     */
     private Integer currentRequestId;
 
     /**
      * Instantiates a new picture controller.
      *
-     * @param picture the picture
-     * @param app     the app
+     * @param pic the picture
+     * @param application    the app
      */
-    public PictureController(Picture picture, MainController app) {
-        super(FileUtil.getFilenameFromPath(picture.getFilename()));
+    public PictureController(final Picture pic, final MainController application) {
+        super(FileUtil.getFilenameFromPath(pic.getFilename()));
 
-        this.app = app;
-        this.picture = picture;
-        this.currentRequestId = app.addRequest(this);
+        this.app = application;
+        this.picture = pic;
+        this.currentRequestId = application.addRequest(this);
 
         build();
-        app.getIHMtoDATA().getPictureById(this.picture.getUid(), currentRequestId);
+        application.getIHMtoDATA()
+                .getPictureById(this.picture.getUid(), currentRequestId);
     }
 
     /**
@@ -202,7 +247,7 @@ public class PictureController extends Tab implements Initializable {
      * @param fitWidth  the fit width
      * @param fitHeight the fit height
      */
-    private static void setImage(ImageView img, Image source, int fitWidth, int fitHeight) {
+    private static void setImage(final ImageView img, final Image source, final int fitWidth, final int fitHeight) {
         img.setImage(source);
         img.setFitWidth(fitWidth);
         img.setFitHeight(fitHeight);
@@ -224,7 +269,8 @@ public class PictureController extends Tab implements Initializable {
      */
     public void build() {
         ihm = new ScrollPane();
-        content = new VBox(8);
+        final double contentSize = 8.0;
+        content = new VBox(contentSize);
         avatarImg = new ImageView();
         shareTxt = new Text();
         pictureName = new TextArea();
@@ -261,11 +307,15 @@ public class PictureController extends Tab implements Initializable {
         } else {
             pictureName.setText(picture.getTitle());
         }
-        pictureName.setPrefSize(210, 70);
+
+        final int prefWidth = 210;
+        final int prefHeight = 70;
+        pictureName.setPrefSize(prefWidth, prefHeight);
         pictureName.setEditable(true);
         pictureName.setWrapText(true);
 
-        shareTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, 8));
+        final int fontSize = 8;
+        shareTxt.setFont(Font.font("Verdana", FontWeight.LIGHT, fontSize));
         shareTxt.setText("a partagé l'image");
         shareTxt.setTextAlignment(TextAlignment.JUSTIFY);
 
@@ -273,7 +323,7 @@ public class PictureController extends Tab implements Initializable {
         final PictureController current = this;
         refreshBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 app.removeRequest(currentRequestId);
                 currentRequestId = app.addRequest(current);
                 app.getIHMtoDATA().getPictureById(picture.getUid(), currentRequestId);
@@ -283,14 +333,15 @@ public class PictureController extends Tab implements Initializable {
         // Save button
         savePictureBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 savePictureLocally();
             }
         });
 
         Image img = picture.getImageObject();
         setImage(pictureImg, img, 300, 300);
-        FadeTransition ft = new FadeTransition(Duration.millis(3000), pictureImg);
+        final int duration = 3000;
+        FadeTransition ft = new FadeTransition(Duration.millis(duration), pictureImg);
         ft.setFromValue(0.);
         ft.setToValue(1.);
         ft.play();
@@ -303,7 +354,7 @@ public class PictureController extends Tab implements Initializable {
         descTxt.setText(picture.getDescription());
         descEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 editDescription(mouseEvent);
             }
         });
@@ -319,7 +370,7 @@ public class PictureController extends Tab implements Initializable {
         writeArea.setPromptText("Ecrire un commentaire...");
         sendBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 comment(mouseEvent);
             }
         });
@@ -327,7 +378,7 @@ public class PictureController extends Tab implements Initializable {
         //rules button
         rulesBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 launchRules();
             }
         });
@@ -359,7 +410,7 @@ public class PictureController extends Tab implements Initializable {
         pictureName.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable,
-                                String oldValue, String newValue) {
+                                final String oldValue, final String newValue) {
                 try {
                     // force correct length by resetting to old value if longer than maxLength
                     if (newValue.length() > MAX_TITLE_LENGTH) {
@@ -375,7 +426,7 @@ public class PictureController extends Tab implements Initializable {
         pictureName.setOnKeyReleased(new EventHandler<KeyEvent>() {
             final KeyCombination combo = new KeyCodeCombination(KeyCode.ENTER);
 
-            public void handle(KeyEvent t) {
+            public void handle(final KeyEvent t) {
                 if (combo.match(t)) {
                     // Prevents linebreaks
                     pictureName.setText(pictureName.getText().replace("\n", ""));
@@ -440,19 +491,26 @@ public class PictureController extends Tab implements Initializable {
     }
 
     private void savePictureLocally() {
-        String targetPath = FileUtil.chooseDirectory();
-        if (Strings.isNullOrEmpty(targetPath)) {
-            return;
-        }
-
         try {
-            byte[] pixels = picture.getPixels();
-            Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
-                    FileUtil.getFilenameFromPath(picture.getFilename()))));
-            Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
+            String targetPath = FileUtil.chooseDirectory();
+            if(Strings.isNullOrEmpty(targetPath)) {
+                return;
+            }
+
+            try {
+                byte[] pixels = picture.getPixels();
+                Files.write(pixels, new File(FileUtil.buildFullPath(targetPath,
+                        FileUtil.getFilenameFromPath(picture.getFilename()))));
+                Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
+            }
+
+        } catch (NullPointerException npe) {
+            Logger.getLogger(WelcomeController.class.getName())
+                    .log(Level.SEVERE, "Nothing selected.");
+            return;
         }
     }
 
@@ -470,7 +528,7 @@ public class PictureController extends Tab implements Initializable {
         voteField.setMaxWidth(30.0);
         voteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 vote(mouseEvent);
             }
         });
@@ -494,7 +552,7 @@ public class PictureController extends Tab implements Initializable {
             tagsEditTxt.setText(sb_tags.toString());
             tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
-                public void handle(MouseEvent mouseEvent) {
+                public void handle(final MouseEvent mouseEvent) {
                     editTags(mouseEvent);
                 }
             });
@@ -517,10 +575,10 @@ public class PictureController extends Tab implements Initializable {
         // Picture Title textarea style
         pictureName.getStyleClass().add("pic-title");
         pictureName.setStyle("-fx-background-insets: 0px ;");
-        pictureName.setStyle("-fx-text-fill: black;" +
-                "-fx-background-color: transparent;" +
-                "-fx-font-weight: bold;" +
-                "-fx-font-size: 20;");
+        pictureName.setStyle("-fx-text-fill: black;"
+                + "-fx-background-color: transparent;"
+                + "-fx-font-weight: bold;"
+                + "-fx-font-size: 20;");
     }
 
     /**
@@ -542,10 +600,10 @@ public class PictureController extends Tab implements Initializable {
     /**
      * Receive full image.
      *
-     * @param picture the picture
+     * @param pic the picture
      */
-    public void receiveFullImage(Picture picture) {
-        this.picture = picture;
+    public void receiveFullImage(final Picture pic) {
+        this.picture = pic;
         refreshAllComponents();
     }
 
@@ -554,7 +612,7 @@ public class PictureController extends Tab implements Initializable {
      *
      * @param mouseEvent the mouse event
      */
-    private void comment(MouseEvent mouseEvent) {
+    private void comment(final MouseEvent mouseEvent) {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
             if (mouseEvent.getClickCount() == 1) {
                 String msg = writeArea.getText();
@@ -620,9 +678,9 @@ public class PictureController extends Tab implements Initializable {
     /**
      * Edit Tags
      *
-     * @param mouseEvent
+     * @param mouseEvent the mouse event
      */
-    private void editTags(MouseEvent mouseEvent) {
+    private void editTags(final MouseEvent mouseEvent) {
         String str = tagsEditTxt.getText();
         List<Tag> tags = picture.getListTags();
         tags.removeAll(tags);
@@ -706,44 +764,51 @@ public class PictureController extends Tab implements Initializable {
         /**
          * The comment.
          */
-        public Comment comment;
+        private Comment comment;
         /**
          * The avatarImg of the comment author.
          */
-        public ImageView avatarImg = new ImageView();
+        private ImageView avatarImg;
         /**
          * The userTxt contains the name of the user and some metadata (date, etc.).
          */
-        public Text userTxt = new Text();
+        private Text userTxt;
         /**
          * Click to switch to edition mode. In edition mode, this button becomes the validate button.
          */
-        public Button editBtn = new Button("Editer");
+        private Button editBtn;
         /**
          * Click to delete comment. In edition, becomes cancel button.
          */
-        public Button delBtn = new Button("Supprimer");
+        private Button delBtn;
         /**
          * The commentTxt contains the text of the comment.
          */
-        public Text commentTxt = new Text();
+        private Text commentTxt;
         /**
-         * VBox that contains userTxt/buttons on first line and commentTxt on second line
+         * VBox that contains userTxt/buttons on first line and commentTxt on second line.
          */
-        VBox vb = new VBox(5);
+        private VBox vb;
         /**
          * The commentField replace the commentTxt when editing.
          */
-        private TextField commentField = new TextField();
+        private TextField commentField;
 
         /**
          * Instantiates a new comment pane.
          *
-         * @param comment the comment
+         * @param com the comment
          */
-        public CommentPane(Comment comment) {
+        public CommentPane(final Comment com) {
             super(10);
-            this.comment = comment;
+            this.comment = com;
+            avatarImg = new ImageView();
+            userTxt = new Text();
+            editBtn = new Button("Editer");
+            delBtn = new Button("Supprimer");
+            commentTxt = new Text();
+            vb = new VBox(5);
+            commentField = new TextField();
             build();
         }
 
@@ -772,8 +837,9 @@ public class PictureController extends Tab implements Initializable {
          * If called with true, switch the UI to edition mode.
          * If called with false, switch back to the displaying of the comment.
          * The method sets the correct behavior of the button callbacks, which calls the method itself to activate and deactivate edition mode.
+         * @param edition switch or not to edition mode
          */
-        private void switchEditionMode(boolean edition) {
+        private void switchEditionMode(final boolean edition) {
             final CommentPane current = this;
 
             if (edition) { // switch to edition mode
@@ -787,7 +853,7 @@ public class PictureController extends Tab implements Initializable {
                 editBtn.setText("Valider");
                 editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
+                    public void handle(final MouseEvent mouseEvent) {
                         try {
                             // Behavior when validating a comment modification (saving then switch back to display mode)
                             comment.setValue(commentField.getText());
@@ -803,7 +869,7 @@ public class PictureController extends Tab implements Initializable {
                 delBtn.setText("Annuler");
                 delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
+                    public void handle(final MouseEvent mouseEvent) {
                         // Behavior when canceling a comment modification (switch back to display mode)
                         switchEditionMode(false);
                     }
@@ -818,7 +884,7 @@ public class PictureController extends Tab implements Initializable {
                 editBtn.setText("Editer");
                 editBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
+                    public void handle(final MouseEvent mouseEvent) {
                         // Behavior when editing (switch edition mode)
                         switchEditionMode(true);
                     }
@@ -827,7 +893,7 @@ public class PictureController extends Tab implements Initializable {
                 delBtn.setText("Supprimer");
                 delBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
+                    public void handle(final MouseEvent mouseEvent) {
                         // Behavior when deleting (delete comment from PictureController)
                         deleteComment(current);
                     }

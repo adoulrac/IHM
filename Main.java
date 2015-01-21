@@ -39,7 +39,7 @@ public class Main extends Application {
      * @param primaryStage the primary stage
      */
     @Override
-    public void start(Stage primaryStage) {
+    public void start(final Stage primaryStage) {
         main = new MainController(primaryStage);
         if (main != null) {
             main.instanciateInterfaces();
