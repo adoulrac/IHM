@@ -143,7 +143,7 @@ public class RulesController implements Initializable {
     }
 
     public void loadRules(Picture p) {
-        picture = getStaticPicture(p);
+        picture = p;
         groupsRules = Lists.newArrayList();
         ObservableList<RuleHBoxCell> myObservableList = FXCollections.observableList(groupsRules);
 
@@ -177,14 +177,6 @@ public class RulesController implements Initializable {
         application.getIHMtoDATA().updatePicture( picture );
 
         ((Stage) manageRules.getScene().getWindow()).close();
-    }
-
-    // TODO delete this fuckin method
-    private Picture getStaticPicture(Picture p) {
-        p.setListRules(Arrays.asList(new Rule(true, true, true, p, new Group("Autres")),
-                new Rule(true, true, true, p, new Group("Amis"))
-        ));
-        return p;
     }
 
     /**
