@@ -18,7 +18,7 @@
                         text="OK"/>
                 <Button fx:id="cancelButton" layoutX="642.0" layoutY="430.0" mnemonicParsing="false"
                         onAction="#onCancel" text="Annuler"/>
-                <TitledPane fx:id="IPPanel" animated="false" layoutX="407.0" layoutY="17.0" prefHeight="408.0"
+                <TitledPane fx:id="ipPanel" animated="false" layoutX="407.0" layoutY="17.0" prefHeight="408.0"
                             prefWidth="318.0" text="Gestion des IPs ..." textFill="WHITE">
                     <content>
                         <AnchorPane fx:id="addressesPanel" minHeight="0.0" minWidth="0.0" prefHeight="322.0"

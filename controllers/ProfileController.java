@@ -115,7 +115,7 @@ public class ProfileController implements Initializable {
 	 * The IP panel.
 	 */
 	@FXML
-	private TitledPane IPPanel;
+	private TitledPane ipPanel;
 
 	/**
 	 * The application.
@@ -154,7 +154,8 @@ public class ProfileController implements Initializable {
 	private boolean editable = false;
 
 	/* (non-Javadoc)
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	 * @see javafx.fxml.Initializable#initialize
+	 * (java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(final URL url, final ResourceBundle resourceBundle) {
@@ -203,24 +204,26 @@ public class ProfileController implements Initializable {
 			userLastName = user.getLastname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO,
-					"Lastname is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Lastname is empty or "
+                    + "original value cannot be retrieved, "
+                    + "changes will not be persisted");
 			this.userLastName = defaultValue;
 		}
 		try {
 			userFirstName = user.getFirstname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO,
-					"Fistname is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Fistname is empty or "
+                    + "original value cannot be retrieved, "
+                    + "changes will not be persisted");
 			userFirstName = defaultValue;
 		}
 		try {
 			userBirthDate = user.getBirthDate();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO,
-					"Birthdate is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Birthdate is empty or original value "
+                    + "cannot be retrieved, changes will not be persisted");
 			userBirthDate = defaultValue;
 		}
 
@@ -228,16 +231,16 @@ public class ProfileController implements Initializable {
 			userAvatar = user.getAvatarImageObject();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO,
-					"Avatar path is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Avatar path is empty or original value "
+                    + "cannot be retrieved, changes will not be persisted");
 		}
 
 		try {
 			userNickName = user.getLogin();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO,
-					"Login is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Login is empty or original value "
+                    + "cannot be retrieved, changes will not be persisted");
 			userNickName = defaultValue;
 		}
 		userIP = new ArrayList<String>();
@@ -246,8 +249,8 @@ public class ProfileController implements Initializable {
 			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO,
-					"List of addresses is empty or original value cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "List of addresses is empty or original value"
+                    + " cannot be retrieved, changes will not be persisted");
 		}
 
 	}
@@ -430,8 +433,8 @@ public class ProfileController implements Initializable {
 	public void onOK() {
 		removeNullValues();
 		if (hasInfoChanged()) {
-			boolean response = Dialogs
-					.showConfirmationDialog("Voulez-vous sauvegarder vos changements ?");
+			boolean response = Dialogs.showConfirmationDialog(
+                    "Voulez-vous sauvegarder vos changements ?");
 			if (response) {
 				persistUserInfoChanges();
 				((Stage) profile.getScene().getWindow()).close();
@@ -441,6 +444,10 @@ public class ProfileController implements Initializable {
 		((Stage) profile.getScene().getWindow()).close();
 	}
 
+    /**
+     * Exports the profile.
+     *
+     */
 	public void exportProfile() {
 		try {
 			application.getIHMtoDATA().export();

@@ -32,12 +32,12 @@ public class MainController {
     /**
      * The Constant APP_NAME.
      */
-    private final static String APP_NAME = "PicShare";
+    private static final String APP_NAME = "PicShare";
 
     /**
      * The Constant CSS_PATH.
      */
-    private final static String CSS_PATH = "IHM/resources/picshare.css";
+    private static final String CSS_PATH = "IHM/resources/picshare.css";
 
     /**
      * The stage.
@@ -89,7 +89,7 @@ public class MainController {
      *
      * @param primaryStage the primary stage
      */
-    public MainController(Stage primaryStage) {
+    public MainController(final Stage primaryStage) {
         stage = primaryStage;
         currentId = 0;
         stage.setTitle(APP_NAME);
@@ -101,6 +101,9 @@ public class MainController {
         primaryStage.show();
     }
 
+    /**
+     * Initializes the interfaces.
+     */
     public void instanciateInterfaces() {
         dataInterfaceReceiver = new DATAtoIHMimpl(this);
         dataInterface = new IHMtoDATAImpl();
@@ -111,13 +114,15 @@ public class MainController {
      */
     public void goToLogin() {
         try {
-            LoginController login = (LoginController) replaceSceneContent("views/connexion.fxml");
+            LoginController login = (LoginController)
+                    replaceSceneContent("views/connexion.fxml");
             login.setApp(this);
             login.build();
             removeAllRequests(currentController);
             currentController = login;
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -126,12 +131,14 @@ public class MainController {
      */
     public void goToRegister() {
         try {
-            RegisterController register = (RegisterController) replaceSceneContent("views/inscription.fxml");
+            RegisterController register = (RegisterController)
+                    replaceSceneContent("views/inscription.fxml");
             register.setApp(this);
             removeAllRequests(currentController);
             currentController = register;
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -140,28 +147,33 @@ public class MainController {
      */
     public void goToGroups() {
         try {
-            GroupsController groups = (GroupsController) replaceSceneContent("views/gestion_groupes.fxml", true);
+            GroupsController groups = (GroupsController)
+                    replaceSceneContent("views/gestion_groupes.fxml", true);
             groups.setApp(this);
             groups.loadGroups();
             removeAllRequests(currentController);
             currentController = groups;
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
     /**
      * Go to rules view.
+     * @param p The picture referenced by the rules.
      */
-    public void goToRules(Picture p) {
+    public void goToRules(final Picture p) {
         try {
-            RulesController rules = (RulesController) replaceSceneContent("views/gestion_droits.fxml", true);
+            RulesController rules = (RulesController)
+                    replaceSceneContent("views/gestion_droits.fxml", true);
             rules.setApp(this);
             rules.loadRules(p);
             removeAllRequests(currentController);
             currentController = rules;
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -173,7 +185,7 @@ public class MainController {
      * @return the initializable
      * @throws Exception the exception
      */
-    private Initializable replaceSceneContent(String fxml, boolean isNewStage) throws Exception {
+    private Initializable replaceSceneContent(final String fxml, final boolean isNewStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         Scene scene = buildScene(fxml, loader);
         Stage currentStage = isNewStage ? new Stage() : stage;
@@ -196,7 +208,8 @@ public class MainController {
      * @return the initializable
      * @throws Exception the exception
      */
-    private Initializable replaceSceneContent(String fxml) throws Exception {
+    private Initializable replaceSceneContent(final String fxml)
+            throws Exception {
         return replaceSceneContent(fxml, false);
     }
 
@@ -208,7 +221,8 @@ public class MainController {
      * @return the scene
      * @throws Exception the exception
      */
-    private Scene buildScene(String fxml, FXMLLoader loader) throws Exception {
+    private Scene buildScene(final String fxml, final FXMLLoader loader)
+            throws Exception {
         InputStream in = Main.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
         loader.setLocation(Main.class.getResource(fxml));
@@ -224,22 +238,12 @@ public class MainController {
     }
 
     /**
-     * User logging.
-     *
-     * @param userId   the user id
-     * @param password the password
-     * @return true, if successful
-     */
-    public boolean userLogging(String userId, String password) {
-        return true;
-    }
-
-    /**
      * User logout.
      */
-    public void userLogout() {
-        for (Stage stage : newStages)
-            stage.close();
+    public final void userLogout() {
+        for (Stage vStage : newStages) {
+            vStage.close();
+        }
         resetCurrentUser();
         goToLogin();
     }
@@ -256,15 +260,17 @@ public class MainController {
      *
      * @param user the user
      */
-    public void goToProfile(User user) {
+    public void goToProfile(final User user) {
         try {
-            ProfileController profile = (ProfileController) replaceSceneContent("views/config.fxml", true);
+            ProfileController profile = (ProfileController)
+                    replaceSceneContent("views/config.fxml", true);
             profile.setApp(this);
             profile.build(user);
             removeAllRequests(currentController);
             currentController = profile;
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -279,7 +285,8 @@ public class MainController {
             welcomeController = welcome;
             removeAllRequests(welcomeController);
         } catch (Exception ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainController.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -289,7 +296,7 @@ public class MainController {
      * @param controller the controller
      * @return the integer
      */
-    public Integer addRequest(Initializable controller) {
+    public Integer addRequest(final Initializable controller) {
         if (controller == null) {
             return null;
         }
@@ -302,7 +309,7 @@ public class MainController {
      *
      * @param requestId the request id
      */
-    public void removeRequest(Integer requestId) {
+    public void removeRequest(final Integer requestId) {
         if (requestId != null) {
             requests.remove(requestId);
         }
@@ -311,10 +318,10 @@ public class MainController {
     /**
      * Sets the current user.
      *
-     * @param currentUser the new current user
+     * @param vCurrentUser the new current user
      */
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public void setCurrentUser(final User vCurrentUser) {
+        this.currentUser = vCurrentUser;
     }
 
     /**
@@ -349,11 +356,13 @@ public class MainController {
      *
      * @param controller the controller
      */
-    public void removeAllRequests(Initializable controller) {
+    public void removeAllRequests(final Initializable controller) {
         List<Parent> allControllers = new ArrayList<>();
         if (controller instanceof WelcomeController) {
-            allControllers.add(((WelcomeController) controller).getFriendsSubController());
-            allControllers.add(((WelcomeController) controller).getTabbedPicturesSubController());
+            allControllers.add(((WelcomeController) controller)
+                    .getFriendsSubController());
+            allControllers.add(((WelcomeController) controller)
+                    .getTabbedPicturesSubController());
         }
         for (Map.Entry item : requests.entrySet()) {
             if (allControllers.contains(item.getValue())) {
