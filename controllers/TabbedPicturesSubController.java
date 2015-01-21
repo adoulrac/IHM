@@ -527,7 +527,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             NoteHelper.getPictureAverage(picture, hBoxStars);
             lblVotes.setText("(" + picture.getListNotes().size() + " votes)");
             setCenter(imgView);
-            Label publisher = new Label("Posté par " + picture.getUser().getLogin());
+            Label publisher = new Label("Postée par " + picture.getUser().getLogin());
             VBox vBox = new VBox();
             vBox.getChildren().addAll(publisher, hBoxStars);
             vBox.setAlignment(Pos.CENTER);
