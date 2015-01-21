@@ -1,6 +1,5 @@
 package IHM.controllers;
 
-import DATA.model.Group;
 import DATA.model.Picture;
 import DATA.model.Rule;
 import com.google.common.collect.Lists;
@@ -21,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -70,6 +68,11 @@ public class RulesController implements Initializable {
     private HBox checkAll;
 
     /**
+     * The spacing between checkboxes.
+     */
+    private static final int SPACING = 20;
+
+    /**
      * Sets the app.
      *
      * @param app the new app
@@ -92,11 +95,10 @@ public class RulesController implements Initializable {
      * @see javafx.fxml.Initializable#initialize
      * (java.net.URL, java.util.ResourceBundle)
      */
-    @FXML
+    @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         checkAll.toFront();
-        final int spacing = 20;
-        checkAll.setSpacing(spacing);
+        checkAll.setSpacing(SPACING);
 
         final CheckBox checkAllComment = new CheckBox();
         final CheckBox checkAllView = new CheckBox();
@@ -104,7 +106,7 @@ public class RulesController implements Initializable {
 
         checkAllComment.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 for (RuleHBoxCell cell : groupsRules) {
                     cell.setCanComment(checkAllComment.isSelected());
                 }
@@ -113,7 +115,7 @@ public class RulesController implements Initializable {
 
         checkAllView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 for (RuleHBoxCell cell : groupsRules) {
                     cell.setCanView(checkAllView.isSelected());
                 }
@@ -122,7 +124,7 @@ public class RulesController implements Initializable {
 
         checkAllRate.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 for (RuleHBoxCell cell : groupsRules) {
                     cell.setCanRate(checkAllRate.isSelected());
                 }
@@ -133,31 +135,43 @@ public class RulesController implements Initializable {
         label.setTextFill(Color.WHITE);
         final int prefWidth = 305;
         label.setPrefWidth(prefWidth);
-        checkAll.getChildren().addAll(label, checkAllView, checkAllComment, checkAllRate);
+        checkAll.getChildren().addAll(label,
+                checkAllView, checkAllComment, checkAllRate);
     }
 
-    private void updateCells(boolean checked) {
+    /**
+     * Updates the cell.
+     *
+     * @param checked the value of the cell
+     */
+    private void updateCells(final boolean checked) {
         for (RuleHBoxCell cell : groupsRules) {
             cell.setCanComment(checked);
         }
     }
 
-    public void loadRules(Picture p) {
+    /**
+     * Loads the rules.
+     *
+     * @param p the Picture
+     */
+    public final void loadRules(final Picture p) {
         picture = p;
         groupsRules = Lists.newArrayList();
-        ObservableList<RuleHBoxCell> myObservableList = FXCollections.observableList(groupsRules);
+        ObservableList<RuleHBoxCell> myObservableList =
+                FXCollections.observableList(groupsRules);
 
         rules.setItems(myObservableList);
         rules.setEditable(true);
 
         // Add rules to the view
         for (Rule rule : picture.getListRules()) {
-            System.out.println("Creating rule");
             RuleHBoxCell cell = new RuleHBoxCell(rule);
             groupsRules.add(cell);
         }
 
-        manageRules.getScene().getWindow().setOnCloseRequest(new EventHandler<WindowEvent>() {
+        manageRules.getScene().getWindow()
+                .setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(final WindowEvent windowEvent) {
                 finish();
@@ -165,16 +179,19 @@ public class RulesController implements Initializable {
         });
     }
 
+    /**
+     * The user finishes his modifications.
+     */
     @FXML
     private void finish() {
         // Save rules
-        List<Rule> rules = Lists.newArrayList();
+        List<Rule> vRules = Lists.newArrayList();
         for (RuleHBoxCell ruleBox : groupsRules) {
-            rules.add(ruleBox.getRule());
+            vRules.add(ruleBox.getRule());
         }
 
-        picture.setListRules( rules );
-        application.getIHMtoDATA().updatePicture( picture );
+        picture.setListRules(vRules);
+        application.getIHMtoDATA().updatePicture(picture);
 
         ((Stage) manageRules.getScene().getWindow()).close();
     }
@@ -190,21 +207,35 @@ public class RulesController implements Initializable {
         private Rule rule;
 
         /**
-         * The label.
+         * The group label.
          */
         private Label groupLbl;
 
+        /**
+         * The checkbox 'canComment'.
+         */
         private CheckBox canComment;
 
+        /**
+         * The checkbox 'canRate'.
+         */
         private CheckBox canRate;
 
+        /**
+         * The checkbox 'canComment'.
+         */
         private CheckBox canView;
 
-        public RuleHBoxCell(final Rule rule) {
-            this.rule = rule;
+        /**
+         * Constructs a Cell for a rule.
+         * @param vRule the new Rule
+         */
+        public RuleHBoxCell(final Rule vRule) {
+            this.rule = vRule;
 
             groupLbl = new Label();
-            groupLbl.setPrefWidth(300);
+            final int prefWidth = 300;
+            groupLbl.setPrefWidth(prefWidth);
             groupLbl.setText(rule.getGroup().getNom());
 
             canView = new CheckBox();
@@ -215,10 +246,14 @@ public class RulesController implements Initializable {
             canComment.setSelected(rule.isCanComment());
             canRate.setSelected(rule.isCanRate());
 
-            this.setSpacing(20);
+            this.setSpacing(SPACING);
             this.getChildren().addAll(groupLbl, canView, canComment, canRate);
         }
 
+        /**
+         * Gets a rule modified by the user.
+         * @return rule the rule modified
+         */
         public Rule getRule() {
             // Update the current rule
             rule.setCanView(canView.isSelected());
@@ -228,14 +263,26 @@ public class RulesController implements Initializable {
             return this.rule;
         }
 
+        /**
+         * Change canComment's value.
+         * @param selected the new value
+         */
         public void setCanComment(final boolean selected) {
             canComment.setSelected(selected);
         }
 
+        /**
+         * Change canView's value.
+         * @param selected the new value
+         */
         public void setCanView(final boolean selected) {
             canView.setSelected(selected);
         }
 
+        /**
+         * Change canRate's value.
+         * @param selected the new value
+         */
         public void setCanRate(final boolean selected) {
             canRate.setSelected(selected);
         }
