@@ -21,6 +21,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class GroupsController.
@@ -108,7 +110,7 @@ public class GroupsController implements Initializable {
      * @see javafx.fxml.Initializable#initialize
      * (java.net.URL, java.util.ResourceBundle)
      */
-    @FXML
+    @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         newGroupName.setPromptText("Ajouter groupe...");
         addUserName.setPromptText("Ajouter membre...");
@@ -124,7 +126,8 @@ public class GroupsController implements Initializable {
         try {
             listGroups = application.getIHMtoDATA().getGroups();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(GroupsController.class.getName())
+                    .log(Level.SEVERE, e.getMessage());
         }
 
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -141,7 +144,8 @@ public class GroupsController implements Initializable {
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    Logger.getLogger(GroupsController.class.getName())
+                            .log(Level.SEVERE, e.getMessage());
                 }
             }
         });
@@ -154,7 +158,8 @@ public class GroupsController implements Initializable {
                         deleteMemberBtn.setDisable(false);
                     }
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    Logger.getLogger(GroupsController.class.getName())
+                            .log(Level.SEVERE, e.getMessage());
                 }
             }
         });
@@ -299,13 +304,11 @@ public class GroupsController implements Initializable {
                         if (user != null) {
                             application.getIHMtoDATA().addUserInGroup(user, g);
                             obsMembersList.add(user.getLogin());
-                            Dialogs.showInformationDialog(user.getLogin()
-                                    + " a été ajouté dans le groupe avec succès.");
+                            Dialogs.showInformationDialog(user.getLogin() + " a été ajouté dans le groupe avec succès.");
                             addUserName.clear();
                             return;
                         } else {
-                            Dialogs.showWarningDialog("Ajout impossible:"
-                                    + " L'utilisateur n'est pas votre ami ou n'existe pas.");
+                            Dialogs.showWarningDialog("Ajout impossible: L'utilisateur n'est pas votre ami ou n'existe pas.");
                             return;
                         }
                     }
@@ -357,6 +360,11 @@ public class GroupsController implements Initializable {
         ((Stage) manageGroups.getScene().getWindow()).close();
     }
 
+    /**
+     * Checks if a user referenced by its login is a friend.
+     *@param login the tested user login.
+     *@return the user if it is a friend, else null.
+     */
     private User checkIfFriend(final String login) {
         User user = null;
         for (Group g : listGroups) {
