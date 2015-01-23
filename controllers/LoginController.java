@@ -95,7 +95,7 @@ public class LoginController extends Pane implements Initializable {
             Dialogs.showErrorDialog("Error "
                     + "in loading the profile file");
             Logger.getLogger(LoginController.class.getName())
-                    .log(Level.SEVERE, "Erreur"
+                    .log(Level.SEVERE, e.getMessage() + ". Erreur"
                             + " durant le chargement du profil.");
         }
     }

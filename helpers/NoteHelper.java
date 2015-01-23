@@ -32,6 +32,13 @@ public class NoteHelper {
     private static final String STAR_INACTIVE = "IHM/resources/star_inactive.png";
 
     /**
+     * Instantiates a new note helper.
+     */
+    private NoteHelper() {
+        super();
+    }
+
+    /**
      * Gets the average note of a picture.
      * @param picture the picture
      * @param hBoxStars the container of the stars

@@ -13,7 +13,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -46,12 +51,6 @@ public class FriendsSubController extends SplitPane implements Initializable {
     private Accordion groupsAccordion;
 
     /**
-     * The btn add friend.
-     */
-    @FXML
-    private Button btnAddFriend;
-
-    /**
      * The box add friend.
      */
     @FXML
@@ -76,7 +75,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
     }
 
     /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     * @see javafx.fxml.Initializable#initialize
+     * (java.net.URL, java.util.ResourceBundle)
      */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
@@ -177,7 +177,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
 
         List<UserHBoxCell> users = Lists.newArrayList();
         ListView<UserHBoxCell> listView = new ListView<UserHBoxCell>();
-        ObservableList<UserHBoxCell> myObservableList = FXCollections.observableList(users);
+        ObservableList<UserHBoxCell> myObservableList
+                = FXCollections.observableList(users);
         listView.setItems(myObservableList);
         listView.setEditable(true);
 
@@ -222,7 +223,8 @@ public class FriendsSubController extends SplitPane implements Initializable {
      * @param user the user
      */
     public void connectUser(final User user) {
-        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Trying to connect user " + user.getLogin());
+        Logger.getLogger(FriendsSubController.class.getName())
+                .log(Level.INFO, "Trying to connect user " + user.getLogin());
         User existingUser = lookForUser(user);
         if (existingUser != null) {
             reloadUser(user);
@@ -254,11 +256,13 @@ public class FriendsSubController extends SplitPane implements Initializable {
             @Override
             public void run() {
                 if (response) {
-                    Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a accepté votre demande d'ami.");
+                    Dialogs.showInformationDialog("L'utilisateur "
+                            + sender.getLogin() + " a accepté votre demande d'ami.");
                     application.getIHMtoDATA().addUserInGroup(sender, getFriendGroup());
                     moveUserToGroup(sender, Group.FRIENDS_GROUP_NAME);
                 } else {
-                    Dialogs.showInformationDialog("L'utilisateur " + sender.getLogin() + " a refusé votre demande d'ami.");
+                    Dialogs.showInformationDialog("L'utilisateur "
+                            + sender.getLogin() + " a refusé votre demande d'ami.");
                 }
             }
         });
@@ -285,10 +289,18 @@ public class FriendsSubController extends SplitPane implements Initializable {
         });
     }
 
+    /**
+     * Gets the friend group.
+     *@return the friend group.
+     */
     private Group getFriendGroup() {
         return application.getIHMtoDATA().getGroupByName(Group.FRIENDS_GROUP_NAME);
     }
 
+    /**
+     * Gets the default group.
+     *@return the default group.
+     */
     private Group getDefaultGroup() {
         return application.getIHMtoDATA().getGroupByName(Group.DEFAULT_GROUP_NAME);
     }
@@ -304,16 +316,25 @@ public class FriendsSubController extends SplitPane implements Initializable {
             List<UserHBoxCell> users = entry.getValue();
             for (UserHBoxCell u : users) {
                 if (u.getUser().getUid().equals(user.getUid())) {
-                    Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User " + user.getLogin() + " found in group " + entry.getKey());
+                    Logger.getLogger(FriendsSubController.class.getName())
+                            .log(Level.INFO, "Looking for user in group list: User "
+                                    + user.getLogin() + " found in group " + entry.getKey());
                     return u.getUser();
                 }
             }
         }
-        Logger.getLogger(FriendsSubController.class.getName()).log(Level.INFO, "Looking for user in group list: User " + user.getLogin() + " not found");
+        Logger.getLogger(FriendsSubController.class.getName())
+                .log(Level.INFO, "Looking for user in group list: User "
+                        + user.getLogin() + " not found");
         return null;
     }
 
-    private boolean isMyFriend(User user) {
+    /**
+     * Checks if a user is a friend.
+     * @param user the user to check
+     *@return true if it is a friend, else false.
+     */
+    private boolean isMyFriend(final User user) {
         List<User> users = getFriendGroup().getUsers();
         for (User u : users) {
             if (u.getUid().equals(user.getUid())) {
@@ -396,6 +417,9 @@ public class FriendsSubController extends SplitPane implements Initializable {
         });
     }
 
+    /**
+     * Reloads the user groups.
+     */
     public void reloadUserGroups() {
         Platform.runLater(new Runnable() {
             @Override
@@ -407,11 +431,18 @@ public class FriendsSubController extends SplitPane implements Initializable {
         });
     }
 
+    /**
+     * Clears the groups.
+     */
     private void clearGroups() {
         groupsAccordion.getPanes().clear();
         groups.clear();
     }
 
+    /**
+     * Reloads a user.
+     *@param user the user to reload.
+     */
     private void reloadUser(final User user) {
         moveUserToGroup(user, null);
     }

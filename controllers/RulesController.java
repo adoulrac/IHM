@@ -41,12 +41,6 @@ public class RulesController implements Initializable {
     private ListView<RuleHBoxCell> rules;
 
     /**
-     * The finish button.
-     */
-    @FXML
-    private Button finishBtn;
-
-    /**
      * The application.
      */
     private MainController application;

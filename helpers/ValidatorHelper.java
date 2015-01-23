@@ -15,7 +15,7 @@ public class ValidatorHelper {
     /**
      * Instantiates a new validator helper.
      */
-    public ValidatorHelper() {
+    private ValidatorHelper() {
         super();
     }
 
