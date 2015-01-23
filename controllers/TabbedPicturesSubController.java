@@ -15,7 +15,13 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.Tab;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -77,7 +83,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /**
      * The Constant CONFIRM_SUPPRESSION.
      */
-    private static final String CONFIRM_SUPPRESSION = "Confirmez-vous la suppression ?";
+    private static final String
+            CONFIRM_SUPPRESSION = "Confirmez-vous la suppression ?";
 
     /**
      * The application.
@@ -134,20 +141,21 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     /**
      * The my images list.
      */
-    private CopyOnWriteArrayList<PicturePane> myImgList; // thread-safe
+    private List<PicturePane> myImgList; // thread-safe
 
     /**
      * The all images list.
      */
-    private CopyOnWriteArrayList<PicturePane> allImgList; // thread-safe
+    private List<PicturePane> allImgList; // thread-safe
 
     /**
-     * The tooltip for displaying picture names
+     * The current request Id.
      */
-    private Tooltip tooltip;
-
     private Integer currentRequestId;
 
+    /**
+     * The min time between two refresh.
+     */
     private long lastTimeRefreshMillis;
 
     /**
@@ -163,7 +171,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
     }
 
     /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     * @see javafx.fxml.Initializable#initialize
+     * (java.net.URL, java.util.ResourceBundle)
      */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
@@ -191,7 +200,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         searchField.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(final KeyEvent keyEvent) {
-                if (keyEvent.getCode().equals(KeyCode.ENTER) && (tagSearch.isSelected() || userSearch.isSelected())) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER)
+                        && (tagSearch.isSelected() || userSearch.isSelected())) {
                     application.removeRequest(pendingRequestId);
                     pendingRequestId = application.addRequest(current);
                     if (tagSearch.isSelected()) {
@@ -199,7 +209,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                     } else if (userSearch.isSelected()) {
                         searchPicturesByUser(searchField.getText(), pendingRequestId);
                     }
-                    // We clear the tab because it will be fill in asynchronously
+                    // We clear the tab
+                    // because it will be fill in asynchronously
                     clearTabContent(allImgTab);
                 }
             }
@@ -211,7 +222,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param tab the tab
      */
-    private void buildStaticTab(Tab tab) {
+    private void buildStaticTab(final Tab tab) {
         TilePane tP2 = new TilePane();
         tP2.setPadding(new Insets(LEFT_PADDING, 0, 0, 0));
         tP2.setVgap(VGAP_PICTURES);
@@ -232,8 +243,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             return;
         }
         if (requestId != null) {
-            ArrayList<String> arrayListStr = new ArrayList<String>(Arrays.asList(text.split(TAG_SEPARATOR)));
-            ArrayList<Tag> arrayListTag = new ArrayList<Tag>();
+            List<String> arrayListStr = new ArrayList<String>(Arrays.asList(text.split(TAG_SEPARATOR)));
+            List<Tag> arrayListTag = new ArrayList<Tag>();
             for (String name : arrayListStr) {
                 arrayListTag.add(new Tag(name));
             }
@@ -252,7 +263,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             return;
         }
         if (requestId != null) {
-            application.getIHMtoDATA().getPicturesByUsers(Arrays.asList(text.split(USER_SEPARATOR)), requestId);
+            application.getIHMtoDATA().getPicturesByUsers(
+                    Arrays.asList(text.split(USER_SEPARATOR)), requestId);
         }
     }
 
@@ -261,7 +273,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param tab the tab
      */
-    public void addTab(Tab tab) {
+    public void addTab(final Tab tab) {
         tab.setClosable(true);
         tabbedPicturesSub.getTabs().add(tab);
         tabbedPicturesSub.getSelectionModel().select(tab);
@@ -273,7 +285,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param pictures the pictures
      * @param tab      the tab
      */
-    public void addPicturesInTab(final List<Picture> pictures, Tab tab) {
+    public void addPicturesInTab(final List<Picture> pictures, final Tab tab) {
         VBox grid = (VBox) tab.getContent();
         for (int i = 0; i < grid.getChildren().size(); ++i) { // thread-safe
             if (grid.getChildren().get(i) instanceof TilePane) {
@@ -304,7 +316,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param tab the tab
      */
-    private void clearTabContent(Tab tab) {
+    private void clearTabContent(final Tab tab) {
         VBox grid = (VBox) tab.getContent();
         for (Node n : grid.getChildren()) {
             if (n instanceof TilePane) {
@@ -319,7 +331,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param pictures the pictures
      */
-    public void addPictures(List<Picture> pictures) {
+    public void addPictures(final List<Picture> pictures) {
         if (pictures != null) {
             addPicturesInTab(pictures, allImgTab);
         }
@@ -330,7 +342,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      *
      * @param picture the picture
      */
-    public void addPicture(Picture picture) {
+    public void addPicture(final Picture picture) {
         if (picture != null) {
             addPicturesInTab(Arrays.asList(picture), allImgTab);
         }
@@ -404,6 +416,9 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
         deleteBtn.setDisable(true);
     }
 
+    /**
+     * Makes an asynchronous call to get all the pictures.
+     */
     private void requestAllPictures() {
         application.removeRequest(pendingRequestId);
         pendingRequestId = application.addRequest(this);
@@ -416,7 +431,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      */
     public void loadAllPictures() {
         long currentTimeMillis = System.currentTimeMillis();
-        if (currentTimeMillis - lastTimeRefreshMillis > 2000) {
+        final int limit = 2000;
+        if (currentTimeMillis - lastTimeRefreshMillis > limit) {
             clearTabContent(allImgTab);
             requestAllPictures();
             lastTimeRefreshMillis = currentTimeMillis;
@@ -438,7 +454,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
      * @param requestId the request Id
      * @return true if the request id is the one pending
      */
-    public boolean isPendingRequest(int requestId) {
+    public boolean isPendingRequest(final int requestId) {
         return pendingRequestId == requestId;
     }
 
@@ -473,7 +489,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
          *
          * @param p the p
          */
-        public PicturePane(Picture p) {
+        public PicturePane(final Picture p) {
             picture = p;
             isSelected = false;
             hBoxStars = new HBox();
@@ -493,7 +509,8 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
             } else {
                 imgView.setImage(new Image("IHM/resources/avatar_icon.png"));
             }
-            // system get separator pour mac et linux à check (surtout picture controller)
+            // system get separator pour mac et linux à check
+            // (surtout picture controller)
             NoteHelper.adaptImage(imgView, PICTURE_DIM, PICTURE_DIM);
             imgView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -502,12 +519,14 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         if (mouseEvent.getClickCount() == 2) {
                             imgView.setEffect(null);
                             isSelected = false;
-                            // Remove file path and extension to create tab title for pictures without titles
+                            // Remove file path and extension
+                            // to create tab title for pictures without titles
                             PictureController pC = new PictureController(picture, application);
                             int index = picture.getFilename().lastIndexOf(File.separatorChar);
                             String filename = picture.getFilename().substring(index + 1);
-                            if (filename.indexOf(".") > 0)
+                            if (filename.indexOf(".") > 0) {
                                 filename = filename.substring(0, filename.lastIndexOf("."));
+                            }
                             pC.setText(picture.getTitle() == null ? filename : picture.getTitle());
                             addTab(pC);
                         } else if (mouseEvent.getClickCount() == 1) {

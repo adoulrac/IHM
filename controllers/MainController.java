@@ -190,7 +190,6 @@ public class MainController {
         Scene scene = buildScene(fxml, loader);
         Stage currentStage = isNewStage ? new Stage() : stage;
         currentStage.setScene(scene);
-        // currentStage.initStyle(StageStyle.UNDECORATED);
         currentStage.setResizable(false);
         currentStage.sizeToScene();
         if (isNewStage) {
@@ -279,7 +278,8 @@ public class MainController {
      */
     public void openWelcome() {
         try {
-            WelcomeController welcome = (WelcomeController) replaceSceneContent("views/accueil.fxml");
+            WelcomeController welcome = (WelcomeController)
+                    replaceSceneContent("views/accueil.fxml");
             welcome.setApp(this);
             welcome.build();
             welcomeController = welcome;

@@ -257,7 +257,8 @@ public class PictureController extends Tab implements Initializable {
     }
 
     /* (non-Javadoc)
-     * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+     * @see javafx.fxml.Initializable#initialize
+     * (java.net.URL, java.util.ResourceBundle)
     */
     @Override
     public void initialize(final URL url, final ResourceBundle resourceBundle) {
@@ -298,7 +299,9 @@ public class PictureController extends Tab implements Initializable {
         tagsValidateBtn = new Button("Terminer");
         rulesBtn = new Button("Droits");
         // Avatar
-        setImage(avatarImg, app.currentUser().getAvatar() == null ? new Image("IHM/resources/avatar_icon.png") : new Image("file:" + app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
+        setImage(avatarImg, app.currentUser().getAvatar() == null
+                ? new Image("IHM/resources/avatar_icon.png")
+                : new Image("file:" + app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
         // Picture name
         Tooltip.install(pictureName, Tooltips.getTooltip("Press enter to save"));
@@ -409,10 +412,11 @@ public class PictureController extends Tab implements Initializable {
         // Limit the number of characters within the textarea
         pictureName.textProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<? extends String> observable,
+            public void changed(final ObservableValue<? extends String> observable,
                                 final String oldValue, final String newValue) {
                 try {
-                    // force correct length by resetting to old value if longer than maxLength
+                    // force correct length
+                    // by resetting to old value if longer than maxLength
                     if (newValue.length() > MAX_TITLE_LENGTH) {
                         pictureName.setText(oldValue);
                     }
@@ -490,10 +494,13 @@ public class PictureController extends Tab implements Initializable {
         setContent(ihm);
     }
 
+    /**
+     * Saves a local picture.
+     */
     private void savePictureLocally() {
         try {
             String targetPath = FileUtil.chooseDirectory();
-            if(Strings.isNullOrEmpty(targetPath)) {
+            if (Strings.isNullOrEmpty(targetPath)) {
                 return;
             }
 
@@ -503,12 +510,11 @@ public class PictureController extends Tab implements Initializable {
                         FileUtil.getFilenameFromPath(picture.getFilename()))));
                 Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
             }
 
         } catch (NullPointerException npe) {
-            Logger.getLogger(WelcomeController.class.getName())
+            Logger.getLogger(PictureController.class.getName())
                     .log(Level.SEVERE, "Nothing selected.");
             return;
         }
@@ -521,7 +527,8 @@ public class PictureController extends Tab implements Initializable {
         noteImg.getChildren().clear();
         float average = NoteHelper.getPictureAverage(picture, noteImg);
         if (average > 0.f) {
-            voteTxt.setText(String.format("%.1f", average) + "/5 (" + picture.getListNotes().size() + " votes)");
+            voteTxt.setText(String.format("%.1f", average)
+                    + "/5 (" + picture.getListNotes().size() + " votes)");
         } else {
             voteTxt.setText("(Aucun vote)");
         }
@@ -538,18 +545,18 @@ public class PictureController extends Tab implements Initializable {
      * Builds the tags.
      */
     private void buildTags() {
-        final StringBuilder sb_tags = new StringBuilder();
+        final StringBuilder sbTags = new StringBuilder();
         for (Tag tag : picture.getListTags()) {
-            sb_tags.append(tag.getValue());
-            sb_tags.append(", ");
+            sbTags.append(tag.getValue());
+            sbTags.append(", ");
         }
-        if (sb_tags.length() > 2) {
-            sb_tags.setLength(sb_tags.length() - 2);
+        if (sbTags.length() > 2) {
+            sbTags.setLength(sbTags.length() - 2);
         }
-        tagsTxt.setText(sb_tags.toString());
+        tagsTxt.setText(sbTags.toString());
 
         if (picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
-            tagsEditTxt.setText(sb_tags.toString());
+            tagsEditTxt.setText(sbTags.toString());
             tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(final MouseEvent mouseEvent) {
@@ -639,7 +646,7 @@ public class PictureController extends Tab implements Initializable {
      *
      * @param mouseEvent the mouse event
      */
-    private void vote(MouseEvent mouseEvent) {
+    private void vote(final MouseEvent mouseEvent) {
         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
             if (mouseEvent.getClickCount() == 1) {
                 if (VoteValidator.validate(voteField.getText())) {
@@ -666,7 +673,11 @@ public class PictureController extends Tab implements Initializable {
         }
     }
 
-    private void addNote(Note note) {
+    /**
+     * Adds a note.
+     * @param note the note given
+     */
+    private void addNote(final Note note) {
         try {
             app.getIHMtoDATA().addNote(note);
             buildVotes();
@@ -676,9 +687,9 @@ public class PictureController extends Tab implements Initializable {
     }
 
     /**
-     * Edit Tags
+     * Edit Tags.
      *
-     * @param mouseEvent the mouse event
+     * @param mouseEvent the mouse event.
      */
     private void editTags(final MouseEvent mouseEvent) {
         String str = tagsEditTxt.getText();
@@ -693,7 +704,7 @@ public class PictureController extends Tab implements Initializable {
 
         tagsValidateBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 String str = tagsEditTxt.getText();
                 if (!str.matches("[a-zA-Z,0-9 ]*")) {
                     Dialogs.showErrorDialog("Format non conforme. Veuillez séparer les tags par des virgules, sans utiliser d'espaces.");
@@ -727,7 +738,7 @@ public class PictureController extends Tab implements Initializable {
      *
      * @param mouseEvent the mouse event
      */
-    private void editDescription(MouseEvent mouseEvent) {
+    private void editDescription(final MouseEvent mouseEvent) {
         editDescTxt.setText(picture.getDescription());
         content.getChildren().add(content.getChildren().size() - 4, editDescTxt);
         content.getChildren().remove(descEditBtn);
@@ -735,7 +746,7 @@ public class PictureController extends Tab implements Initializable {
         descTxt.setText("");
         validateDescBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
+            public void handle(final MouseEvent mouseEvent) {
                 picture.setDescription(editDescTxt.getText());
                 descTxt.setText(editDescTxt.getText());
                 content.getChildren().remove(editDescTxt);
@@ -747,7 +758,11 @@ public class PictureController extends Tab implements Initializable {
 
     }
 
-    private void deleteComment(CommentPane cp) {
+    /**
+     * Handles the suppression of a comment.
+     * @param cp The pane of the comment.
+     */
+    private void deleteComment(final CommentPane cp) {
         try {
             app.getIHMtoDATA().deleteComment(cp.comment);
             content.getChildren().remove(cp);
