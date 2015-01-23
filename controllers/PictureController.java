@@ -422,6 +422,8 @@ public class PictureController extends Tab implements Initializable {
                     }
                 } catch (Exception e) {
                     pictureName.setText(oldValue);
+                    Logger.getLogger(PictureController.class.getName())
+                            .log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         });
@@ -511,11 +513,13 @@ public class PictureController extends Tab implements Initializable {
                 Dialogs.showInformationDialog("L'image a été sauvegardée avec succès.");
             } catch (Exception e) {
                 Dialogs.showInformationDialog("Erreur pendant la sauvegarde de l'image.");
+                Logger.getLogger(PictureController.class.getName())
+                        .log(Level.SEVERE, "Error while saving the picture.", e);
             }
 
         } catch (NullPointerException npe) {
             Logger.getLogger(PictureController.class.getName())
-                    .log(Level.SEVERE, "Nothing selected.");
+                    .log(Level.SEVERE, "Nothing selected.", npe);
             return;
         }
     }
@@ -631,6 +635,8 @@ public class PictureController extends Tab implements Initializable {
                         content.getChildren().add(content.getChildren().size() - 1, new CommentPane(c));
                     } catch (Exception e) {
                         Dialogs.showWarningDialog(e.getMessage());
+                        Logger.getLogger(PictureController.class.getName())
+                                .log(Level.SEVERE, e.getMessage(), e);
                     }
                     writeArea.setText("");
                     writeArea.setPromptText("Ecrire un commentaire...");
@@ -647,28 +653,26 @@ public class PictureController extends Tab implements Initializable {
      * @param mouseEvent the mouse event
      */
     private void vote(final MouseEvent mouseEvent) {
-        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-            if (mouseEvent.getClickCount() == 1) {
-                if (VoteValidator.validate(voteField.getText())) {
-                    int vote = Integer.parseInt(voteField.getText());
-                    Note note = picture.getNoteFromUser(picture, app.currentUser());
+        if (mouseEvent.getButton().equals(MouseButton.PRIMARY) && mouseEvent.getClickCount() == 1) {
+            if (VoteValidator.validate(voteField.getText())) {
+                int vote = Integer.parseInt(voteField.getText());
+                Note note = picture.getNoteFromUser(picture, app.currentUser());
 
-                    if (note != null) {
-                        // user has already voted
-                        boolean ok = Dialogs.showConfirmationDialog("Vous avez déjà voté pour cette image. Souhaitez-vous modifier votre vote ?");
-                        if (ok) {
-                            note.setValue(vote);
-                            addNote(note);
-                        }
-                    } else {
-                        // first vote of the user
-                        note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
+                if (note != null) {
+                    // user has already voted
+                    boolean ok = Dialogs.showConfirmationDialog("Vous avez déjà voté pour cette image. Souhaitez-vous modifier votre vote ?");
+                    if (ok) {
+                        note.setValue(vote);
                         addNote(note);
                     }
-
                 } else {
-                    Dialogs.showWarningDialog(VoteValidator.MESSAGE);
+                    // first vote of the user
+                    note = new Note(vote, app.currentUser(), picture.getUid(), picture.getUser().getUid());
+                    addNote(note);
                 }
+
+            } else {
+                Dialogs.showWarningDialog(VoteValidator.MESSAGE);
             }
         }
     }
@@ -683,6 +687,8 @@ public class PictureController extends Tab implements Initializable {
             buildVotes();
         } catch (Exception e) {
             Dialogs.showWarningDialog(e.getMessage());
+            Logger.getLogger(PictureController.class.getName())
+                    .log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -769,6 +775,8 @@ public class PictureController extends Tab implements Initializable {
             comments.remove(cp);
         } catch (BadInformationException e) {
             Dialogs.showWarningDialog("Informations du commentaire invalides pour la suppression.");
+            Logger.getLogger(PictureController.class.getName())
+                    .log(Level.SEVERE, "Invalid information about the comment.", e);
         }
     }
 
@@ -877,6 +885,8 @@ public class PictureController extends Tab implements Initializable {
                             switchEditionMode(false);
                         } catch (Exception e) {
                             Dialogs.showWarningDialog("Informations du commentaire invalides.");
+                            Logger.getLogger(PictureController.class.getName())
+                                    .log(Level.SEVERE, "Invalid information about the comment.", e);
                         }
                     }
                 });

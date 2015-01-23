@@ -127,7 +127,7 @@ public class GroupsController implements Initializable {
             listGroups = application.getIHMtoDATA().getGroups();
         } catch (Exception e) {
             Logger.getLogger(GroupsController.class.getName())
-                    .log(Level.SEVERE, e.getMessage());
+                    .log(Level.SEVERE, e.getMessage(), e);
         }
 
         groups.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -145,7 +145,7 @@ public class GroupsController implements Initializable {
                     }
                 } catch (Exception e) {
                     Logger.getLogger(GroupsController.class.getName())
-                            .log(Level.SEVERE, e.getMessage());
+                            .log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         });
@@ -159,7 +159,7 @@ public class GroupsController implements Initializable {
                     }
                 } catch (Exception e) {
                     Logger.getLogger(GroupsController.class.getName())
-                            .log(Level.SEVERE, e.getMessage());
+                            .log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         });
@@ -369,7 +369,7 @@ public class GroupsController implements Initializable {
         User user = null;
         for (Group g : listGroups) {
             for (User u : g.getUsers()) {
-                if (u.getLogin().equalsIgnoreCase(addUserName.getText())) {
+                if (u.getLogin().equalsIgnoreCase(login)) {
                     user = u;
                     return user;
                 }
