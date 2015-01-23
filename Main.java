@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     /**
-     * The main.
+     * The main controller.
      */
-    private static MainController main;
+    private static MainController mainController;
 
     /**
      * The main method.
@@ -30,7 +30,7 @@ public class Main extends Application {
      * @return the DAT ato ih mimpl
      */
     public static DATAtoIHM getDATAtoIHMimpl() {
-        return main.getDATAInterfaceReceiver();
+        return mainController.getDATAInterfaceReceiver();
     }
 
     /**
@@ -40,9 +40,9 @@ public class Main extends Application {
      */
     @Override
     public void start(final Stage primaryStage) {
-        main = new MainController(primaryStage);
-        if (main != null) {
-            main.instanciateInterfaces();
+        mainController = new MainController(primaryStage);
+        if (mainController != null) {
+            mainController.instanciateInterfaces();
         }
     }
 }

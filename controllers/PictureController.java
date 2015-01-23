@@ -844,7 +844,6 @@ public class PictureController extends Tab implements Initializable {
             commentTxt.setText(comment.getValue());
 
             addContent();
-            addCssClasses();
             switchEditionMode(false);
         }
 
@@ -857,7 +856,8 @@ public class PictureController extends Tab implements Initializable {
         private void switchEditionMode(final boolean edition) {
             final CommentPane current = this;
 
-            if (edition) { // switch to edition mode
+            // switch to edition mode
+            if (edition) {
                 if (!vb.getChildren().contains(commentField)) {
                     // if we are not already in edition mode, hide text and display field
                     commentField.setText(commentTxt.getText());
@@ -889,7 +889,8 @@ public class PictureController extends Tab implements Initializable {
                         switchEditionMode(false);
                     }
                 });
-            } else { // switch back to display
+                // switch back to display
+            } else {
                 if (!vb.getChildren().contains(commentTxt)) {
                     // if we are not already in display mode, hide field and display text
                     vb.getChildren().remove(commentField);
@@ -935,13 +936,6 @@ public class PictureController extends Tab implements Initializable {
             vb.getChildren().addAll(hb, commentTxt);
 
             getChildren().addAll(avatarImg, vb);
-        }
-
-        /**
-         * Adds the css classes.
-         */
-        private void addCssClasses() {
-            //userTxt.getStyleClass().add("pic-title");
         }
     }
 

@@ -297,7 +297,7 @@ public class TabbedPicturesSubController extends TabPane implements Initializabl
                         } else {
                             allImgList.add(picturePane);
                         }
-                        final TilePane current = ((TilePane) grid.getChildren().get(i));
+                        final TilePane current = (TilePane) grid.getChildren().get(i);
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {

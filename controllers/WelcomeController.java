@@ -113,7 +113,7 @@ public class WelcomeController implements Initializable {
 			}
 		} catch (IOException e) {
 			Logger.getLogger(WelcomeController.class.getName())
-                    .log(Level.SEVERE, "Error in disconnecting the user.");
+                    .log(Level.SEVERE, e.getMessage() + ". Error in disconnecting the user.");
 		}
 		application.userLogout();
 	}
@@ -176,7 +176,7 @@ public class WelcomeController implements Initializable {
 			Dialogs.showErrorDialog("Erreur"
                     + " durant la sauvegarde du profil.");
             Logger.getLogger(WelcomeController.class.getName())
-                    .log(Level.SEVERE, "Error in saving the profile.");
+                    .log(Level.SEVERE, e.getMessage() + ". Error in saving the profile.");
 		}
 	}
 

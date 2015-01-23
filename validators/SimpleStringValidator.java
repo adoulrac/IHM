@@ -17,16 +17,6 @@ public class SimpleStringValidator {
     public static final String MESSAGE = "Les champs doivent être remplis.";
 
     /**
-     * The pattern.
-     */
-    private Pattern pattern;
-
-    /**
-     * The matcher.
-     */
-    private Matcher matcher;
-
-    /**
      * Instantiates a new simple string validator.
      */
     public SimpleStringValidator() {
