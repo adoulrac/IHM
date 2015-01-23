@@ -135,6 +135,11 @@ public class ProfileController implements Initializable {
 	 */
 	private boolean editable = false;
 
+    /**
+     * The style class property.
+     */
+    private static final String STYLE_CLASS = "txtfield-disabled";
+
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize
 	 * (java.net.URL, java.util.ResourceBundle)
@@ -159,11 +164,11 @@ public class ProfileController implements Initializable {
 			okButton.setVisible(false);
 			changeAvatar.setVisible(false);
 			lastname.setDisable(true);
-			lastname.getStyleClass().add("txtfield-disabled");
+			lastname.getStyleClass().add(STYLE_CLASS);
 			firstname.setDisable(true);
-			firstname.getStyleClass().add("txtfield-disabled");
+			firstname.getStyleClass().add(STYLE_CLASS);
 			birthdate.setDisable(true);
-			birthdate.getStyleClass().add("txtfield-disabled");
+			birthdate.getStyleClass().add(STYLE_CLASS);
 		}
 		getUserInfos();
 		displayUserInfo();
@@ -186,26 +191,26 @@ public class ProfileController implements Initializable {
 			userLastName = user.getLastname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO, e.getMessage() + ". Lastname is empty or "
+			.log(Level.INFO, "Lastname is empty or "
                     + "original value cannot be retrieved, "
-                    + "changes will not be persisted");
+                    + "changes will not be persisted", e);
 			this.userLastName = defaultValue;
 		}
 		try {
 			userFirstName = user.getFirstname();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO, e.getMessage() + ". Firstname is empty or "
+			.log(Level.INFO, "Firstname is empty or "
                     + "original value cannot be retrieved, "
-                    + "changes will not be persisted");
+                    + "changes will not be persisted", e);
 			userFirstName = defaultValue;
 		}
 		try {
 			userBirthDate = user.getBirthDate();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO, e.getMessage() + ". Birthdate is empty or original value "
-                    + "cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Birthdate is empty or original value "
+                    + "cannot be retrieved, changes will not be persisted", e);
 			userBirthDate = defaultValue;
 		}
 
@@ -213,16 +218,16 @@ public class ProfileController implements Initializable {
 			userAvatar = user.getAvatarImageObject();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO, e.getMessage() + ". Avatar path is empty or original value "
-                    + "cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Avatar path is empty or original value "
+                    + "cannot be retrieved, changes will not be persisted", e);
 		}
 
 		try {
 			userNickName = user.getLogin();
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO, e.getMessage() + ". Login is empty or original value "
-                    + "cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "Login is empty or original value "
+                    + "cannot be retrieved, changes will not be persisted", e);
 			userNickName = defaultValue;
 		}
 		userIP = new ArrayList<String>();
@@ -231,8 +236,8 @@ public class ProfileController implements Initializable {
 			userIP.addAll(user.getListIP());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
-			.log(Level.INFO, e.getMessage() + ". List of addresses is empty or original value"
-                    + " cannot be retrieved, changes will not be persisted");
+			.log(Level.INFO, "List of addresses is empty or original value"
+                    + " cannot be retrieved, changes will not be persisted", e);
 		}
 
 	}
@@ -270,7 +275,7 @@ public class ProfileController implements Initializable {
 					"Avatar changed");
 		} catch (Exception e) {
             Logger.getLogger(ProfileController.class.getName())
-                    .log(Level.SEVERE, e.getMessage());
+                    .log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 
@@ -294,7 +299,7 @@ public class ProfileController implements Initializable {
 			avatar.setImage(userAvatar);
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
-					Level.SEVERE, e.getMessage() + ". Unknown User avatar");
+					Level.SEVERE, "Unknown User avatar", e);
 		}
 	}
 
@@ -323,7 +328,7 @@ public class ProfileController implements Initializable {
 					application.currentUser().setListIP(this.userIP);
 				} catch (Exception e) {
 					Logger.getLogger(ProfileController.class.getName()).log(
-							Level.SEVERE, e.getMessage() + ". New IP address cannot be persisted");
+							Level.SEVERE, "New IP address cannot be persisted", e);
 				}
 			} else {
 				Dialogs.showInformationDialog("Cette adresse existe déjà.");
@@ -378,7 +383,7 @@ public class ProfileController implements Initializable {
 			application.currentUser().setLastname(lastname.getText());
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName()).log(
-					Level.SEVERE, e.getMessage() + ". Unable to persist changes");
+					Level.SEVERE, "Unable to persist changes", e);
 		}
 	}
 
@@ -438,7 +443,7 @@ public class ProfileController implements Initializable {
 		} catch (IOException e) {
 			Dialogs.showErrorDialog("Erreur durant l'export du profil.");
             Logger.getLogger(ProfileController.class.getName()).log(
-                    Level.SEVERE, e.getMessage());
+                    Level.SEVERE, "Profile export error.", e);
 		}
 	}
 }
