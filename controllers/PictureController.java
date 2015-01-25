@@ -556,7 +556,7 @@ public class PictureController extends Tab implements Initializable {
         }
         tagsTxt.setText(sbTags.toString());
 
-        if (picture.getUser().getLogin().equals(app.currentUser().getLogin())) {
+        if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
             tagsEditTxt.setText(sbTags.toString());
             tagsEditBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
