@@ -1,11 +1,7 @@
 package IHM.controllers;
 
 import DATA.exceptions.BadInformationException;
-import DATA.model.Picture;
-import DATA.model.Comment;
-import DATA.model.Note;
-import DATA.model.Tag;
-import DATA.model.User;
+import DATA.model.*;
 import IHM.helpers.NoteHelper;
 import IHM.helpers.ValidatorHelper;
 import IHM.utils.Dialogs;
@@ -15,6 +11,7 @@ import IHM.validators.VoteValidator;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -615,7 +612,12 @@ public class PictureController extends Tab implements Initializable {
      */
     public void receiveFullImage(final Picture pic) {
         this.picture = pic;
-        refreshAllComponents();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                refreshAllComponents();
+            }
+        });
     }
 
     /**
