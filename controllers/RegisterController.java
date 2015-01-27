@@ -75,26 +75,26 @@ public class RegisterController implements Initializable {
 
         if (!ValidatorHelper.validateString(loginText)) {
             Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE
-                    + " Please check your login.");
+                    + " Veuillez vérifier votre login.");
             return;
         }
 
         if (passwordText == null
                 || confirmText == null
                 || !passwordText.equals(confirmText)) {
-            Dialogs.showInformationDialog("Password are different.");
+            Dialogs.showInformationDialog("Les mots de passes sont différents.");
             return;
         }
 
         if (!ValidatorHelper.validateString(passwordText)) {
             Dialogs.showInformationDialog(SimpleStringValidator.MESSAGE
-                    + " Please check your password.");
+                    + " Veuillez vérifier votre mot de passe.");
             return;
         }
 
         if (!ValidatorHelper.validateIPs(ipsText)) {
-            Dialogs.showInformationDialog("Invalid IP Addresses."
-                    + " Please check the IP format.");
+            Dialogs.showInformationDialog("Adresse(s) IP invalide."
+                    + " Veuillez vérifier le format.");
             return;
         }
 
