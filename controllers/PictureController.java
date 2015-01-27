@@ -298,7 +298,7 @@ public class PictureController extends Tab implements Initializable {
         // Avatar
         setImage(avatarImg, app.currentUser().getAvatar() == null
                 ? new Image("IHM/resources/avatar_icon.png")
-                : new Image("file:" + app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
+                : app.currentUser().getAvatarImageObject(), AVATAR_SIZE, AVATAR_SIZE);
 
         // Picture name
         pictureName.setEditable(false);
@@ -851,7 +851,7 @@ public class PictureController extends Tab implements Initializable {
             if (comment.getCommentUser().getAvatar() == null) {
                 setImage(avatarImg, new Image("IHM/resources/avatar_icon.png"), 75, 75);
             } else {
-                setImage(avatarImg, new Image("file:" + comment.getCommentUser().getAvatar()), 75, 75);
+                setImage(avatarImg,  comment.getCommentUser().getAvatarImageObject(), 75, 75);
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("'Le' dd/MM/yyyy 'à' HH'h'mm");
