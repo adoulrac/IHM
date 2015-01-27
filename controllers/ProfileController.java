@@ -219,7 +219,7 @@ public class ProfileController implements Initializable {
 		} catch (Exception e) {
 			Logger.getLogger(ProfileController.class.getName())
 			.log(Level.INFO, "Avatar path is empty or original value "
-                    + "cannot be retrieved, changes will not be persisted", e);
+                    + "cannot be retrieved", e);
 		}
 
 		try {
@@ -266,7 +266,7 @@ public class ProfileController implements Initializable {
 	public void avatarPicker() {
 		try {
 			File f = FileUtil.chooseFile();
-			Image image = new Image(f.toPath().toString());
+			Image image = new Image(f.toURI().toString());
 			avatar.setImage(image);
 			if (isEditable()) {
 				application.getIHMtoDATA().addAvatar(f.toPath().toString());
