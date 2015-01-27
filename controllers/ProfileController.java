@@ -437,13 +437,29 @@ public class ProfileController implements Initializable {
      *
      */
 	public void exportProfile() {
-		try {
-			application.getIHMtoDATA().export();
-			Dialogs.showInformationDialog("Profil exporté.");
-		} catch (IOException e) {
-			Dialogs.showErrorDialog("Erreur durant l'export du profil.");
-            Logger.getLogger(ProfileController.class.getName()).log(
-                    Level.SEVERE, "Profile export error.", e);
-		}
+        boolean userChoice = Dialogs.showConfirmationDialog("Attention, vous allez être déconnecté durant cette opération");
+        if (userChoice) {
+            try {
+                application.getIHMtoDATA().export();
+                logout();
+                Dialogs.showInformationDialog("Profil exporté.");
+            } catch (IOException e) {
+                Dialogs.showErrorDialog("Erreur durant l'export du profil.");
+                Logger.getLogger(ProfileController.class.getName()).log(
+                        Level.SEVERE, "Profile export error.", e);
+            }
+        }
 	}
+
+    public final void logout() {
+        try {
+            if (application.currentUser() != null) {
+                application.getIHMtoDATA().logout();
+            }
+        } catch (IOException e) {
+            Logger.getLogger(WelcomeController.class.getName())
+                    .log(Level.SEVERE, e.getMessage() + ". Error in disconnecting the user.");
+        }
+        application.userLogout();
+    }
 }
