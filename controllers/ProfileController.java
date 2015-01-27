@@ -266,10 +266,10 @@ public class ProfileController implements Initializable {
 	public void avatarPicker() {
 		try {
 			File f = FileUtil.chooseFile();
-			Image image = new Image(f.toURI().toString());
+			Image image = new Image(f.toPath().toString());
 			avatar.setImage(image);
 			if (isEditable()) {
-				application.getIHMtoDATA().addAvatar(f.toURI().toString());
+				application.getIHMtoDATA().addAvatar(f.toPath().toString());
 			}
 			Logger.getLogger(ProfileController.class.getName()).log(Level.INFO,
 					"Avatar changed");

@@ -216,7 +216,7 @@ public class RulesController implements Initializable {
         private CheckBox canRate;
 
         /**
-         * The checkbox 'canComment'.
+         * The checkbox 'canView'.
          */
         private CheckBox canView;
 

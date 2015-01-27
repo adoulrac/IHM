@@ -196,11 +196,11 @@ public class FriendsSubController extends SplitPane implements Initializable {
         String friend = friendName.getText();
         User userToAdd = lookForUser(friend);
         if (userToAdd != null) {
-            if (!isMyFriend(userToAdd)) {
+            if (!isMyFriend(userToAdd) && userToAdd.getUid() != application.currentUser().getUid()) {
                 application.getIHMtoDATA().addUserInGroup(userToAdd, getFriendGroup());
                 Dialogs.showInformationDialog("Une demande d'ami a été envoyé à " + friend);
             } else {
-                Dialogs.showInformationDialog("Ajout impossible: l'utilisateur est déjà dans vos amis.");
+                Dialogs.showInformationDialog("L'utilisateur " + friend + " est déjà votre ami.");
             }
         } else {
             Dialogs.showInformationDialog("Utilisateur inconnu.");
