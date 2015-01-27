@@ -408,7 +408,6 @@ public class PictureController extends Tab implements Initializable {
         HBox hbox = new HBox();
         hbox.setSpacing(3);
         hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, savePictureBtn);
-
         if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
             hbox.getChildren().add(rulesBtn);
         }
