@@ -404,7 +404,13 @@ public class PictureController extends Tab implements Initializable {
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox();
         hbox.setSpacing(3);
-        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, rulesBtn, savePictureBtn);
+
+        if (app.currentUser().getLogin().equals(picture.getUser().getLogin())) {
+            hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, rulesBtn, savePictureBtn);
+        }
+        else {
+            hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, savePictureBtn);
+        }
 
         // Limit the number of characters within the textarea
         pictureName.textProperty().addListener(new ChangeListener<String>() {
