@@ -301,7 +301,11 @@ public class PictureController extends Tab implements Initializable {
                 : new Image("file:" + app.currentUser().getAvatar()), AVATAR_SIZE, AVATAR_SIZE);
 
         // Picture name
-        Tooltip.install(pictureName, Tooltips.getTooltip("Press enter to save"));
+        pictureName.setEditable(false);
+        if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
+            Tooltip.install(pictureName, Tooltips.getTooltip("Press enter to save"));
+            pictureName.setEditable(true);
+        }
         if (picture.getTitle() == null) {
             pictureName.setPromptText("(sans titre)");
         } else {
@@ -309,9 +313,8 @@ public class PictureController extends Tab implements Initializable {
         }
 
         final int prefWidth = 210;
-        final int prefHeight = 70;
+                    final int prefHeight = 70;
         pictureName.setPrefSize(prefWidth, prefHeight);
-        pictureName.setEditable(true);
         pictureName.setWrapText(true);
 
         final int fontSize = 8;
@@ -404,40 +407,45 @@ public class PictureController extends Tab implements Initializable {
         hbDesc.getChildren().addAll(avatarImg, textPartage);
         HBox hbox = new HBox();
         hbox.setSpacing(3);
-        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, rulesBtn, savePictureBtn);
+        hbox.getChildren().addAll(hbDesc, pictureName, refreshBtn, savePictureBtn);
 
-        // Limit the number of characters within the textarea
-        pictureName.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> observable,
-                                final String oldValue, final String newValue) {
-                try {
-                    // force correct length
-                    // by resetting to old value if longer than maxLength
-                    if (newValue.length() > MAX_TITLE_LENGTH) {
+        if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
+            hbox.getChildren().add(rulesBtn);
+        }
+
+        if (picture.getUser().getUid().equals(app.currentUser().getUid())) {
+            // Limit the number of characters within the textarea
+            pictureName.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(final ObservableValue<? extends String> observable,
+                                    final String oldValue, final String newValue) {
+                    try {
+                        // force correct length
+                        // by resetting to old value if longer than maxLength
+                        if (newValue.length() > MAX_TITLE_LENGTH) {
+                            pictureName.setText(oldValue);
+                        }
+                    } catch (Exception e) {
                         pictureName.setText(oldValue);
+                        Logger.getLogger(PictureController.class.getName())
+                                .log(Level.SEVERE, e.getMessage(), e);
                     }
-                } catch (Exception e) {
-                    pictureName.setText(oldValue);
-                    Logger.getLogger(PictureController.class.getName())
-                            .log(Level.SEVERE, e.getMessage(), e);
                 }
-            }
-        });
+            });
 
-        // VALIDATE ON ENTER
-        pictureName.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            final KeyCombination combo = new KeyCodeCombination(KeyCode.ENTER);
+            // VALIDATE ON ENTER
+            pictureName.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                final KeyCombination combo = new KeyCodeCombination(KeyCode.ENTER);
 
-            public void handle(final KeyEvent t) {
-                if (combo.match(t)) {
-                    // Prevents linebreaks
-                    pictureName.setText(pictureName.getText().replace("\n", ""));
-                    picture.setTitle(pictureName.getText());
+                public void handle(final KeyEvent t) {
+                    if (combo.match(t)) {
+                        // Prevents linebreaks
+                        pictureName.setText(pictureName.getText().replace("\n", ""));
+                        picture.setTitle(pictureName.getText());
+                    }
                 }
-            }
-        });
-
+            });
+        }
         // EDITABLE TITLE
         content.getChildren().addAll(hbox);
         content.getChildren().addAll(pictureImg);
