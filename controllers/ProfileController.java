@@ -400,7 +400,6 @@ public class ProfileController implements Initializable {
 		if (userBirthDate == null) {
 			userLastName = "";
 		}
-		// TODO: CHECK THIS
 		if (userAvatar == null) {
 			userAvatar = null;
 		}

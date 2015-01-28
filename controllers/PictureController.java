@@ -296,9 +296,9 @@ public class PictureController extends Tab implements Initializable {
         tagsValidateBtn = new Button("Terminer");
         rulesBtn = new Button("Droits");
         // Avatar
-        setImage(avatarImg, app.currentUser().getAvatar() == null
+        setImage(avatarImg, picture.getUser().getAvatarImageObject() == null
                 ? new Image("IHM/resources/avatar_icon.png")
-                : app.currentUser().getAvatarImageObject(), AVATAR_SIZE, AVATAR_SIZE);
+                : picture.getUser().getAvatarImageObject() , AVATAR_SIZE, AVATAR_SIZE);
 
         // Picture name
         pictureName.setEditable(false);
