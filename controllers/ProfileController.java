@@ -156,6 +156,10 @@ public class ProfileController implements Initializable {
 	 */
 	public void build(final User userToDisplay) {
 		this.user = userToDisplay;
+
+		//Async request to get full user
+		application.getIHMtoDATA().getUserById(userToDisplay.getUid(), application.addRequest(this));
+
 		if (userToDisplay.getUid().equals(application.currentUser().getUid())) {
 			editable = true;
 		}

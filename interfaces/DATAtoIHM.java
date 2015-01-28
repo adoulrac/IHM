@@ -59,4 +59,11 @@ public interface DATAtoIHM {
      * Receive reload all user groups
      */
     public void receiveReloadUserGroups();
+
+    /**
+     * Receive full user
+     * @param user the user
+     * @param queryId the query id
+     */
+    public void receiveFullUser(User user, int queryId);
 }

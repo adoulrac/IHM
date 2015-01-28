@@ -2,11 +2,9 @@ package IHM.interfaces;
 
 import DATA.model.Picture;
 import DATA.model.User;
-import IHM.controllers.MainController;
-import IHM.controllers.PictureController;
-import IHM.controllers.TabbedPicturesSubController;
-import IHM.controllers.WelcomeController;
+import IHM.controllers.*;
 import com.google.common.collect.Lists;
+import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 import javafx.fxml.Initializable;
 
 import java.util.ArrayList;
@@ -133,6 +131,22 @@ public class DATAtoIHMimpl implements DATAtoIHM {
         WelcomeController welcome = app.getWelcomeController();
         if (welcome != null) {
             welcome.getFriendsSubController().receiveFriendResponse(user, response);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see IHM.interfaces.DATAtoIHM#receiveFullUser(DATA.model.User, integer)
+     */
+    @Override
+    public void receiveFullUser(User user, int queryId) {
+        Initializable controller = app.getRequests().get(new Integer(queryId));
+        if (controller == null) {
+            //no entry or it's deleted in the map
+            // do nothing (we don't know for what these pictures are for)
+        } else {
+            if (controller instanceof ProfileController) {
+                ((ProfileController) controller).build(user);
+            }
         }
     }
 
