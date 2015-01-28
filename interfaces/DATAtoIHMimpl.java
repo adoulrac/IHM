@@ -5,6 +5,7 @@ import DATA.model.User;
 import IHM.controllers.*;
 import com.google.common.collect.Lists;
 import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 
 import java.util.ArrayList;
@@ -138,14 +139,20 @@ public class DATAtoIHMimpl implements DATAtoIHM {
      * @see IHM.interfaces.DATAtoIHM#receiveFullUser(DATA.model.User, integer)
      */
     @Override
-    public void receiveFullUser(User user, int queryId) {
+    public void receiveFullUser(final User user, int queryId) {
         Initializable controller = app.getRequests().get(new Integer(queryId));
         if (controller == null) {
             //no entry or it's deleted in the map
             // do nothing (we don't know for what these pictures are for)
         } else {
             if (controller instanceof ProfileController) {
-                ((ProfileController) controller).build(user);
+                final ProfileController profileController = ((ProfileController) controller);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        profileController.build(user);
+                    }
+                });
             }
         }
     }
